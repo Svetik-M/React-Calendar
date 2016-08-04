@@ -1,0 +1,218 @@
+$main-color: #b3003b;
+$button-color: #cc0044;
+$shadow-color: #660022;
+$color-grey: #595959;
+$color-pale-grey: #bfbfbf;
+
+@mixin user-select {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+}
+
+body {
+    font: 14px 'Nunito', sans-serif;
+    color: $color-grey;
+}
+
+.page-body {
+    display: inline-flex;
+}
+
+
+/*Title menu*/
+
+header {
+    position: fixed;
+    background-color: white;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    box-shadow: 0 0 10px $color-grey;
+    height: 3.1rem;
+    @include user-select;
+    .logo {
+        font: small-caps 36px 'Chewy', sans-serif;
+        color: $main-color;
+        text-shadow: 1px 1px 3px $color-grey;
+        text-align: center;
+        min-width: 15rem;
+        width: 15rem;
+    }
+    .menu {
+        display: flex;
+        justify-content: center;
+        min-width: 570px;
+        width: 100%;
+        text-transform: uppercase;
+    }
+    .title-menu {
+        display: flex;
+        justify-content: space-around;
+        align-items: baseline;
+        flex-grow: 1;
+        max-width: 800px;
+        font-weight: bold;
+    }
+    .period-block {
+        list-style-type: none;
+        display: inline-flex;
+        flex-wrap: nowrap;
+        padding: 0;
+    }
+    .nav-today, .nav, .period-block, .create-event {
+        margin: 0 15px;
+    }
+    .period, .nav-today {
+        padding: 5px;
+    }
+    .period {
+        margin-right: 10px;
+    }
+    .period:hover, .nav-today:hover {
+        padding-bottom: 1px;
+        color: $main-color;
+        border-bottom: 3px solid $main-color;
+        cursor: pointer;
+    }
+    .period:active, .nav-today:active {
+        color: $shadow-color;
+    }
+    .nav {
+        display: inline-flex;
+        color: #595959;
+        .fa {
+            width: 1em;
+            height: 1em;
+            margin: 0 10px;
+        }
+        .fa:hover {
+            background: $button-color;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .fa:active {
+            box-shadow: inset 0 0 10px $shadow-color;
+            margin: 1px 11px;
+        }
+        .fa-chevron-left {
+            padding: 5px 4px 4px 5px;
+        }
+        .fa-chevron-left:active {
+            padding: 4px 3px 3px 4px;
+        }
+        .fa-chevron-right {
+            padding: 5px 2px 4px 7px;
+        }
+        .fa-chevron-right:active {
+            padding: 4px 1px 3px 6px;
+        }
+    }
+}
+
+/*Sidebar menu*/
+
+.page-body {
+    margin-top: 3.1rem;
+}
+
+.sidebar-menu {
+    position: fixed;
+    display: block;
+    max-width: 15rem;
+    height: 48rem;
+    border: 2px solid $color-pale-grey;
+}
+
+.create-event {
+    width: 7rem;
+    height: 1.2rem;
+    text-align: center;
+    white-space: nowrap;
+    background-color: $main-color;
+    text-transform: uppercase;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 3rem;
+    border-radius: 5px;
+    @include user-select;
+}
+
+.create-event:hover {
+    background-color: $button-color;
+    cursor: pointer;
+}
+
+.create-event:active {
+    background-color: $button-color;
+    box-shadow: inset 0 0 10px $shadow-color;
+}
+
+
+/*Calendar Widget*/
+
+.nav-title {
+    display: inline-flex;
+    width: 13rem;
+    padding: 1rem 1rem 1rem;
+    text-align: center;
+    font-size: 1rem;
+    .fa {
+        width: 1.9rem;
+        color: $main-color;
+        font-size: 1.2rem;
+        margin: 0 auto;
+    }
+    .fa:hover {
+        cursor: pointer;
+        color: $button-color;
+    }
+    .fa:active {
+        font-size: 1.1rem;
+    }
+    #month {
+        width: 9.2rem;
+    }
+}
+
+#nav-calendar {
+    width: 13rem;
+    padding: 0rem 1rem;
+}
+
+.calendar {
+    table-layout: fixed;
+    width: 100%;
+    line-height: 1.2rem;
+    font-size: 0.8rem;
+    text-align: center;
+    empty-cells: hide;
+    td {
+        width: 1.9rem;
+        height: 1.2rem;
+    }
+    thead {
+        tr {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: $main-color;
+        }
+    }
+    tbody {
+        td:nth-child(n+6) {
+            color: $button-color;
+        }
+        td.other-month {
+            color: $color-pale-grey;
+        }
+        td:hover {
+            background-color: $color-grey;
+            color: white;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "name": "my-calendar",
+    "version": "1.0.0",
+    "description": "My Calendar",
+    "main": "index.html",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "author": "Svetlana Morozko",
+    "license": "MIT",
+    "devDependencies": {
+    "express": "^4.14.0"
+    }
+}

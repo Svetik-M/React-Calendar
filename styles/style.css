@@ -1,0 +1,176 @@
+body {
+  font: 14px 'Nunito', sans-serif;
+  color: #595959; }
+
+.page-body {
+  display: inline-flex; }
+
+/*Title menu*/
+header {
+  position: fixed;
+  background-color: white;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  box-shadow: 0 0 10px #595959;
+  height: 3.1rem;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none; }
+
+.logo {
+  font: small-caps 36px 'Chewy', sans-serif;
+  color: #b3003b;
+  text-shadow: 1px 1px 3px #595959;
+  text-align: center;
+  min-width: 15rem;
+  width: 15rem; }
+
+.menu {
+  display: flex;
+  justify-content: center;
+  min-width: 570px;
+  width: 100%;
+  text-transform: uppercase; }
+
+.title-menu {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  flex-grow: 1;
+  max-width: 800px;
+  font-weight: bold; }
+
+.period-block {
+  list-style-type: none;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  padding: 0; }
+
+.nav-today, .nav, .period-block, .create-event {
+  margin: 0 15px; }
+
+.period, .nav-today {
+  padding: 5px; }
+
+.period {
+  margin-right: 10px; }
+
+.period:hover, .nav-today:hover {
+  padding-bottom: 1px;
+  color: #b3003b;
+  border-bottom: 3px solid #b3003b;
+  cursor: pointer; }
+
+.period:active, .nav-today:active {
+  color: #660022; }
+
+.nav {
+  display: inline-flex;
+  color: #595959; }
+  .nav .fa {
+    width: 1em;
+    height: 1em;
+    margin: 0 10px; }
+  .nav .fa:hover {
+    background: #cc0044;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer; }
+  .nav .fa:active {
+    box-shadow: inset 0 0 10px #660022;
+    margin: 1px 11px; }
+  .nav .fa-chevron-left {
+    padding: 5px 4px 4px 5px; }
+  .nav .fa-chevron-left:active {
+    padding: 4px 3px 3px 4px; }
+  .nav .fa-chevron-right {
+    padding: 5px 2px 4px 7px; }
+  .nav .fa-chevron-right:active {
+    padding: 4px 1px 3px 6px; }
+
+/*Sidebar menu*/
+.page-body {
+  margin-top: 3.1rem; }
+
+.sidebar-menu {
+  position: fixed;
+  display: block;
+  max-width: 15rem;
+  height: 48rem;
+  border: 2px solid #bfbfbf; }
+
+.create-event {
+  width: 7rem;
+  height: 1.2rem;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #b3003b;
+  text-transform: uppercase;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 3rem;
+  border-radius: 5px;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none; }
+
+.create-event:hover {
+  background-color: #cc0044;
+  cursor: pointer; }
+
+.create-event:active {
+  background-color: #cc0044;
+  box-shadow: inset 0 0 10px #660022; }
+
+/*Calendar Widget*/
+.nav-title {
+  display: inline-flex;
+  width: 13rem;
+  padding: 1rem 1rem 1rem;
+  text-align: center;
+  font-size: 1rem; }
+  .nav-title .fa {
+    width: 1.9rem;
+    color: #b3003b;
+    font-size: 1.2rem;
+    margin: 0 auto; }
+  .nav-title .fa:hover {
+    cursor: pointer;
+    color: #cc0044; }
+  .nav-title .fa:active {
+    font-size: 1.1rem; }
+  .nav-title #month {
+    width: 9.2rem; }
+
+#nav-calendar {
+  width: 13rem;
+  padding: 0rem 1rem; }
+
+.calendar {
+  table-layout: fixed;
+  width: 100%;
+  line-height: 1.2rem;
+  font-size: 0.8rem;
+  text-align: center;
+  empty-cells: hide; }
+  .calendar td {
+    width: 1.9rem;
+    height: 1.2rem; }
+  .calendar thead tr {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #b3003b; }
+  .calendar tbody td:nth-child(n+6) {
+    color: #cc0044; }
+  .calendar tbody td.other-month {
+    color: #bfbfbf; }
+  .calendar tbody td:hover {
+    background-color: #595959;
+    color: white;
+    cursor: pointer; }
+
+/*# sourceMappingURL=style.css.map */
