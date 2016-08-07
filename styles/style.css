@@ -8,6 +8,7 @@ body {
 /*Title menu*/
 header {
   position: fixed;
+  z-index: 99;
   background-color: white;
   top: 0;
   width: 100%;
@@ -19,88 +20,81 @@ header {
   -webkit-user-select: none;
   -ms-user-select: none;
   -moz-user-select: none; }
-
-.logo {
-  font: small-caps 36px 'Chewy', sans-serif;
-  color: #b3003b;
-  text-shadow: 1px 1px 3px #595959;
-  text-align: center;
-  min-width: 15rem;
-  width: 15rem; }
-
-.menu {
-  display: flex;
-  justify-content: center;
-  min-width: 570px;
-  width: 100%;
-  text-transform: uppercase; }
-
-.title-menu {
-  display: flex;
-  justify-content: space-around;
-  align-items: baseline;
-  flex-grow: 1;
-  max-width: 800px;
-  font-weight: bold; }
-
-.period-block {
-  list-style-type: none;
-  display: inline-flex;
-  flex-wrap: nowrap;
-  padding: 0; }
-
-.nav-today, .nav, .period-block, .create-event {
-  margin: 0 15px; }
-
-.period, .nav-today {
-  padding: 5px; }
-
-.period {
-  margin-right: 10px; }
-
-.period:hover, .nav-today:hover {
-  padding-bottom: 1px;
-  color: #b3003b;
-  border-bottom: 3px solid #b3003b;
-  cursor: pointer; }
-
-.period:active, .nav-today:active {
-  color: #660022; }
-
-.nav {
-  display: inline-flex;
-  color: #595959; }
-  .nav .fa {
-    width: 1em;
-    height: 1em;
-    margin: 0 10px; }
-  .nav .fa:hover {
-    background: #cc0044;
-    color: white;
-    border-radius: 50%;
+  header .logo {
+    font: small-caps 36px 'Chewy', sans-serif;
+    color: #b3003b;
+    text-shadow: 1px 1px 3px #595959;
+    text-align: center;
+    min-width: 15rem;
+    width: 15rem; }
+  header .menu {
+    display: flex;
+    justify-content: center;
+    min-width: 570px;
+    width: 100%;
+    text-transform: uppercase; }
+  header .title-menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    flex-grow: 1;
+    max-width: 800px;
+    font-weight: bold; }
+  header .period-block {
+    list-style-type: none;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    padding: 0; }
+  header .nav-today, header .nav, header .period-block, header .create-event {
+    margin: 0 15px; }
+  header .period, header .nav-today {
+    padding: 5px; }
+  header .period {
+    margin-right: 10px; }
+  header .period:hover, header .nav-today:hover {
+    padding-bottom: 1px;
+    color: #b3003b;
+    border-bottom: 3px solid #b3003b;
     cursor: pointer; }
-  .nav .fa:active {
-    box-shadow: inset 0 0 10px #660022;
-    margin: 1px 11px; }
-  .nav .fa-chevron-left {
-    padding: 5px 4px 4px 5px; }
-  .nav .fa-chevron-left:active {
-    padding: 4px 3px 3px 4px; }
-  .nav .fa-chevron-right {
-    padding: 5px 2px 4px 7px; }
-  .nav .fa-chevron-right:active {
-    padding: 4px 1px 3px 6px; }
+  header .period:active, header .nav-today:active {
+    color: #660022; }
+  header .nav {
+    display: inline-flex;
+    color: #595959; }
+    header .nav .fa {
+      width: 1em;
+      height: 1em;
+      margin: 0 10px; }
+    header .nav .fa:hover {
+      background: #cc0044;
+      color: white;
+      border-radius: 50%;
+      cursor: pointer; }
+    header .nav .fa:active {
+      box-shadow: inset 0 0 10px #660022;
+      margin: 1px 11px; }
+    header .nav .fa-chevron-left {
+      padding: 5px 4px 4px 5px; }
+    header .nav .fa-chevron-left:active {
+      padding: 4px 3px 3px 4px; }
+    header .nav .fa-chevron-right {
+      padding: 5px 1px 4px 7px; }
+    header .nav .fa-chevron-right:active {
+      padding: 4px 0 3px 6px; }
 
 /*Sidebar menu*/
 .page-body {
-  margin-top: 3.1rem; }
+  margin-top: 3.1rem;
+  min-width: 900px;
+  width: 100%;
+  display: flex; }
 
 .sidebar-menu {
   position: fixed;
   display: block;
   max-width: 15rem;
-  height: 48rem;
-  border: 2px solid #bfbfbf; }
+  background-color: white;
+  z-index: 90; }
 
 .create-event {
   width: 7rem;
@@ -111,7 +105,7 @@ header {
   text-transform: uppercase;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem 0.5rem 1rem;
   margin: 3rem;
   border-radius: 5px;
   -webkit-user-select: none;
@@ -127,6 +121,11 @@ header {
   box-shadow: inset 0 0 10px #660022; }
 
 /*Calendar Widget*/
+.nav-date {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none; }
+
 .nav-title {
   display: inline-flex;
   width: 13rem;
@@ -151,6 +150,7 @@ header {
   padding: 0rem 1rem; }
 
 .calendar {
+  border-collapse: separate;
   table-layout: fixed;
   width: 100%;
   line-height: 1.2rem;
@@ -158,19 +158,59 @@ header {
   text-align: center;
   empty-cells: hide; }
   .calendar td {
-    width: 1.9rem;
-    height: 1.2rem; }
+    width: 1.9rem; }
   .calendar thead tr {
     font-size: 0.7rem;
     text-transform: uppercase;
     color: #b3003b; }
-  .calendar tbody td:nth-child(n+6) {
+  .calendar tbody td {
+    border: 0.15rem solid white; }
+  .calendar tbody td:first-child, .calendar tbody td:last-child {
     color: #cc0044; }
   .calendar tbody td.other-month {
     color: #bfbfbf; }
+  .calendar tbody td.click-calendar {
+    background-color: #bfbfbf;
+    border: 0.15rem solid #bfbfbf; }
+  .calendar tbody #today {
+    border: 0.15rem solid #b3003b; }
   .calendar tbody td:hover {
-    background-color: #595959;
-    color: white;
+    background-color: #bfbfbf;
+    border: 0.15rem solid #bfbfbf;
     cursor: pointer; }
+  .calendar tbody td.other-month:hover {
+    color: white; }
+
+/*Main body*/
+.events-of-day {
+  width: calc(100% - 15.2rem);
+  position: absolute;
+  left: 15.2rem;
+  flex-grow: 1;
+  box-shadow: 0 0 10px #595959; }
+  .events-of-day .date {
+    position: fixed;
+    background-color: #b3003b;
+    border: 1px solid #b3003b;
+    color: white;
+    vertical-align: middle;
+    text-align: center;
+    table-layout: fixed;
+    width: calc(100% - 15.2rem);
+    height: 1.5rem; }
+    .events-of-day .date .time {
+      width: 55px; }
+  .events-of-day .event-list {
+    width: 100%;
+    margin-top: 1.5rem; }
+    .events-of-day .event-list tr {
+      height: 2rem; }
+    .events-of-day .event-list td {
+      border: 1px solid #bfbfbf; }
+    .events-of-day .event-list .time {
+      width: 55px;
+      text-align: center; }
+    .events-of-day .event-list .event {
+      background-color: #e6e6e6; }
 
 /*# sourceMappingURL=style.css.map */

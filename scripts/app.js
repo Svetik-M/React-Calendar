@@ -3,6 +3,8 @@
 
 //Render Calendar Widget
 
+var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+
 function calendar(year, month) {
     var lastDayOfMonth = new Date(year ,month+1, 0).getDate(),
         dateLast = new Date(year, month, lastDayOfMonth),
@@ -11,11 +13,14 @@ function calendar(year, month) {
         DOW_first = dateFirst.getDay(),
         monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         msInDay = 86400000,
-        currDay;
+        currDay = dateFirst.getTime() - DOW_first * msInDay;;
+
 
     var MonthNav = React.createClass({
         render: function() {
-            return <div id='month'>{monthNames[dateFirst.getMonth()] + ' ' + dateFirst.getFullYear()}</div>;
+            return (<div id='month' data-month={dateFirst.getMonth()} data-year={dateFirst.getFullYear()}>
+                        {monthNames[dateFirst.getMonth()] + ' ' + dateFirst.getFullYear()}
+                    </div>);
         }
     });
 
@@ -24,17 +29,6 @@ function calendar(year, month) {
         document.getElementById('curr-month')
     );
 
-    document.getElementById('month').dataset.month = dateFirst.getMonth();
-    document.getElementById('month').dataset.year = dateFirst.getFullYear();
-
-    if (DOW_first > 1) {
-        currDay = dateFirst.getTime() - (DOW_first - 1) * msInDay;
-    } else if (DOW_first === 0) {
-        currDay = dateFirst.getTime() - 6 * msInDay;
-    } else {
-        currDay = dateFirst.getTime();
-    }
-
     var Week = React.createClass({
         render: function() {
             var firstDay = this.props.date
@@ -42,9 +36,11 @@ function calendar(year, month) {
             days = days.map((v,i) => {
                 var day = new Date(firstDay + i*msInDay);
                 if (day.getMonth() !== dateFirst.getMonth()) {
-                    return <td key={i} className='other-month'>{day.getDate()}</td>;
+                    return <td key={i} className='other-month' data-date={day}>{day.getDate()}</td>;
+                } else  if (day.getTime() === today.getTime()) {
+                    return <td key={i} className='curr-month' id='today' data-date={day}>{day.getDate()}</td>;
                 } else {
-                    return <td key={i} className='curr-month'>{day.getDate()}</td>;
+                    return <td key={i} className='curr-month' data-date={day}>{day.getDate()}</td>;
                 }
             });
             return  (
@@ -74,7 +70,7 @@ function calendar(year, month) {
             return (
                 <table className='calendar'>
                     <thead>
-                        <tr><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td><td>Sun</td></tr>
+                        <tr><td>Sun</td><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td></tr>
                     </thead>
                     <Month />
                 </table>
@@ -88,6 +84,7 @@ function calendar(year, month) {
     );
 
 }
+
 calendar(new Date().getFullYear(), new Date().getMonth());
 
 document.getElementsByClassName('fa-chevron-circle-left')[0].onclick = function() {
@@ -97,3 +94,77 @@ document.getElementsByClassName('fa-chevron-circle-left')[0].onclick = function(
 document.getElementsByClassName('fa-chevron-circle-right')[0].onclick = function() {
     calendar(+document.getElementById('month').getAttribute('data-year'), +document.getElementById('month').getAttribute('data-month')+1);
 }
+
+document.querySelector('.nav-date').onclick = function(event) {
+    var el = document.getElementsByClassName('click-calendar')[0],
+        target = event.target,
+        date = new Date(target.getAttribute('data-date'));
+    if (target.tagName !== 'TD') return;
+    if (el) el.className = 'curr-month';
+    if (target.className === 'curr-month') {
+        target.className = 'curr-month click-calendar';
+    } else {
+        calendar(date.getFullYear(), date.getMonth());
+        var day = date.getDay()+1;
+        if (date.getDate() < 7) {
+            target = document.querySelector('.calendar tbody tr:first-child td:nth-child('+day+')');
+        } else {
+            target = document.querySelector('.calendar tbody tr:last-child td:nth-child('+day+')');
+        }
+        target.className = 'curr-month click-calendar';
+    }
+    getIventOfDay(date);
+}
+
+
+//Render Main block (Day)
+
+function getIventOfDay(date) {
+    var daysOfWeek = ['Sanday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        DOW_date = daysOfWeek[date.getDay()],
+        day = date.getDate(),
+        month = date.getMonth()+1,
+        year = date.getFullYear();
+
+    var IventOfDay = React.createClass({
+        render: function() {
+            var rows = Array.from({length:24}),
+                time;
+            rows = rows.map((v,i) => {
+                if (i === 0) time = '12am';
+                else if (i < 12) time = i + 'am';
+                else if (i === 12) time = '12pm';
+                else if (i > 12) time = i-12 + 'pm';
+                return (
+                    <tr key={i}>
+                        <td className='time'>{time}</td>
+                        <td className='event' id={day+'-'+month+'-'+year+'-'+time}></td>
+                    </tr>
+                );
+            });
+            return (
+                <div className='events-of-day'>
+                    <table className='date'>
+                        <tbody>
+                            <tr>
+                                <td className='time'></td>
+                                <td className='event'>{DOW_date +' '+ day +'/'+ month +'/'+ year}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table className='event-list'>
+                        <tbody>
+                            {rows}
+                        </tbody>
+                    </table>
+                </div>
+            )
+        }
+    });
+
+    ReactDOM.render(
+        <IventOfDay />,
+        document.getElementById('main-body')
+    );
+}
+getIventOfDay(new Date())
