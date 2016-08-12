@@ -7,11 +7,11 @@ function createWeek(firstDay, dateFirst, msInDay) {
     days = days.map(function(v,i) {
         var day = new Date(firstDay + i*msInDay);
         if (day.getMonth() !== dateFirst.getMonth()) {
-            return <td key={i} className='other-month' id={day.getTime()} data-date={day}>{day.getDate()}</td>;
+            return <td key={i} className='other-month' id={day.getTime()}>{day.getDate()}</td>;
         } else  if (day.getTime() === today.getTime()) {
-            return <td key={i} className='curr-month today' id={day.getTime()} data-date={day}>{day.getDate()}</td>;
+            return <td key={i} className='curr-month today' id={day.getTime()}>{day.getDate()}</td>;
         } else {
-            return <td key={i} className='curr-month' id={day.getTime()} data-date={day}>{day.getDate()}</td>;
+            return <td key={i} className='curr-month' id={day.getTime()}>{day.getDate()}</td>;
         }
     });
     return  (
@@ -118,8 +118,8 @@ function getIventsOfDay(date) {
             <tr key={i}>
                 <td className='time'>{timeStr}</td>
                 <td className='event'>
-                    <div data-date={date.getTime()} data-time={time + i * msInHour}></div>
-                    <div data-date={date.getTime()} data-time={time + i * msInHour + msInHour/2}></div>
+                    <div className={time + i * msInHour}></div>
+                    <div className={time + i * msInHour + msInHour/2}></div>
                 </td>
             </tr>
         );
@@ -191,10 +191,11 @@ function getIventsOfWeek(date) {
         else if (i > 12) time = i-12 + 'pm';
 
         eventsDOW = eventsDOW.map(function(v,i) {
-            var bool = (firstDay + i * msInDay === today);
+            var bool = (firstDay + i * msInDay === today),
+                date = firstDay + i * msInDay;
             return <td key={i} className={bool ? 'event curr-day' : 'event'}>
-                       <div key={i+.0} data-date={firstDay + i * msInDay} data-time={time + i * msInHour}></div>
-                       <div key={i+.1} data-date={firstDay + i * msInDay} data-time={time + i * msInHour + msInHour/2}></div>
+                       <div key={i+.0} className={date + ' ' + (time + i * msInHour)}></div>
+                       <div key={i+.1} className={date + ' ' + (time + i * msInHour + msInHour/2)}></div>
                    </td>
         });
         return (
@@ -334,22 +335,24 @@ function eventService() {
     getIventsOfDay(date);
     clickEventHendlerForCalendar(document.getElementById('' + date.getTime()));
 
-    document.getElementsByClassName('fa-chevron-circle-left')[0].onclick = function() {
+
+    document.getElementsByClassName('fa-chevron-circle-left')[0].addEventListener('click', function() {
         calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
                           +document.getElementById('month').getAttribute('data-month')-1));
-    }
 
-    document.getElementsByClassName('fa-chevron-circle-right')[0].onclick = function() {
+    });
+
+    document.getElementsByClassName('fa-chevron-circle-right')[0].addEventListener('click', function() {
         calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
                           +document.getElementById('month').getAttribute('data-month')+1));
-    }
+    });
+
 
     //Click event hendler on Calendar
     function clickEventHendlerForCalendar(target) {
         var el = document.querySelector('.calendar .click-calendar');
 
-        date = new Date(target.getAttribute('data-date'));
-        if (target.tagName !== 'TD') return;
+        date = new Date(parseInt(target.getAttribute('id')));
 
         if (el) {
             if (el.className === 'curr-month today click-calendar') {
@@ -384,8 +387,8 @@ function eventService() {
 
             let week = document.querySelector('.calendar .selectedWeek'),
                 thisWeek = target.parentElement,
-                firstDay = new Date(thisWeek.firstElementChild.getAttribute('data-date')),
-                lastDay = new Date (thisWeek.lastElementChild.getAttribute('data-date'));
+                firstDay = new Date(parseInt(thisWeek.firstElementChild.getAttribute('id'))),
+                lastDay = new Date (parseInt(thisWeek.lastElementChild.getAttribute('id')));
 
             if (firstDay.getFullYear() !== lastDay.getFullYear()) {
                 period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ', ' + firstDay.getFullYear() + ' - ' +
@@ -404,6 +407,7 @@ function eventService() {
             thisWeek.className = 'selectedWeek';
 
         } else {
+
             let thisMonth = document.querySelector('.calendar .monthTable')
             period = monthNames[date.getMonth()] + ' ' + date.getFullYear();
             getSelectedPeriod(period);
@@ -413,37 +417,43 @@ function eventService() {
         }
     }
 
-    document.querySelector('.sidebar-menu .nav-date').onclick = function(event) {
+    document.querySelector('.sidebar-menu .nav-date').addEventListener('click', function(event) {
         var target = event.target;
-        clickEventHendlerForCalendar(target)
-    }
+        if (target.tagName === 'TD') clickEventHendlerForCalendar(target);
+    });
+
 
     //Click event hendler on "Today"
-    document.querySelector('.title-menu .nav-today').onclick = function() {
+    document.querySelector('.title-menu .nav-today').addEventListener('click', function() {
         var el = document.querySelector('.calendar .click-calendar'),
+            week = week = document.querySelector('.calendar .selectedWeek'),
+            month = document.querySelector('.calendar .selectedMonth'),
             today = new Date();
 
         period = monthNames[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear();
         getSelectedPeriod(period);
         getIventsOfDay(new Date());
-        calendar(today);
+        if (!document.querySelector('.calendar .today')) calendar(today);
+
+        if (el && el.className !== 'curr-month today click-calendar') el.className = 'curr-month';
+        if(week) week.removeAttribute('class');
+        if(month) month.className = 'monthTable';
+
         document.querySelector('.calendar .today').className = 'curr-month today click-calendar';
         state = 'day';
-    }
+    });
+
 
     //Click event hendler on "Day"
     function clickEventHendlerForDay() {
-        var el = document.querySelector('.calendar .click-calendar'),
-            week = document.querySelector('.calendar .selectedWeek'),
-            month = document.querySelector('.calendar .selectedMonth'),
-            date;
+        var week = document.querySelector('.calendar .selectedWeek'),
+            month = document.querySelector('.calendar .selectedMonth');
 
-        if (el) {
-            date = new Date(el.getAttribute('data-date'));
-        } else {
-            date = new Date();
-            document.getElementById('today').className = 'curr-month click-calendar';
+        if (!document.querySelector('.calendar .click-calendar')) {
+            calendar(date);
+            document.getElementById('' + date.getTime()).className = 'curr-month click-calendar';
         }
+
         if(week) week.removeAttribute('class');
         if(month) month.className = 'monthTable';
         period = monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
@@ -452,9 +462,9 @@ function eventService() {
         state = 'day';
     }
 
-    document.querySelector('.title-menu .period-block .day').onclick = function() {
-        clickEventHendlerForDay();
-    }
+    document.querySelector('.title-menu .period-block .day').addEventListener('click', clickEventHendlerForDay);
+
+
 
     //Click event hendler on "Week"
     function clickEventHendlerForWeek() {
@@ -465,16 +475,14 @@ function eventService() {
             thisWeek;
 
         if (el) {
-            var date = new Date(el.getAttribute('data-date'));
-            getIventsOfWeek(date);
             thisWeek = el.parentElement;
         } else {
-            getIventsOfWeek(new Date());
-            thisWeek = document.getElementById('today').parentElement;
+            calendar(date);
+            thisWeek = document.getElementById('' + date.getTime()).parentElement;
         }
 
-        firstDay = new Date(thisWeek.firstElementChild.getAttribute('data-date'));
-        lastDay = new Date (thisWeek.lastElementChild.getAttribute('data-date'));
+        firstDay = new Date(parseInt(thisWeek.firstElementChild.getAttribute('id')));
+        lastDay = new Date (parseInt(thisWeek.lastElementChild.getAttribute('id')));
         if (firstDay.getFullYear() !== lastDay.getFullYear()) {
             period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ', ' + firstDay.getFullYear() + ' - ' +
                      monthNames[lastDay.getMonth()].slice(0,3) + ' ' + lastDay.getDate() + ', ' + lastDay.getFullYear();
@@ -486,95 +494,80 @@ function eventService() {
                      monthNames[lastDay.getMonth()].slice(0,3) + ' ' + lastDay.getDate() + ', ' + firstDay.getFullYear();
         }
 
+        getIventsOfWeek(date);
         getSelectedPeriod(period);
-        if(month) month.className = 'monthTable';
+        if (month) month.className = 'monthTable';
         thisWeek.className = 'selectedWeek';
         state = 'week';
     }
 
-    document.querySelector('.title-menu .period-block .week').onclick = function() {
-        clickEventHendlerForWeek();
-    }
+    document.querySelector('.title-menu .period-block .week').addEventListener('click', clickEventHendlerForWeek);
+
 
     //Click event hendler on "Month"
     function clickEventHendlerForMonth() {
-        var el = document.querySelector('.calendar .click-calendar'),
-            thisMonth = document.querySelector('.calendar .monthTable'),
-            date;
+        var thisMonth;
 
-        if (el) {
-            date = new Date(el.getAttribute('data-date'));
-        } else {
-            date = new Date();
-        }
+        if (!document.querySelector('.calendar .click-calendar')) calendar(date);
+        thisMonth = document.querySelector('.calendar .monthTable');
 
         period = monthNames[date.getMonth()] + ' ' + date.getFullYear();
-        getSelectedPeriod(period);
         getIventsOfMonth(date);
+        getSelectedPeriod(period);
         thisMonth.className =  'monthTable selectedMonth';
         state = 'month';
     }
 
-    document.querySelector('.title-menu .period-block .month').onclick = function() {
-        clickEventHendlerForMonth();
-    }
+    document.querySelector('.title-menu .period-block .month').addEventListener('click', clickEventHendlerForMonth);
+
 
     //Click event hendler on icon "Previous"
-    document.querySelector('.title-menu .fa-arrow-circle-left').onclick = function() {
-        var currdate = new Date(document.querySelector('.calendar .click-calendar').dataset.date),
-            msInDay = 86400000,
+    document.querySelector('.title-menu .fa-arrow-circle-left').addEventListener('click', function() {
+        var msInDay = 86400000,
             prevDate,
             elem;
 
         if (state === 'day') {
-            prevDate = currdate.getTime() - msInDay;
-            if (date.getDate() === 1) {
-                calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
-                                  +document.getElementById('month').getAttribute('data-month')-1));
-            }
+            prevDate = date.getTime() - msInDay;
         } else if (state === 'week') {
-            prevDate = currdate.getTime() - 7*msInDay;
-            if (currdate.getDate() <= 7) {
-                calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
-                                  +document.getElementById('month').getAttribute('data-month')-1));
-            }
+            prevDate = date.getTime() - 7*msInDay;
         } else if (state === 'month') {
-            prevDate = new Date(currdate.getFullYear(), +currdate.getMonth()-1, currdate.getDate()).getTime();
-            calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
-                              +document.getElementById('month').getAttribute('data-month')-1));
+            prevDate = new Date(date.getFullYear(), + date.getMonth()-1, date.getDate()).getTime();
         }
 
         elem = document.getElementById('' + prevDate);
+        if (!elem) {
+            calendar(new Date(prevDate));
+            elem = document.getElementById('' + prevDate);
+        }
+
         clickEventHendlerForCalendar(elem);
-    }
+        date = new Date(prevDate);
+    });
+
 
     //Click event hendler on icon "Next"
-    document.querySelector('.title-menu .fa-arrow-circle-right').onclick = function() {
-        var date = new Date(document.querySelector('.calendar .click-calendar').dataset.date),
-            msInDay = 86400000,
+    document.querySelector('.title-menu .fa-arrow-circle-right').addEventListener('click', function() {
+        var msInDay = 86400000,
             nextDate,
             elem;
 
         if (state === 'day') {
             nextDate = date.getTime() + msInDay;
-            if (new Date(date.getTime() + msInDay).getDate() === 1) {
-                calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
-                                  +document.getElementById('month').getAttribute('data-month')+1));
-            }
         } else if (state === 'week') {
             nextDate = date.getTime() + 7*msInDay;
-            if (new Date(date.getTime() + 7*msInDay).getDate() <= 7) {
-                calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
-                                  +document.getElementById('month').getAttribute('data-month')+1));
-            }
         } else if (state === 'month') {
             nextDate = new Date(date.getFullYear(), +date.getMonth()+1, date.getDate()).getTime();
-            calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
-                              +document.getElementById('month').getAttribute('data-month')+1));
         }
 
         elem = document.getElementById('' + nextDate);
+        if (!elem) {
+            calendar(new Date(nextDate));
+            elem = document.getElementById('' + nextDate);
+        }
+
         clickEventHendlerForCalendar(elem);
-    }
+        date = new Date(nextDate);
+    });
 }
 eventService();
