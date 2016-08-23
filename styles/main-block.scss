@@ -1,0 +1,86 @@
+.events-block {
+    width: calc(100% - 17rem);
+    position: absolute;
+    left: 15.2rem;
+    flex-grow: 1;
+    box-shadow: 0 0 10px $color-grey;
+    .date {
+        position: fixed;
+        background-color: $main-color;
+        border: 1px solid $main-color;
+        color: white;
+        vertical-align: middle;
+        text-align: center;
+        table-layout: fixed;
+        width: calc(100% - 17rem);
+        height: 2rem;
+        padding-bottom: 1px;
+        .time {
+            width: 55px;
+        }
+    }
+    .event-list {
+        width: 100%;
+        table-layout: fixed;
+        tbody {
+            tr {
+                height: 3rem;
+                td.curr-day {
+                    border-left: 2px solid $main-color;
+                    border-right: 2px solid $main-color;
+                }
+            }
+            tr:first-child td.curr-day {
+                border-top: 1.5px solid $main-color;
+            }
+            tr:last-child td.curr-day {
+                border-bottom: 1.5px solid $main-color;
+            }
+
+        }
+        thead tr {
+            height: 2rem;
+        }
+        td {
+            border-collapse: separate;
+            border: 1px solid $color-pale-grey;
+            div {
+                width: 100%;
+                height: 1.5rem;
+            }
+            div:first-child {
+                border-bottom: 1px dotted $color-pale-grey;
+            }
+        }
+        .time {
+            width: 55px;
+            text-align: center;
+        }
+        .event {
+            background-color: $background-color;
+        }
+        .monthTable {
+            height: 100%;
+            tr {
+                td {
+                    vertical-align: top;
+                    text-align: right;
+                    padding: 0 20px;
+                }
+                td:first-child, td:last-child {
+                    color: $button-color;
+                }
+                td.today {
+                    border: 3px solid $main-color;
+                }
+                td.other-month {
+                    background-color: $background-color;
+                    color: $color-grey;
+                }
+            }
+        }
+    }
+    .month {
+        height: calc(100vh - 3.1rem);
+    }
+}

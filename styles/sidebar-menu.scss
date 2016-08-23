@@ -1,0 +1,38 @@
+.page-body {
+    margin-top: 3.1rem;
+    min-width: 900px;
+    width: 100%;
+    display: flex;
+}
+
+.sidebar-menu {
+    position: fixed;
+    display: block;
+    max-width: 15rem;
+    z-index: 90;
+}
+
+.create-event {
+    width: 7rem;
+    height: 1.2rem;
+    text-align: center;
+    white-space: nowrap;
+    background-color: $main-color;
+    text-transform: uppercase;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem 0.5rem 1rem;
+    margin: 3rem;
+    border-radius: 5px;
+    @include user-select;
+}
+
+.create-event:hover {
+    background-color: $button-color;
+    cursor: pointer;
+}
+
+.create-event:active {
+    background-color: $button-color;
+    box-shadow: inset 0 0 10px $shadow-color;
+}

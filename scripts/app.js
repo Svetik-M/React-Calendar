@@ -1,349 +1,36 @@
 'use strict'
 
-
-function createWeek(firstDay, dateFirst, msInDay) {
-    var days = Array.from({length: 7}),
-        today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-    days = days.map(function(v,i) {
-        var day = new Date(firstDay + i*msInDay);
-        if (day.getMonth() !== dateFirst.getMonth()) {
-            return <td key={i} className='other-month' id={day.getTime()}>{day.getDate()}</td>;
-        } else  if (day.getTime() === today.getTime()) {
-            return <td key={i} className='curr-month today' id={day.getTime()}>{day.getDate()}</td>;
-        } else {
-            return <td key={i} className='curr-month' id={day.getTime()}>{day.getDate()}</td>;
-        }
-    });
-    return  (
-        <tr>
-            {days}
-        </tr>
-    );
-}
-
-function createMonth(currDay, dateLast, msInDay, Week) {
-    var weeks = [];
-    for (let n = 1; currDay <= dateLast.getTime(); currDay = currDay + 7*msInDay, n++) {
-        weeks.push(<Week key = {n} date={currDay} />)
-    }
-    return (
-        <tbody className='monthTable'>
-            {weeks}
-        </tbody>
-    );
-}
+import {renderCalendarWidget, getSelectedPeriod} from "./calendar-widget.jsx";
+import renderDay from './day.jsx';
+import renderWeek from './week.jsx';
+import renderMonth from './month.jsx';
+import '../styles/style.scss';
 
 
-//Render Calendar Widget
-
-function calendar(date) {
-    var month = date.getMonth(),
-        year = date.getFullYear(),
-        lastDayOfMonth = new Date(year ,month+1, 0).getDate(),
-        dateLast = new Date(year, month, lastDayOfMonth),
-        dateFirst = new Date(year, month, 1),
-        DOW_last = dateLast.getDay(),
-        DOW_first = dateFirst.getDay(),
-        monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        msInDay = 86400000,
-        currDay = dateFirst.getTime() - DOW_first * msInDay;
-
-
-    var MonthNav = React.createClass({
-        render: function() {
-            return (<div id='month' data-month={month} data-year={year}>
-                        {monthNames[month] + ' ' + year}
-                    </div>);
-        }
-    });
-
-    ReactDOM.render(
-        <MonthNav />,
-        document.getElementById('curr-month')
-    );
-
-    var Week = React.createClass({
-        render: function() {
-            var firstDay = this.props.date;
-            return createWeek(firstDay, dateFirst, msInDay);
-        }
-    });
-
-    var Month = React.createClass({
-        render: function() {
-            return createMonth(currDay, dateLast, msInDay, Week);
-        }
-    });
-
-    var Calendar = React.createClass({
-        render: function() {
-            return (
-                <table className='calendar'>
-                    <thead>
-                        <tr><td>Sun</td><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td></tr>
-                    </thead>
-                    <Month />
-                </table>
-            );
-        }
-    });
-
-    ReactDOM.render(
-        <Calendar />,
-        document.getElementById('nav-calendar')
-    );
-
-}
-
-calendar(new Date());
-
-
-//Render Main block (Day)
-
-function getIventsOfDay(date) {
-    var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        msInHour = 360000,
-        DOW_date = daysOfWeek[date.getDay()],
-        titleTable = <td className='event'>{DOW_date +' '+ date.getDate() +'/'+ (+date.getMonth()+1)}</td>;
-
-    var rows = Array.from({length:24}),
-        time = 0,
-        timeStr;
-    rows = rows.map(function(v,i) {
-        if (i === 0) timeStr = '12am';
-        else if (i < 12) timeStr = i + 'am';
-        else if (i === 12) timeStr = '12pm';
-        else if (i > 12) timeStr = i-12 + 'pm';
-        return (
-            <tr key={i}>
-                <td className='time'>{timeStr}</td>
-                <td className='event'>
-                    <div className={time + i * msInHour}></div>
-                    <div className={time + i * msInHour + msInHour/2}></div>
-                </td>
-            </tr>
-        );
-    });
-
-    var IventsOfDay = React.createClass({
-        render: function() {
-            return (
-                <div className='events-block'>
-                    <table className='date'>
-                        <tbody>
-                            <tr>
-                                <td className='time'></td>
-                                {titleTable}
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table className='event-list'>
-                    <thead>
-                        <tr>
-                            <td className='time'></td>
-                            {titleTable}
-                        </tr>
-                    </thead>
-                        <tbody>
-                            {rows}
-                        </tbody>
-                    </table>
-                </div>
-            );
-        }
-    });
-
-    ReactDOM.render(
-        <IventsOfDay />,
-        document.getElementById('main-body')
-    );
-}
-//getIventsOfDay(new Date());
-
-
-////Render Main block (Week)
-
-function getIventsOfWeek(date) {
-    var daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        msInDay = 86400000,
-        msInHour = 360000,
-        DOW_date = date.getDay(),
-        firstDay = date.getTime() - DOW_date*msInDay,
-        lastDay = date.getTime() + (6 - DOW_date)*msInDay;
-
-    var titleTable = Array.from({length:7});
-    titleTable = titleTable.map(function(v,i) {
-        var day = new Date(firstDay + i * msInDay).getDate(),
-            month = parseInt(new Date(firstDay + i * msInDay).getMonth())+1,
-            year = new Date(firstDay + i * msInDay).getFullYear();
-        return <td key={i} className='event'>{daysOfWeek[i] +' '+ day +'/'+ month}</td>;
-    });
-
-    var rows = Array.from({length:24}),
-        time;
-    rows = rows.map(function(v,i) {
-        var eventsDOW  = Array.from({length:7}),
-            today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime();
-
-        if (i === 0) time = '12am';
-        else if (i < 12) time = i + 'am';
-        else if (i === 12) time = '12pm';
-        else if (i > 12) time = i-12 + 'pm';
-
-        eventsDOW = eventsDOW.map(function(v,i) {
-            var bool = (firstDay + i * msInDay === today),
-                date = firstDay + i * msInDay;
-            return <td key={i} className={bool ? 'event curr-day' : 'event'}>
-                       <div key={i+.0} className={date + ' ' + (time + i * msInHour)}></div>
-                       <div key={i+.1} className={date + ' ' + (time + i * msInHour + msInHour/2)}></div>
-                   </td>
-        });
-        return (
-            <tr key={i}>
-                <td className='time'>{time}</td>
-                {eventsDOW}
-            </tr>
-        );
-    });
-
-    var IventsOfWeek = React.createClass({
-        render: function() {
-            return (
-                <div className='events-block'>
-                    <table className='date'>
-                        <tbody>
-                            <tr>
-                                <td className='time'></td>
-                                {titleTable}
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table className='event-list'>
-                        <thead>
-                            <tr>
-                                <td className='time'></td>
-                                {titleTable}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rows}
-                        </tbody>
-                    </table>
-                </div>
-            )
-        }
-    });
-
-    ReactDOM.render(
-        <IventsOfWeek />,
-        document.getElementById('main-body')
-    );
-}
-//getIventsOfWeek(new Date())
-
-
-//Render Main block (Month)
-
-function getIventsOfMonth(date) {
-    var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        msInDay = 86400000,
-        month = date.getMonth(),
-        year = date.getFullYear(),
-        lastDayOfMonth = new Date(year ,month+1, 0).getDate(),
-        dateLast = new Date(year, month, lastDayOfMonth),
-        dateFirst = new Date(year, month, 1),
-        DOW_last = dateLast.getDay(),
-        DOW_first = dateFirst.getDay(),
-        currDay = dateFirst.getTime() - DOW_first * msInDay;
-
-    var titleTable = Array.from({length:7});
-    titleTable = titleTable.map(function(v,i) {
-        return <td key={i} className='event'>{daysOfWeek[i]}</td>;
-    });
-
-    var Week = React.createClass({
-        render: function() {
-            var firstDay = this.props.date;
-            return createWeek(firstDay, dateFirst, msInDay);
-        }
-    });
-
-    var Month = React.createClass({
-        render: function() {
-            return createMonth(currDay, dateLast, msInDay, Week);
-        }
-    });
-
-    var IventsOfMonth = React.createClass({
-        render: function() {
-            return (
-                <div className='events-block'>
-                    <table className='date'>
-                        <tbody>
-                            <tr>
-                                {titleTable}
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table className='event-list month'>
-                        <thead>
-                            <tr>
-                                {titleTable}
-                            </tr>
-                        </thead>
-                        <Month />
-                    </table>
-                </div>
-            )
-        }
-    });
-
-    ReactDOM.render(
-        <IventsOfMonth />,
-        document.getElementById('main-body')
-    );
-}
-//getIventsOfMonth(new Date())
-
-
-//Render Selected period
-
-function getSelectedPeriod(period) {
-    var Period = React.createClass({
-        render: function(){
-            return <div>{period}</div>
-        }
-    });
-
-    ReactDOM.render(
-        <Period />,
-        document.getElementById('selected-period')
-    );
-}
-
-//Event handlers
-
-function eventService() {
-    var state = 'day',
+// //Event handlers
+// renderCalendarWidget(new Date);
+//
+// function eventService() {
+    var state = 'week',
         monthNames = ['January', 'February', 'March', 'April',
                       'May', 'June', 'July', 'August',
                       'September', 'October', 'November', 'December'],
         date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
         period = monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
 
+    renderCalendarWidget(date);
     getSelectedPeriod(period);
-    getIventsOfDay(date);
     clickEventHendlerForCalendar(document.getElementById('' + date.getTime()));
 
 
     document.getElementsByClassName('fa-chevron-circle-left')[0].addEventListener('click', function() {
-        calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
+        renderCalendarWidget(new Date(+document.getElementById('month').getAttribute('data-year'),
                           +document.getElementById('month').getAttribute('data-month')-1));
 
     });
 
     document.getElementsByClassName('fa-chevron-circle-right')[0].addEventListener('click', function() {
-        calendar(new Date(+document.getElementById('month').getAttribute('data-year'),
+        renderCalendarWidget(new Date(+document.getElementById('month').getAttribute('data-year'),
                           +document.getElementById('month').getAttribute('data-month')+1));
     });
 
@@ -367,7 +54,7 @@ function eventService() {
         } else if (target.className === 'curr-month') {
             target.className = 'curr-month click-calendar';
         } else {
-            calendar(date);
+            renderCalendarWidget(date);
             var day = date.getDay()+1;
             if (date.getDate() < 7) {
                 target = document.querySelector('.calendar tbody tr:first-child td:nth-child('+day+')');
@@ -381,7 +68,7 @@ function eventService() {
 
             period = monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
             getSelectedPeriod(period);
-            getIventsOfDay(date);
+            renderDay(date);
 
         } else if (state === 'week') {
 
@@ -391,19 +78,21 @@ function eventService() {
                 lastDay = new Date (parseInt(thisWeek.lastElementChild.getAttribute('id')));
 
             if (firstDay.getFullYear() !== lastDay.getFullYear()) {
-                period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ', ' + firstDay.getFullYear() + ' - ' +
-                         monthNames[lastDay.getMonth()].slice(0,3) + ' ' + lastDay.getDate() + ', ' + lastDay.getFullYear();
+                period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ', ' +
+                         firstDay.getFullYear() + ' - ' + monthNames[lastDay.getMonth()].slice(0,3) + ' ' +
+                         lastDay.getDate() + ', ' + lastDay.getFullYear();
             } else if (firstDay.getMonth() === lastDay.getMonth()) {
                 period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ' - ' +
                          lastDay.getDate() + ', ' + firstDay.getFullYear();
             } else {
                 period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ' - ' +
-                         monthNames[lastDay.getMonth()].slice(0,3) + ' ' + lastDay.getDate() + ', ' + firstDay.getFullYear();
+                         monthNames[lastDay.getMonth()].slice(0,3) + ' ' + lastDay.getDate() + ', ' +
+                         firstDay.getFullYear();
             }
 
             getSelectedPeriod(period);
             if (week) week.removeAttribute('class');
-            getIventsOfWeek(date);
+            renderWeek(date);
             thisWeek.className = 'selectedWeek';
 
         } else {
@@ -411,7 +100,7 @@ function eventService() {
             let thisMonth = document.querySelector('.calendar .monthTable')
             period = monthNames[date.getMonth()] + ' ' + date.getFullYear();
             getSelectedPeriod(period);
-            getIventsOfMonth(date);
+            renderMonth(date);
             thisMonth.className =  'monthTable selectedMonth';
 
         }
@@ -432,8 +121,8 @@ function eventService() {
 
         period = monthNames[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear();
         getSelectedPeriod(period);
-        getIventsOfDay(new Date());
-        if (!document.querySelector('.calendar .today')) calendar(today);
+        renderDay(new Date());
+        if (!document.querySelector('.calendar .today')) renderCalendarWidget(today);
 
         if (el && el.className !== 'curr-month today click-calendar') el.className = 'curr-month';
         if(week) week.removeAttribute('class');
@@ -450,7 +139,7 @@ function eventService() {
             month = document.querySelector('.calendar .selectedMonth');
 
         if (!document.querySelector('.calendar .click-calendar')) {
-            calendar(date);
+            renderCalendarWidget(date);
             document.getElementById('' + date.getTime()).className = 'curr-month click-calendar';
         }
 
@@ -458,11 +147,11 @@ function eventService() {
         if(month) month.className = 'monthTable';
         period = monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
         getSelectedPeriod(period);
-        getIventsOfDay(date);
+        renderDay(date);
         state = 'day';
     }
 
-    document.querySelector('.title-menu .period-block .day').addEventListener('click', clickEventHendlerForDay);
+    document.querySelector('.period-block .day').addEventListener('click', clickEventHendlerForDay);
 
 
 
@@ -477,48 +166,50 @@ function eventService() {
         if (el) {
             thisWeek = el.parentElement;
         } else {
-            calendar(date);
+            renderCalendarWidget(date);
             thisWeek = document.getElementById('' + date.getTime()).parentElement;
         }
 
         firstDay = new Date(parseInt(thisWeek.firstElementChild.getAttribute('id')));
         lastDay = new Date (parseInt(thisWeek.lastElementChild.getAttribute('id')));
         if (firstDay.getFullYear() !== lastDay.getFullYear()) {
-            period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ', ' + firstDay.getFullYear() + ' - ' +
-                     monthNames[lastDay.getMonth()].slice(0,3) + ' ' + lastDay.getDate() + ', ' + lastDay.getFullYear();
+            period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ', ' +
+                     firstDay.getFullYear() + ' - ' + monthNames[lastDay.getMonth()].slice(0,3) + ' ' +
+                     lastDay.getDate() + ', ' + lastDay.getFullYear();
         } else if (firstDay.getMonth() === lastDay.getMonth()) {
             period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ' - ' +
                      lastDay.getDate() + ', ' + firstDay.getFullYear();
         } else {
             period = monthNames[firstDay.getMonth()].slice(0,3) + ' ' + firstDay.getDate() + ' - ' +
-                     monthNames[lastDay.getMonth()].slice(0,3) + ' ' + lastDay.getDate() + ', ' + firstDay.getFullYear();
+                     monthNames[lastDay.getMonth()].slice(0,3) + ' ' + lastDay.getDate() + ', ' +
+                     firstDay.getFullYear();
         }
 
-        getIventsOfWeek(date);
+        renderWeek(date);
         getSelectedPeriod(period);
         if (month) month.className = 'monthTable';
         thisWeek.className = 'selectedWeek';
         state = 'week';
     }
 
-    document.querySelector('.title-menu .period-block .week').addEventListener('click', clickEventHendlerForWeek);
+    document.querySelector('.period-block .week').addEventListener('click', clickEventHendlerForWeek);
 
 
     //Click event hendler on "Month"
     function clickEventHendlerForMonth() {
         var thisMonth;
 
-        if (!document.querySelector('.calendar .click-calendar')) calendar(date);
+        if (!document.querySelector('.calendar .click-calendar')) renderCalendarWidget(date);
         thisMonth = document.querySelector('.calendar .monthTable');
 
         period = monthNames[date.getMonth()] + ' ' + date.getFullYear();
-        getIventsOfMonth(date);
+        renderMonth(date);
         getSelectedPeriod(period);
         thisMonth.className =  'monthTable selectedMonth';
         state = 'month';
     }
 
-    document.querySelector('.title-menu .period-block .month').addEventListener('click', clickEventHendlerForMonth);
+    document.querySelector('.period-block .month').addEventListener('click', clickEventHendlerForMonth);
 
 
     //Click event hendler on icon "Previous"
@@ -537,7 +228,7 @@ function eventService() {
 
         elem = document.getElementById('' + prevDate);
         if (!elem) {
-            calendar(new Date(prevDate));
+            renderCalendarWidget(new Date(prevDate));
             elem = document.getElementById('' + prevDate);
         }
 
@@ -562,12 +253,12 @@ function eventService() {
 
         elem = document.getElementById('' + nextDate);
         if (!elem) {
-            calendar(new Date(nextDate));
+            renderCalendarWidget(new Date(nextDate));
             elem = document.getElementById('' + nextDate);
         }
 
         clickEventHendlerForCalendar(elem);
         date = new Date(nextDate);
     });
-}
-eventService();
+// }
+// eventService();

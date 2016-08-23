@@ -1,0 +1,369 @@
+body {
+  font: 14px 'Nunito', sans-serif;
+  color: #595959;
+}
+
+.page-body {
+  display: inline-flex;
+}
+
+header {
+  position: fixed;
+  z-index: 99;
+  background-color: white;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  box-shadow: 0 0 10px #595959;
+  height: 3.1rem;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+
+header .logo {
+  font: small-caps 36px 'Chewy', sans-serif;
+  color: #b3003b;
+  text-shadow: 1px 1px 3px #595959;
+  text-align: center;
+  min-width: 15rem;
+  width: 15rem;
+}
+
+header .menu {
+  display: flex;
+  justify-content: center;
+  min-width: 570px;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+header .title-menu {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  flex-grow: 1;
+  max-width: 800px;
+  font-weight: bold;
+}
+
+header .period-block {
+  list-style-type: none;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  padding: 0;
+}
+
+header .nav-today,
+header .nav,
+header .period-block,
+header .create-event {
+  margin: 0 15px;
+}
+
+header .period,
+header .nav-today {
+  padding: 5px;
+}
+
+header .period {
+  margin-right: 10px;
+}
+
+header .period:hover,
+header .nav-today:hover {
+  padding-bottom: 1px;
+  color: #b3003b;
+  border-bottom: 3px solid #b3003b;
+  cursor: pointer;
+}
+
+header .period:active,
+header .nav-today:active {
+  color: #660022;
+}
+
+header .nav {
+  display: inline-flex;
+  color: #595959;
+}
+
+header .nav #selected-period {
+  width: 13rem;
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+header .nav .fa {
+  color: #b3003b;
+  font-size: 1.3rem;
+  margin: 0 10px;
+}
+
+header .nav .fa:hover {
+  cursor: pointer;
+  color: #cc0044;
+}
+
+header .nav .fa:active {
+  font-size: 1.2rem;
+  padding: 0.05rem;
+}
+
+.page-body {
+  margin-top: 3.1rem;
+  min-width: 900px;
+  width: 100%;
+  display: flex;
+}
+
+.sidebar-menu {
+  position: fixed;
+  display: block;
+  max-width: 15rem;
+  z-index: 90;
+}
+
+.create-event {
+  width: 7rem;
+  height: 1.2rem;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #b3003b;
+  text-transform: uppercase;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  margin: 3rem;
+  border-radius: 5px;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+
+.create-event:hover {
+  background-color: #cc0044;
+  cursor: pointer;
+}
+
+.create-event:active {
+  background-color: #cc0044;
+  box-shadow: inset 0 0 10px #660022;
+}
+
+.nav-date {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+
+.nav-title {
+  display: inline-flex;
+  width: 13rem;
+  padding: 1rem 1rem 1rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.nav-title .fa {
+  width: 1.9rem;
+  color: #b3003b;
+  font-size: 1.1rem;
+  margin: 0 auto;
+}
+
+.nav-title .fa:hover {
+  cursor: pointer;
+  color: #cc0044;
+}
+
+.nav-title .fa:active {
+  font-size: 1rem;
+}
+
+.nav-title #month {
+  width: 9.2rem;
+}
+
+#nav-calendar {
+  width: 13rem;
+  padding: 0rem 1rem;
+}
+
+.calendar {
+  border-collapse: separate;
+  table-layout: fixed;
+  width: 100%;
+  line-height: 1.2rem;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.calendar td {
+  width: 1.9rem;
+}
+
+.calendar thead tr {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #b3003b;
+}
+
+.calendar .monthTable tr.selectedWeek td {
+  background-color: #bfbfbf;
+  border: 0.15rem solid #bfbfbf;
+}
+
+.calendar .monthTable tr.selectedWeek td.other-month {
+  color: white;
+}
+
+.calendar .monthTable td {
+  border: 0.15rem solid white;
+}
+
+.calendar .monthTable td:first-child,
+.calendar .monthTable td:last-child {
+  color: #cc0044;
+}
+
+.calendar .monthTable td.other-month {
+  color: #bfbfbf;
+}
+
+.calendar .monthTable td.click-calendar {
+  background-color: #bfbfbf;
+  border: 0.15rem solid #bfbfbf;
+}
+
+.calendar .monthTable tr td.today {
+  border: 0.15rem solid #b3003b;
+}
+
+.calendar .monthTable td:hover {
+  background-color: #bfbfbf;
+  border: 0.15rem solid #bfbfbf;
+  cursor: pointer;
+}
+
+.calendar .monthTable td.other-month:hover {
+  color: white;
+}
+
+.calendar .selectedMonth td {
+  background-color: #bfbfbf;
+  border: 0.15rem solid #bfbfbf;
+}
+
+.calendar .selectedMonth td.other-month {
+  color: white;
+}
+
+.events-block {
+  width: calc(100% - 17rem);
+  position: absolute;
+  left: 15.2rem;
+  flex-grow: 1;
+  box-shadow: 0 0 10px #595959;
+}
+
+.events-block .date {
+  position: fixed;
+  background-color: #b3003b;
+  border: 1px solid #b3003b;
+  color: white;
+  vertical-align: middle;
+  text-align: center;
+  table-layout: fixed;
+  width: calc(100% - 17rem);
+  height: 2rem;
+  padding-bottom: 1px;
+}
+
+.events-block .date .time {
+  width: 55px;
+}
+
+.events-block .event-list {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.events-block .event-list tbody tr {
+  height: 3rem;
+}
+
+.events-block .event-list tbody tr td.curr-day {
+  border-left: 2px solid #b3003b;
+  border-right: 2px solid #b3003b;
+}
+
+.events-block .event-list tbody tr:first-child td.curr-day {
+  border-top: 1.5px solid #b3003b;
+}
+
+.events-block .event-list tbody tr:last-child td.curr-day {
+  border-bottom: 1.5px solid #b3003b;
+}
+
+.events-block .event-list thead tr {
+  height: 2rem;
+}
+
+.events-block .event-list td {
+  border-collapse: separate;
+  border: 1px solid #bfbfbf;
+}
+
+.events-block .event-list td div {
+  width: 100%;
+  height: 1.5rem;
+}
+
+.events-block .event-list td div:first-child {
+  border-bottom: 1px dotted #bfbfbf;
+}
+
+.events-block .event-list .time {
+  width: 55px;
+  text-align: center;
+}
+
+.events-block .event-list .event {
+  background-color: #e6e6e6;
+}
+
+.events-block .event-list .monthTable {
+  height: 100%;
+}
+
+.events-block .event-list .monthTable tr td {
+  vertical-align: top;
+  text-align: right;
+  padding: 0 20px;
+}
+
+.events-block .event-list .monthTable tr td:first-child,
+.events-block .event-list .monthTable tr td:last-child {
+  color: #cc0044;
+}
+
+.events-block .event-list .monthTable tr td.today {
+  border: 3px solid #b3003b;
+}
+
+.events-block .event-list .monthTable tr td.other-month {
+  background-color: #e6e6e6;
+  color: #595959;
+}
+
+.events-block .month {
+  height: calc(100vh - 3.1rem);
+}
+
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzdHlsZXMuY3NzIiwic291cmNlUm9vdCI6IiJ9*/

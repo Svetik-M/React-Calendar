@@ -1,0 +1,84 @@
+header {
+    position: fixed;
+    z-index: 99;
+    background-color: white;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    box-shadow: 0 0 10px $color-grey;
+    height: 3.1rem;
+    @include user-select;
+    .logo {
+        font: small-caps 36px 'Chewy', sans-serif;
+        color: $main-color;
+        text-shadow: 1px 1px 3px $color-grey;
+        text-align: center;
+        min-width: 15rem;
+        width: 15rem;
+    }
+    .menu {
+        display: flex;
+        justify-content: center;
+        min-width: 570px;
+        width: 100%;
+        text-transform: uppercase;
+    }
+    .title-menu {
+        display: flex;
+        justify-content: space-around;
+        align-items: baseline;
+        flex-grow: 1;
+        max-width: 800px;
+        font-weight: bold;
+    }
+    .period-block {
+        list-style-type: none;
+        display: inline-flex;
+        flex-wrap: nowrap;
+        padding: 0;
+    }
+    .nav-today, .nav, .period-block, .create-event {
+        margin: 0 15px;
+    }
+    .period, .nav-today {
+        padding: 5px;
+    }
+    .period {
+        margin-right: 10px;
+    }
+    .period:hover, .nav-today:hover {
+        padding-bottom: 1px;
+        color: $main-color;
+        border-bottom: 3px solid $main-color;
+        cursor: pointer;
+    }
+    .period:active, .nav-today:active {
+        color: $shadow-color;
+    }
+    .nav {
+        display: inline-flex;
+        color: $color-grey;
+        #selected-period {
+            width: 13rem;
+            text-align: center;
+            text-transform: capitalize;
+            font-weight: normal;
+            font-size: 1rem;
+        }
+        .fa {
+            color: $main-color;
+            font-size: 1.3rem;
+            margin: 0 10px;
+        }
+        .fa:hover {
+            cursor: pointer;
+            color: $button-color;
+        }
+        .fa:active {
+            font-size: 1.2rem;
+            padding: 0.05rem;
+        }
+    }
+}

@@ -1,0 +1,95 @@
+.nav-date {
+    @include user-select;
+}
+
+.nav-title {
+    display: inline-flex;
+    width: 13rem;
+    padding: 1rem 1rem 1rem;
+    text-align: center;
+    font-size: 1rem;
+    .fa {
+        width: 1.9rem;
+        color: $main-color;
+        font-size: 1.1rem;
+        margin: 0 auto;
+    }
+    .fa:hover {
+        cursor: pointer;
+        color: $button-color;
+    }
+    .fa:active {
+        font-size: 1rem;
+    }
+    #month {
+        width: 9.2rem;
+    }
+}
+
+#nav-calendar {
+    width: 13rem;
+    padding: 0rem 1rem;
+}
+
+.calendar {
+    border-collapse: separate;
+    table-layout: fixed;
+    width: 100%;
+    line-height: 1.2rem;
+    font-size: 0.8rem;
+    text-align: center;
+    td {
+        width: 1.9rem;
+    }
+    thead {
+        tr {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: $main-color;
+        }
+    }
+    .monthTable {
+        tr.selectedWeek {
+            td {
+                background-color: $color-pale-grey;
+                border: 0.15rem solid $color-pale-grey;
+            }
+            td.other-month {
+                color: white;
+            }
+        }
+        td {
+            border: 0.15rem solid white;
+        }
+        td:first-child, td:last-child {
+            color: $button-color;
+        }
+        td.other-month {
+            color: $color-pale-grey;
+        }
+        td.click-calendar {
+            background-color: $color-pale-grey;
+            border: 0.15rem solid $color-pale-grey;
+        }
+        tr td.today {
+            border: 0.15rem solid $main-color;
+        }
+        td:hover {
+            background-color: $color-pale-grey;
+            border: 0.15rem solid $color-pale-grey;
+            cursor: pointer;
+        }
+        td.other-month:hover {
+            color: white;
+        }
+    }
+    .selectedMonth {
+        td {
+            background-color: $color-pale-grey;
+            border: 0.15rem solid $color-pale-grey;
+        }
+        td.other-month {
+            color: white;
+        }
+    }
+}
