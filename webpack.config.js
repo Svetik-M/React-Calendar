@@ -6,13 +6,13 @@ let ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     context: __dirname,
-    entry: './scripts/app.js',
+    entry: './scripts/app.jsx',
     output: {
         path: __dirname + '/build',
         filename: 'bundle.js'
     },
 
-    //watch: NODE_ENV == 'development',
+    watch: NODE_ENV == 'development',
 
     devtool: NODE_ENV === 'development' ? 'inline-source-map' : null,
 
@@ -46,6 +46,10 @@ module.exports = {
                 query: {
                     presets: ['es2015', 'react', 'stage-0', 'stage-1']
                 }
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
             },
             {
                 test: /\.scss$/,

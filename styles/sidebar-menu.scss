@@ -1,15 +1,8 @@
-.page-body {
-    margin-top: 3.1rem;
-    min-width: 900px;
-    width: 100%;
-    display: flex;
-}
-
 .sidebar-menu {
     position: fixed;
     display: block;
     max-width: 15rem;
-    z-index: 90;
+    z-index: 40;
 }
 
 .create-event {

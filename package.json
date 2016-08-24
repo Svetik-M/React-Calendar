@@ -8,6 +8,8 @@
   },
   "author": "Svetlana Morozko",
   "license": "MIT",
+  "dependencies": {
+  },
   "devDependencies": {
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.5",

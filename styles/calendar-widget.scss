@@ -1,11 +1,13 @@
 .nav-date {
     @include user-select;
+    width: 13rem;
+    padding: 0rem 1rem;
 }
 
 .nav-title {
     display: inline-flex;
     width: 13rem;
-    padding: 1rem 1rem 1rem;
+    padding: 1rem 0;
     text-align: center;
     font-size: 1rem;
     .fa {
@@ -21,14 +23,9 @@
     .fa:active {
         font-size: 1rem;
     }
-    #month {
+    #curr-month {
         width: 9.2rem;
     }
-}
-
-#nav-calendar {
-    width: 13rem;
-    padding: 0rem 1rem;
 }
 
 .calendar {

@@ -1,14 +1,15 @@
 'use strict'
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 
 
-export default function renderDay(date) {
+// export default function renderDay(date) {
     const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const MS_IN_HOUR = 360000;
 
-    var DOW_date = DAYS_OF_WEEK[date.getDay()],
+    var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        DOW_date = DAYS_OF_WEEK[date.getDay()],
         titleTable = <td className='event'>{DOW_date +' '+ date.getDate() +'/'+ (+date.getMonth()+1)}</td>,
         rows = Array.from({length:24}),
         time = 0,
@@ -29,7 +30,7 @@ export default function renderDay(date) {
         );
     });
 
-    var IventsOfDay = React.createClass({
+    export var IventsOfDay = React.createClass({
         render: function() {
             return (
                 <div className='events-block'>
@@ -57,10 +58,8 @@ export default function renderDay(date) {
         }
     });
 
-    ReactDOM.render(
-        <IventsOfDay />,
-        document.getElementById('main-body')
-    );
-}
-
-//export {renderDay};
+//     ReactDOM.render(
+//         <IventsOfDay />,
+//         document.getElementById('main-body')
+//     );
+// }

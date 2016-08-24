@@ -18,5 +18,9 @@ body {
 
 .page-body {
     display: inline-flex;
+    margin-top: 3.1rem;
+    min-width: 900px;
+    width: 100%;
 }
+
 @import 'title-menu', 'sidebar-menu', 'calendar-widget', 'main-block';

@@ -1,15 +1,16 @@
 'use strict'
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 
 
-export default function renderWeek(date) {
+//export default function renderWeek(date) {
     const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const MS_IN_DAY = 86400000;
     const MS_IN_HOUR = 360000;
 
-    var DOW_date = date.getDay(),
+    var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        DOW_date = date.getDay(),
         firstDay = date.getTime() - DOW_date*MS_IN_DAY,
         lastDay = date.getTime() + (6 - DOW_date)*MS_IN_DAY;
 
@@ -48,7 +49,7 @@ export default function renderWeek(date) {
         );
     });
 
-    var IventsOfWeek = React.createClass({
+    export var IventsOfWeek = React.createClass({
         render: function() {
             return (
                 <div className='events-block'>
@@ -75,11 +76,11 @@ export default function renderWeek(date) {
             )
         }
     });
-
-    ReactDOM.render(
-        <IventsOfWeek />,
-        document.getElementById('main-body')
-    );
-}
+//
+//     ReactDOM.render(
+//         <IventsOfWeek />,
+//         document.getElementById('main-body')
+//     );
+// }
 
 //export {renderWeek};

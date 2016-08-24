@@ -1,15 +1,17 @@
 'use strict'
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {createWeek, createMonth} from './calendar-widget.jsx';
+//import ReactDOM from 'react-dom';
+import {createWeek} from './calendar-widget.jsx';
+import {createMonth} from './calendar-widget.jsx';
 
 
-export default function renderMonth(date) {
+//export default function renderMonth(date) {
     const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const MS_IN_DAY = 86400000;
 
-    var month = date.getMonth(),
+    var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        month = date.getMonth(),
         year = date.getFullYear(),
         lastDayOfMonth = new Date(year ,month+1, 0).getDate(),
         dateLast = new Date(year, month, lastDayOfMonth),
@@ -22,6 +24,7 @@ export default function renderMonth(date) {
     titleTable = titleTable.map(function(v,i) {
         return <td key={i} className='event'>{DAYS_OF_WEEK[i]}</td>;
     });
+
 
     var Week = React.createClass({
         render: function() {
@@ -36,7 +39,7 @@ export default function renderMonth(date) {
         }
     });
 
-    var IventsOfMonth = React.createClass({
+    export var IventsOfMonth = React.createClass({
         render: function() {
             return (
                 <div className='events-block'>
@@ -60,10 +63,10 @@ export default function renderMonth(date) {
         }
     });
 
-    ReactDOM.render(
-        <IventsOfMonth />,
-        document.getElementById('main-body')
-    );
-}
+//     ReactDOM.render(
+//         <IventsOfMonth />,
+//         document.getElementById('main-body')
+//     );
+// }
 
 //export {renderMonth};
