@@ -1,0 +1,132 @@
+.authorization {
+    position: absolute;
+    top: 0;
+    background-color: $background-color;
+    height: 100%;
+    width: 100%;
+    .logo {
+        margin: 2rem auto;
+        margin-top: calc(50vh - 19rem);
+        font-size: 3rem;
+        text-shadow: 3px 3px 5px $color-grey;
+    }
+}
+
+.reg-form {
+    background-color: $form-color;
+    color: $background-color;
+    width: 30rem;
+    height: 28rem;
+    margin: 0 auto;
+    box-shadow: 7px 7px 5px $color-grey;
+    ul.form-group {
+        display: inline-flex;
+        justify-content: center;
+        width: 100%;
+        padding: 0;
+        margin: 1rem 0;
+        @include user-select;
+        li {
+            list-style-type: none;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 14rem;
+            height: 2.5rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        li.form {
+            background-color: $color-grey;
+            border-bottom: 2px solid $main-color;
+        }
+        li.active {
+            background-color: $main-color;
+        }
+        li:hover {
+            background-color: $button-color;
+        }
+    }
+}
+
+#signup, #login {
+    height: 19.5rem;
+    h2 {
+        margin: 1rem 0;
+        text-align: center;
+        width: 100%;
+        @include user-select;
+    }
+    input, .fa {
+        height: 2rem;
+        border: 2px solid $color-pale-grey;
+    }
+    input {
+        padding: 0 1rem;
+        color: $color-grey;
+        font-size: 1.1rem;
+    }
+    input:focus {
+        border: 2px solid $main-color;
+        outline: 0;
+    }
+    .button {
+        background-color: $main-color;
+        border: 2px solid $main-color;
+        width: calc(28rem - 4px);
+        height: 2.5rem;
+        font-size: 1.2rem;
+        @include user-select;
+    }
+    .button:hover {
+        background-color: $button-color;
+        border: 2px solid $button-color;
+    }
+    .button:focus {
+        outline: 0;
+        background-color: $main-color;
+
+    }
+}
+
+#login {
+    .field-wrap {
+        display: flex;
+        justify-content: center;
+        height: 2.5rem;
+        margin: 2.5rem auto;
+        .fa {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 2rem;
+            font-size: 1.5rem;
+            color: $main-color;
+            background-color: $color-pale-grey;
+        }
+        input {
+            width: calc(23rem - 2px);
+        }
+    }
+    .button {
+        margin: 4.4rem 1rem 1rem;
+    }
+}
+
+#signup {
+    input {
+        margin: 1.2rem 1rem;
+    }
+    .top-row input {
+        width: calc(11.5rem - 4px);
+    }
+    .top-row input:last-child {
+        margin-left: 0;
+    }
+    .main input {
+        width: calc(26rem - 4px);
+    }
+    .button {
+        margin: 2rem 1rem 1rem;
+    }
+}

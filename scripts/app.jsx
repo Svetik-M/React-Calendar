@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import {AuthorizationForm} from './signup-login.jsx';
 import {TitleMenu} from './title-menu.jsx';
 import {SidebarMenu} from './sidebar-menu.jsx';
 import {IventsOfDay} from './day.jsx';
@@ -17,16 +18,24 @@ import {IventsOfMonth} from './month.jsx';
 import '../styles/style.scss';
 
 
+// var App = React.createClass({
+//     render: function() {
+//         return (
+//             <div>
+//                 <TitleMenu />
+//                 <div className='page-body'>
+//                     <SidebarMenu />
+//                     <IventsOfWeek />
+//                 </div>
+//             </div>
+//         );
+//     }
+// });
+
 var App = React.createClass({
     render: function() {
         return (
-            <div>
-                <TitleMenu />
-                <div className='page-body'>
-                    <SidebarMenu />
-                    <IventsOfWeek />
-                </div>
-            </div>
+            <AuthorizationForm />
         );
     }
 });

@@ -26,6 +26,7 @@
 }
 
 .create-event:active {
-    background-color: $button-color;
-    box-shadow: inset 0 0 10px $shadow-color;
+    background-color: $main-color;
+    padding: 0.45rem 1.45rem 0.45rem 0.95rem;
+    margin: 3.05rem;
 }

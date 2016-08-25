@@ -1,6 +1,7 @@
-$main-color: #b3003b;
-$button-color: #cc0044;
+$main-color: #ba2c5c; /*a2083b;*/
+$button-color: #a2083b; /*ba2c5c;*/
 $shadow-color: #660022;
+$form-color: #40262f;
 $color-grey: #595959;
 $color-pale-grey: #bfbfbf;
 $background-color: #e6e6e6;
@@ -16,6 +17,11 @@ body {
     color: $color-grey;
 }
 
+#content {
+    width: 100vw;
+    height: 100vh;
+}
+
 .page-body {
     display: inline-flex;
     margin-top: 3.1rem;
@@ -23,4 +29,4 @@ body {
     width: 100%;
 }
 
-@import 'title-menu', 'sidebar-menu', 'calendar-widget', 'main-block';
+@import 'title-menu', 'sidebar-menu', 'calendar-widget', 'main-block', 'signup-login';

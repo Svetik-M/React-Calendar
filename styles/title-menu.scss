@@ -1,3 +1,12 @@
+.logo {
+    font: small-caps 36px 'Chewy', sans-serif;
+    color: $main-color;
+    text-shadow: 1px 1px 3px $color-grey;
+    text-align: center;
+    min-width: 15rem;
+    width: 15rem;
+}
+
 .header {
     position: fixed;
     z-index: 50;
@@ -10,14 +19,6 @@
     box-shadow: 0 0 10px $color-grey;
     height: 3.1rem;
     @include user-select;
-    .logo {
-        font: small-caps 36px 'Chewy', sans-serif;
-        color: $main-color;
-        text-shadow: 1px 1px 3px $color-grey;
-        text-align: center;
-        min-width: 15rem;
-        width: 15rem;
-    }
     .menu {
         display: flex;
         justify-content: center;
@@ -55,7 +56,8 @@
         cursor: pointer;
     }
     .period:active, .nav-today:active {
-        color: $shadow-color;
+        color: $button-color;
+        border-bottom: 3px solid white;
     }
     .nav {
         display: inline-flex;
