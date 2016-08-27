@@ -217,15 +217,6 @@ body {
   color: #ba2c5c;
 }
 
-.calendar .monthTable tr.selectedWeek td {
-  background-color: #bfbfbf;
-  border: 0.15rem solid #bfbfbf;
-}
-
-.calendar .monthTable tr.selectedWeek td.other-month {
-  color: white;
-}
-
 .calendar .monthTable td {
   border: 0.15rem solid white;
 }
@@ -236,12 +227,7 @@ body {
 }
 
 .calendar .monthTable td.other-month {
-  color: #bfbfbf;
-}
-
-.calendar .monthTable td.click-calendar {
-  background-color: #bfbfbf;
-  border: 0.15rem solid #bfbfbf;
+  color: #b5b1b1;
 }
 
 .calendar .monthTable tr td.today {
@@ -249,22 +235,14 @@ body {
 }
 
 .calendar .monthTable td:hover {
-  background-color: #bfbfbf;
-  border: 0.15rem solid #bfbfbf;
+  background-color: #e6e6e6;
+  border: 0.15rem solid #e6e6e6;
   cursor: pointer;
 }
 
-.calendar .monthTable td.other-month:hover {
-  color: white;
-}
-
-.calendar .selectedMonth td {
-  background-color: #bfbfbf;
-  border: 0.15rem solid #bfbfbf;
-}
-
-.calendar .selectedMonth td.other-month {
-  color: white;
+.calendar td.selectedPeriod {
+  background-color: #e6e6e6;
+  border: 0.15rem solid #e6e6e6;
 }
 
 .events-block {
@@ -319,8 +297,8 @@ body {
 }
 
 .events-block .event-list td {
-  border-right: 1px solid #bfbfbf;
-  border-bottom: 1px solid #bfbfbf;
+  border-right: 1px solid #b5b1b1;
+  border-bottom: 1px solid #b5b1b1;
 }
 
 .events-block .event-list td div {
@@ -329,7 +307,7 @@ body {
 }
 
 .events-block .event-list td div:first-child {
-  border-bottom: 1px dotted #bfbfbf;
+  border-bottom: 1px dotted #b5b1b1;
 }
 
 .events-block .event-list .time {
@@ -382,6 +360,9 @@ body {
   margin-top: calc(50vh - 19rem);
   font-size: 3rem;
   text-shadow: 3px 3px 5px #595959;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
 }
 
 .reg-form {
@@ -448,7 +429,7 @@ body {
 #login input,
 #login .fa {
   height: 2rem;
-  border: 2px solid #bfbfbf;
+  border: 2px solid #b5b1b1;
 }
 
 #signup input,
@@ -502,7 +483,7 @@ body {
   width: 2rem;
   font-size: 1.5rem;
   color: #ba2c5c;
-  background-color: #bfbfbf;
+  background-color: #b5b1b1;
 }
 
 #login .field-wrap input {

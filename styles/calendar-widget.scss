@@ -46,15 +46,6 @@
         }
     }
     .monthTable {
-        tr.selectedWeek {
-            td {
-                background-color: $color-pale-grey;
-                border: 0.15rem solid $color-pale-grey;
-            }
-            td.other-month {
-                color: white;
-            }
-        }
         td {
             border: 0.15rem solid white;
         }
@@ -64,29 +55,17 @@
         td.other-month {
             color: $color-pale-grey;
         }
-        td.click-calendar {
-            background-color: $color-pale-grey;
-            border: 0.15rem solid $color-pale-grey;
-        }
         tr td.today {
             border: 0.15rem solid $main-color;
         }
         td:hover {
-            background-color: $color-pale-grey;
-            border: 0.15rem solid $color-pale-grey;
+            background-color: $background-color;
+            border: 0.15rem solid $background-color;
             cursor: pointer;
         }
-        td.other-month:hover {
-            color: white;
-        }
     }
-    .selectedMonth {
-        td {
-            background-color: $color-pale-grey;
-            border: 0.15rem solid $color-pale-grey;
-        }
-        td.other-month {
-            color: white;
-        }
+    td.selectedPeriod {
+        background-color: $background-color;
+        border: 0.15rem solid $background-color;
     }
 }
