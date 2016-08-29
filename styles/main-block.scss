@@ -1,6 +1,6 @@
 .events-block {
-    width: calc(100% - 17rem);
-    position: absolute;
+    width: calc(100vw - 17rem);
+    position: relative;;
     left: 15.2rem;
     flex-grow: 1;
     box-shadow: 0 0 10px $color-grey;
@@ -12,7 +12,7 @@
         vertical-align: middle;
         text-align: center;
         table-layout: fixed;
-        width: calc(100% - 17rem);
+        width: calc(100vw - 17rem);
         height: 2rem;
         padding-bottom: 1px;
         .time {
@@ -60,7 +60,6 @@
             background-color: $background-color;
         }
         .monthTable {
-            /*height: 100%;*/
             tr {
                 td {
                     vertical-align: top;

@@ -1,11 +1,12 @@
 .sidebar-menu {
-    position: fixed;
+    position: absolute;
+    top: 3.1rem;
     display: block;
     max-width: 15rem;
-    z-index: 40;
 }
 
 .create-event {
+    position: fixed;
     width: 7rem;
     height: 1.2rem;
     text-align: center;

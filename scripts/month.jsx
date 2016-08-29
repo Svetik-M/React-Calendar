@@ -17,16 +17,17 @@ titleTable = titleTable.map(function(v,i) {
 
 var Week = React.createClass({
     render: function() {
-        var firstDay = this.props.date.getTime(),
+        var firstDay = this.props.date,
             dateFirst = new Date(this.props.year, this.props.month, 1);
-        return createWeek(firstDay, dateFirst, MS_IN_DAY, this.props.day, this.props.period);
+        return createWeek(firstDay, dateFirst, this.props.month, MS_IN_DAY, this.props.sel_day, this.props.period);
     }
 });
 
 var Month = React.createClass({
     render: function() {
-        var period = this.props.period || '';
-        return createMonth(MS_IN_DAY, Week, this.props.day, this.props.period);
+        var period = this.props.period || '',
+            selDay = this.props.sel_day || '';
+        return createMonth(MS_IN_DAY, Week, selDay, this.props.day, period);
     }
 });
 

@@ -1,4 +1,6 @@
 .nav-date {
+    position: fixed;
+    top: 11rem;
     @include user-select;
     width: 13rem;
     padding: 0rem 1rem;

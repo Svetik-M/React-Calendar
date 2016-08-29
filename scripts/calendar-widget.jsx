@@ -7,13 +7,13 @@ const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
 const MS_IN_DAY = 86400000;
 
 
-function createWeek(firstDay, dateFirst, msInDay, selDay, period) {
+function createWeek(firstDay, dateFirst, month, msInDay, selDay, period) {
     var allDays = Array.from({length: 7}),
         today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
         selPeriod = '';
 
-    if (period === 'month'
-        || (period === 'week' && firstDay <= selDay.getTime() && selDay.getTime() <= firstDay + 6*msInDay)) {
+    if (period === 'month' && selDay.getMonth() === month
+        || period === 'week' && firstDay <= selDay.getTime() && selDay.getTime() <= firstDay + 6*msInDay) {
         selPeriod = ' selectedPeriod';
     }
     allDays = allDays.map(function(v,i) {
@@ -41,9 +41,9 @@ function createWeek(firstDay, dateFirst, msInDay, selDay, period) {
     );
 }
 
-function createMonth(msInDay, Week, selDay, period) {
-    var month = selDay.getMonth(),
-        year = selDay.getFullYear(),
+function createMonth(msInDay, Week, selDay, day, period) {
+    var month = day.getMonth(),
+        year = day.getFullYear(),
         lastDayOfMonth = new Date(year ,month+1, 0).getDate(),
         dateLast = new Date(year, month, lastDayOfMonth),
         dateFirst = new Date(year, month, 1),
@@ -52,7 +52,7 @@ function createMonth(msInDay, Week, selDay, period) {
         weeks = [];
     for (let n = 1; currDay <= dateLast.getTime(); currDay = currDay + 7*msInDay, n++) {
         weeks.push(
-            <Week key = {n} date={currDay} day={selDay} month={month} year={year} period={period} />
+            <Week key = {n} sel_day={selDay} date={currDay} month={month} year={year} period={period} />
         );
     }
     return (
@@ -67,15 +67,16 @@ var Week = React.createClass({
     render: function() {
         var firstDay = this.props.date,
             dateFirst = new Date(this.props.year, this.props.month, 1);
-        return createWeek(firstDay, dateFirst, MS_IN_DAY, this.props.day, this.props.period);
+        return createWeek(firstDay, dateFirst, this.props.month, MS_IN_DAY, this.props.sel_day, this.props.period);
     }
 });
 
 
 var Month = React.createClass({
     render: function() {
-        var period = this.props.period || '';
-        return createMonth(MS_IN_DAY, Week, this.props.day, this.props.period);
+        var period = this.props.period || '',
+            selDay = this.props.sel_day || '';
+        return createMonth(MS_IN_DAY, Week, selDay, this.props.day, period);
     }
 });
 
@@ -83,6 +84,7 @@ var Month = React.createClass({
 var CalendarWidget = React.createClass({
     getInitialState: function() {
         return {
+            selDay: this.props.day,
             date: this.props.day,
             period: this.props.period
         }
@@ -90,6 +92,7 @@ var CalendarWidget = React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         this.setState({
+            selDay: nextProps.day,
             date: nextProps.day,
             period: nextProps.period
         })
@@ -118,13 +121,13 @@ var CalendarWidget = React.createClass({
             <div className='nav-date'>
                 <div className='nav-title'>
                     <div onClick={this.getPrevMonth}>
-                        <i className='fa fa-chevron-circle-left' aria-hidden='true'></i>
+                        <i className='fa fa-chevron-circle-left' aria-hidden='true' />
                     </div>
                     <div id='curr-month' data-month={month} data-year={year}>
                         {MONTH_NAMES[month] + ' ' + year}
                     </div>
                     <div onClick={this.getNextMonth}>
-                        <i className='fa fa-chevron-circle-right' aria-hidden='true'></i>
+                        <i className='fa fa-chevron-circle-right' aria-hidden='true' />
                     </div>
                 </div>
                 <table className='calendar'>
@@ -139,7 +142,7 @@ var CalendarWidget = React.createClass({
                             <td>Sat</td>
                         </tr>
                     </thead>
-                    <Month day={date} period={this.state.period}/>
+                    <Month sel_day={this.state.selDay} day={date} period={this.state.period}/>
                 </table>
             </div>
         );
