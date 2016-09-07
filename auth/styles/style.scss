@@ -1,3 +1,22 @@
+$main-color: rgb(186, 44, 92);
+$button-color: rgb(162, 8, 59);
+$shadow-color: rgb(102, 0, 34);
+$form-color: rgb(64, 38, 47);
+$color-grey: rgb(89, 89, 89);
+$color-pale-grey: rgb(181, 177, 177);
+$background-color: rgb(230, 230, 230);
+
+@mixin user-select {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+}
+
+body {
+    font: 14px 'Nunito', sans-serif;
+    color: $color-grey;
+}
+
 .authorization {
     position: absolute;
     top: 0;
@@ -5,10 +24,13 @@
     height: 100%;
     width: 100%;
     .logo {
+        font: small-caps 36px 'Chewy', sans-serif;
+        color: $main-color;
+        text-shadow: 3px 3px 5px $color-grey;
+        text-align: center;
         margin: 1rem auto;
         margin-top: calc(50vh - 18rem);
         font-size: 3rem;
-        text-shadow: 3px 3px 5px $color-grey;
         @include user-select;
     }
 }
@@ -17,7 +39,7 @@
     background-color: $form-color;
     color: $background-color;
     width: 30rem;
-    height: 29rem;
+    height: 28rem;
     margin: 0 auto;
     box-shadow: 7px 7px 5px $color-grey;
     ul.form-group {
@@ -40,6 +62,17 @@
         li.form {
             background-color: $color-grey;
             border-bottom: 2px solid $main-color;
+            a {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                text-decoration: none;
+                color: $background-color;
+
+
+            }
         }
         li.active {
             background-color: $main-color;
@@ -98,6 +131,7 @@
     .button {
         background-color: $main-color;
         border: 2px solid $main-color;
+        cursor: pointer;
     }
     .button:focus {
         outline: 0;
@@ -112,17 +146,6 @@
     .button-block {
         background-color: $color-grey;
         border: 2px solid $color-grey;
-    }
-    .error-message {
-        width: 30rem;
-        height: 1.5rem;
-        margin-top: 0.5rem;
-        text-align: center;
-        font-size: 1rem;
-        color: rgb(251, 1, 9);
-        .fa {
-            padding-right: 0.5rem;
-        }
     }
 }
 
@@ -160,10 +183,10 @@
 
     }
     .button, .button-block {
-        margin: 2.5rem 1rem 1rem;
+        margin: 3.5rem 1rem 1rem;
     }
     .button:focus {
-        margin: 2.6rem 1.1rem 1.1rem;
+        margin: 3.6rem 1.1rem 1.1rem;
     }
 }
 
@@ -203,9 +226,52 @@
         margin: 0.6rem;
     }
     .button, .button-block {
-        margin: 0.6rem 1rem 1rem;
+        margin: 1.6rem 1rem 1rem;
     }
     .button:focus {
-        margin: 0.7rem 1.1rem 1.1rem;
+        margin: 1.7rem 1.1rem 1.1rem;
     }
+}
+
+
+.incorrect {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(64, 38, 47, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    > div {
+        width: 35rem;
+        height: 5rem;
+        background-color: $background-color;
+        box-shadow: 0 0 10px $button-color;
+        color: $button-color;
+        font-size: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        .fa-times {
+            color: $color-grey;
+            margin: 0.5rem 0.5rem 0 33rem;
+        }
+        .fa-times:hover {
+            color: $button-color;
+        }
+        div {
+            display: inline-flex;
+            align-items: baseline;
+            margin-top: -2.1rem;
+            .fa-exclamation-triangle {
+                margin-right: 1rem;
+            }
+        }
+    }
+}
+
+.none {
+    display: none;
 }

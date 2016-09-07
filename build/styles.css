@@ -28,7 +28,7 @@ body {
   top: 0;
   width: 100%;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   box-shadow: 0 0 10px #595959;
   height: 3.1rem;
@@ -120,6 +120,27 @@ body {
   padding: 0.05rem;
 }
 
+.header .logout {
+  text-decoration: none;
+  color: #595959;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  border: 2px solid #ba2c5c;
+  padding: 0.1rem 1rem;
+  border-radius: 5px;
+  margin: 0 1.5rem;
+}
+
+.header .logout:hover {
+  background-color: #e6e6e6;
+}
+
+.header .logout:active {
+  padding: 0.05rem 0.95rem;
+  margin: 0 1.55rem;
+}
+
 .sidebar-menu {
   position: absolute;
   top: 3.1rem;
@@ -195,7 +216,7 @@ body {
 }
 
 .calendar {
-  border-collapse: separate;
+  border-spacing: 0;
   table-layout: fixed;
   width: 100%;
   line-height: 1.2rem;
@@ -204,7 +225,7 @@ body {
 }
 
 .calendar td {
-  width: 1.9rem;
+  width: 1.8rem;
 }
 
 .calendar thead tr {
@@ -269,6 +290,7 @@ body {
 .events-block .event-list {
   width: 100%;
   table-layout: fixed;
+  border-spacing: 0;
 }
 
 .events-block .event-list tbody tr {
@@ -348,8 +370,8 @@ body {
 }
 
 .authorization .logo {
-  margin: 2rem auto;
-  margin-top: calc(50vh - 19rem);
+  margin: 1rem auto;
+  margin-top: calc(50vh - 18rem);
   font-size: 3rem;
   text-shadow: 3px 3px 5px #595959;
   -webkit-user-select: none;
@@ -361,7 +383,7 @@ body {
   background-color: #40262f;
   color: #e6e6e6;
   width: 30rem;
-  height: 28rem;
+  height: 29rem;
   margin: 0 auto;
   box-shadow: 7px 7px 5px #595959;
 }
@@ -417,9 +439,9 @@ body {
 }
 
 #signup input,
-#signup .fa,
+#signup label .fa,
 #login input,
-#login .fa {
+#login label .fa {
   height: 2rem;
   border: 2px solid #b5b1b1;
 }
@@ -437,16 +459,54 @@ body {
   outline: 0;
 }
 
+#signup .message,
+#signup .err,
+#login .message,
+#login .err {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28rem;
+  height: 1.5rem;
+  margin: 0 1rem;
+  color: #fb0109;
+}
+
+#signup .message,
+#login .message {
+  color: #b5b1b1;
+}
+
+#signup .error,
+#login .error {
+  border: 2px solid #fb0109;
+  box-shadow: inset 0 0 10px #fb0109;
+}
+
+#signup .button,
+#signup .button-block,
+#login .button,
+#login .button-block {
+  width: 28rem;
+  height: 2.5rem;
+  font-size: 1.2rem;
+  color: #e6e6e6;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+
 #signup .button,
 #login .button {
   background-color: #ba2c5c;
   border: 2px solid #ba2c5c;
-  width: calc(28rem - 4px);
-  height: 2.5rem;
-  font-size: 1.2rem;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
+}
+
+#signup .button:focus,
+#login .button:focus {
+  outline: 0;
+  width: 27.8rem;
+  height: 2.3rem;
 }
 
 #signup .button:hover,
@@ -455,20 +515,52 @@ body {
   border: 2px solid #a2083b;
 }
 
-#signup .button:focus,
-#login .button:focus {
-  outline: 0;
-  background-color: #ba2c5c;
+#signup .button-block,
+#login .button-block {
+  background-color: #595959;
+  border: 2px solid #595959;
+}
+
+#signup .error-message,
+#login .error-message {
+  width: 30rem;
+  height: 1.5rem;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #fb0109;
+}
+
+#signup .error-message .fa,
+#login .error-message .fa {
+  padding-right: 0.5rem;
+}
+
+#login form {
+  margin-top: 3rem;
+}
+
+#login .field-wrap:nth-child(2) {
+  height: 4.9rem;
+}
+
+#login .field-wrap:nth-child(2) .err {
+  height: 1rem;
 }
 
 #login .field-wrap {
-  display: flex;
+  display: inline-flex;
+  flex-wrap: wrap;
   justify-content: center;
-  height: 2.5rem;
-  margin: 2.5rem auto;
+  margin: 0.5rem auto;
 }
 
-#login .field-wrap .fa {
+#login .field-wrap label {
+  display: inline-flex;
+  align-items: center;
+}
+
+#login .field-wrap label .fa {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -478,32 +570,71 @@ body {
   background-color: #b5b1b1;
 }
 
-#login .field-wrap input {
-  width: calc(23rem - 2px);
+#login .field-wrap label input {
+  width: calc(22rem - 2px);
 }
 
-#login .button {
-  margin: 4.4rem 1rem 1rem;
+#login .button,
+#login .button-block {
+  margin: 2.5rem 1rem 1rem;
+}
+
+#login .button:focus {
+  margin: 2.6rem 1.1rem 1.1rem;
 }
 
 #signup input {
-  margin: 1.2rem 1rem;
+  margin: 0 1rem;
+}
+
+#signup .top-row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
 }
 
 #signup .top-row input {
   width: calc(11.5rem - 4px);
 }
 
-#signup .top-row input:last-child {
+#signup .top-row input:nth-child(2n),
+#signup .top-row .err:nth-child(2n) {
   margin-left: 0;
 }
 
+#signup .top-row .err {
+  width: 13.5rem;
+}
+
+#signup .main {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
 #signup .main input {
+  margin-top: 0.5rem;
   width: calc(26rem - 4px);
 }
 
-#signup .button {
-  margin: 2rem 1rem 1rem;
+#signup .main:nth-child(3) {
+  height: 5.4rem;
+}
+
+#signup .main:nth-child(3) .err {
+  height: 1rem;
+}
+
+#signup .error-message {
+  margin: 0.6rem;
+}
+
+#signup .button,
+#signup .button-block {
+  margin: 0.6rem 1rem 1rem;
+}
+
+#signup .button:focus {
+  margin: 0.7rem 1.1rem 1.1rem;
 }
 
 .event-form {

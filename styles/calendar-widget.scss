@@ -31,14 +31,14 @@
 }
 
 .calendar {
-    border-collapse: separate;
+    border-spacing: 0;
     table-layout: fixed;
     width: 100%;
     line-height: 1.2rem;
     font-size: 0.8rem;
     text-align: center;
     td {
-        width: 1.9rem;
+        width: 1.8rem;
     }
     thead {
         tr {

@@ -9,7 +9,9 @@ var IventsOfDay = React.createClass({
     render: function() {
         var date = this.props.day,
             DOW_date = DAYS_OF_WEEK[date.getDay()],
-            titleTable = <td className='event'>{DOW_date +' '+ date.getDate() +'/'+ (+date.getMonth()+1)}</td>,
+            titleTable = (<td className='event'>
+                             {DOW_date +' '+ date.getDate() +'/'+ (+date.getMonth()+1)}
+                         </td>),
             rows = Array.from({length:24}),
             time = 0,
             timeStr;

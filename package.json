@@ -10,7 +10,18 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.2",
-    "pg-promise": "^5.3.2"
+    "connect-ensure-login": "^0.1.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "pg-promise": "^5.3.2",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "react-router": "^2.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.13.2",
@@ -21,11 +32,8 @@
     "babel-preset-stage-1": "^6.13.0",
     "bootstrap-sass": "^3.3.7",
     "css-loader": "^0.23.1",
-    "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "node-sass": "^3.8.0",
-    "react": "^15.3.1",
-    "react-dom": "^15.3.1",
     "resolve-url-loader": "^1.6.0",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",

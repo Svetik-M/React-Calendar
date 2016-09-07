@@ -27,11 +27,17 @@ function createWeek(firstDay, dateFirst, month, msInDay, selDay, period) {
         }
 
         if (date.getMonth() !== dateFirst.getMonth()) {
-            return <td key={i} className={'other-month' + select} id={thisDayMs}>{thisDay}</td>;
+            return (<td key={i} className={'other-month' + select} id={thisDayMs}>
+                        {thisDay}
+                    </td>);
         } else  if (thisDayMs === today.getTime()) {
-            return <td key={i} className={'curr-month today' + select} id={thisDayMs}>{thisDay}</td>;
+            return (<td key={i} className={'curr-month today' + select} id={thisDayMs}>
+                        {thisDay}
+                    </td>);
         } else {
-            return <td key={i} className={'curr-month' + select} id={thisDayMs}>{thisDay}</td>;
+            return (<td key={i} className={'curr-month' + select} id={thisDayMs}>
+                        {thisDay}
+                    </td>);
         }
     });
     return  (
@@ -66,17 +72,21 @@ function createMonth(msInDay, Week, selDay, day, period) {
 var Week = React.createClass({
     render: function() {
         var firstDay = this.props.date,
-            dateFirst = new Date(this.props.year, this.props.month, 1);
-        return createWeek(firstDay, dateFirst, this.props.month, MS_IN_DAY, this.props.sel_day, this.props.period);
+            dateFirst = new Date(this.props.year, this.props.month, 1),
+            month = this.props.month,
+            selDay = this.props.sel_day,
+            period = this.props.period;
+        return createWeek(firstDay, dateFirst, month, MS_IN_DAY, selDay, period);
     }
 });
 
 
 var Month = React.createClass({
     render: function() {
-        var period = this.props.period || '',
-            selDay = this.props.sel_day || '';
-        return createMonth(MS_IN_DAY, Week, selDay, this.props.day, period);
+        var selDay = this.props.sel_day || '',
+            period = this.props.period || '',
+            day = this.props.day;
+        return createMonth(MS_IN_DAY, Week, selDay, day, period);
     }
 });
 

@@ -2,33 +2,17 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router, Route, Link, browserHistory } from 'react-router';
 
-import {AuthorizationForm} from './signup-login.jsx';
 import {TitleMenu} from './title-menu.jsx';
 import {SidebarMenu} from './sidebar-menu.jsx';
-import {IventsOfDay} from './day.jsx';
-import {IventsOfWeek} from './week.jsx';
-import {IventsOfMonth} from './month.jsx';
+import {EventsTable} from './events-table.jsx';
 
 import '../styles/style.scss';
 
-var userID = 123456;
-
 var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
-var Period = React.createClass({
-    render: function() {
-        if (this.props.period === 'day') {
-            return <IventsOfDay day={this.props.day} />;
-        } else if (this.props.period === 'week') {
-            return <IventsOfWeek day={this.props.day} />;
-        } else if (this.props.period === 'month') {
-            return <IventsOfMonth day={this.props.day} />;
-        }
-    }
-});
-
-var App = React.createClass({
+var AppView = React.createClass({
     getInitialState: function() {
         return {
             day: date,
@@ -80,7 +64,7 @@ var App = React.createClass({
                 }
             }
 
-            this.setState( function(previousState) {
+            this.setState(function(previousState) {
                 return {
                     day: selectedDate,
                     period: previousState.period
@@ -102,29 +86,27 @@ var App = React.createClass({
     },
 
     render: function() {
-        if (userID) {
-            return (
-                <div>
-                    <div onClick={this.changePeriod}>
-                        <TitleMenu day={this.state.day} period={this.state.period} />
+        return (
+            <div>
+                <div onClick={this.changePeriod}>
+                    <TitleMenu day={this.state.day} period={this.state.period} />
+                </div>
+                <div className='page-body'>
+                    <div onClick={this.changeDay}>
+                        <SidebarMenu day={this.state.day} period={this.state.period} />
                     </div>
-                    <div className='page-body'>
-                        <div onClick={this.changeDay}>
-                            <SidebarMenu day={this.state.day} period={this.state.period} />
-                        </div>
-                        <div>
-                            <Period day={this.state.day} period={this.state.period} />
-                        </div>
+                    <div>
+                        <EventsTable day={this.state.day} period={this.state.period} />
                     </div>
                 </div>
-            );
-        } else return (
-            <AuthorizationForm />
-        )
+            </div>
+        );
     }
 });
 
 ReactDOM.render(
-    <App />,
+    <Router history={browserHistory}>
+        <Route path='/user/:userId' component={AppView} />
+    </Router>,
     document.getElementById('content')
 );

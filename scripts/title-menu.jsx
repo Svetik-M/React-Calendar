@@ -13,11 +13,11 @@ export var TitleMenu  = React.createClass({
                         <div className='nav-today' id='today'>Today</div>
                         <div className='nav'>
                             <div>
-                                <i className='fa fa-arrow-circle-left' aria-hidden='true' id='prev-period'></i>
+                                <i className='fa fa-arrow-circle-left' aria-hidden='true' id='prev-period' />
                             </div>
                             <SelectedPeriod day={this.props.day} period={this.props.period}/>
                             <div>
-                                <i className='fa fa-arrow-circle-right' aria-hidden='true' id='next-period'></i>
+                                <i className='fa fa-arrow-circle-right' aria-hidden='true' id='next-period' />
                             </div>
                         </div>
                         <ul className='period-block'>
@@ -25,7 +25,11 @@ export var TitleMenu  = React.createClass({
                             <li className='period' id='week'>Week</li>
                             <li className='period' id='month'>Month</li>
                         </ul>
+
                     </div>
+                </div>
+                <div>
+                    <a className='logout' href='/logout'>Log Out</a>
                 </div>
             </div>
         );
