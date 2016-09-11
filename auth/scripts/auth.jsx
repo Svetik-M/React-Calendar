@@ -63,7 +63,7 @@ var AuthorizationForm = React.createClass({
                     </div>
                     <div className={'incorrect' + (this.state.visible ? '' : ' none')}>
                         <div>
-                            <i className='fa fa-times' aria-hidden='true' onClick={this.changeVisible}></i>
+                            <i className='fa fa-times' aria-hidden='true' onClick={this.changeVisible} />
                             <div>
                                 <i className='fa fa-exclamation-triangle' aria-hidden='true' />
                                 Incorrect E-mail Address or Password

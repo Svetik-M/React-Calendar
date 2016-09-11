@@ -34,7 +34,7 @@ function getWeekPeriod(date) {
 var SelectedPeriod = React.createClass({
     getInitialState: function() {
         var date = this.props.day;
-        return getWeekPeriod(date);
+        return {period: MONTH_NAMES[date.getMonth()] + ' ' + date.getFullYear()};
     },
 
     componentWillReceiveProps: function(nextProps) {

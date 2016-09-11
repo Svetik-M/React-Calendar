@@ -56,10 +56,7 @@ var Login = React.createClass({
                             <div className='err'>{this.state.mesPassword}</div>
                         </div>
                     </div>
-                    <div className='error-message'>
-
-                    </div>
-
+                    
                     <button type='submit' className={this.state.valid ? 'button' : ' button-block'}
                             disabled={!this.state.valid} formNoValidate>
                         Log In

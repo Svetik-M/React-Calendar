@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react';
+import requests from './request.js';
 
 var CreateEvent = React.createClass({
     getInitialState: function() {
@@ -13,24 +14,29 @@ var CreateEvent = React.createClass({
         this.setState({visible: nextProps.visible});
     },
 
+    handleSubmit: function(e) {
+        e.preventDefault();
+        requests.sendEventForm.call(this);
+    },
+
     render: function() {
         return (
             <div className={'event-form' + (this.state.visible ? '' : ' none')}>
-                <form action='/event' method='post'>
+                <form id='event-form' onSubmit={this.handleSubmit}>
                     <div className='title-form'>Create event</div>
                     <label className='title-event'>
-                        Title event
-                        <input type='text' ref='title-event' defaultValue='' />
+                        Title event*
+                        <input type='text' ref='title' defaultValue='' required />
                     </label>
                     <label className='start'>
-                        Start
-                        <input type='date' ref='start-date' defaultValue='' />
-                        <input type='time' ref='start-time' defaultValue='' />
+                        Start*
+                        <input type='date' ref='start_date' defaultValue='' required />
+                        <input type='time' ref='start_time' defaultValue='' required />
                     </label>
                     <label className='end'>
-                        End
-                        <input type='date' ref='end-date' defaultValue='' />
-                        <input type='time' ref='end-time' defaultValue='' />
+                        End*
+                        <input type='date' ref='end_date' defaultValue='' required />
+                        <input type='time' ref='end_time' defaultValue='' required />
                     </label>
                     <label className='place'>
                         Place
@@ -38,16 +44,16 @@ var CreateEvent = React.createClass({
                     </label>
 
                     <div className='category'>
-                        <span>Event category</span>
-                        <label><input name='category' type='radio' value='home' /> Home</label>
-                        <label><input name='category' type='radio' value='work' /> Work</label>
+                        <span>Event category*</span>
+                        <label><input name='category' ref='home' type='radio' value='home' required/> Home</label>
+                        <label><input name='category' ref='work' type='radio' value='work' required/> Work</label>
                     </div>
                     <label className='discription'>
                         Discription
-                        <textarea></textarea>
+                        <textarea ref='discription'></textarea>
                     </label>
                     <div className='button-block'>
-                        <button type='submit' className='button button-blocked'>Save</button>
+                        <button type='submit' className='button'>Save</button>
                         <button type='reset' className='button'>Cancel</button>
                     </div>
                 </form>

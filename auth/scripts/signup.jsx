@@ -70,10 +70,6 @@ var Signup = React.createClass({
                         </div>
                     </div>
 
-                    <div className='error-message'>
-                        {this.state.mesСapture}
-                    </div>
-
                     <button type='submit' className={this.state.valid ? 'button' : ' button-block'}
                             disabled={!this.state.valid} formNoValidate>
                         Get Started

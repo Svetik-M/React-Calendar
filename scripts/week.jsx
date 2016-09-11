@@ -41,9 +41,9 @@ var IventsOfWeek = React.createClass({
                 var bool = (firstDay + i * MS_IN_DAY === today),
                     date = firstDay + i * MS_IN_DAY;
                 return (<td key={i} className={bool ? 'event curr-day' : 'event'}>
-                           <div key={i+.0} className={date + ' ' + (time + i * MS_IN_HOUR)}>
+                           <div key={i+.0} className={'half ' + (date + ' ' + (time + i * MS_IN_HOUR))}>
                            </div>
-                           <div key={i+.1} className={date + ' ' + (time + i * MS_IN_HOUR + MS_IN_HOUR/2)}>
+                           <div key={i+.1} className={'half ' + (date + ' ' + (time + i * MS_IN_HOUR + MS_IN_HOUR/2))}>
                            </div>
                        </td>)
             });

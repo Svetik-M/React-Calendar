@@ -7,18 +7,32 @@ import {CreateEvent} from './create-event.jsx';
 var SidebarMenu = React.createClass({
     getInitialState: function() {
         return {
-            visible: false
+            visible: this.props.visible,
+            action: this.props.action
         };
     },
 
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            visible: nextProps.visible,
+            action: nextProps.action
+        });
+    },
+
     visualizeForm: function() {
-        this.setState({visible: true});
+        this.setState({
+            visible: true,
+            action: 'add'
+        });
     },
 
     hidingForm: function(event) {
         var target = event.target;
         if (target.className === 'button') {
-            this.setState({visible: false});
+            this.setState({
+                visible: false,
+                action: this.props.action
+            });
         }
     },
 
@@ -31,7 +45,7 @@ var SidebarMenu = React.createClass({
                  </div>
                 <CalendarWidget day={this.props.day} period={this.props.period} />
                 <div onClick={this.hidingForm}>
-                    <CreateEvent visible={this.state.visible} />
+                    <CreateEvent  action={this.state.action} visible={this.state.visible} />
                 </div>
             </div>
         );

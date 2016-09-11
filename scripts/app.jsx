@@ -7,16 +7,23 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import {TitleMenu} from './title-menu.jsx';
 import {SidebarMenu} from './sidebar-menu.jsx';
 import {EventsTable} from './events-table.jsx';
+import {Event} from './event.jsx';
 
 import '../styles/style.scss';
 
 var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
+window['EVENT'];
+
 var AppView = React.createClass({
     getInitialState: function() {
         return {
             day: date,
-            period: 'week'
+            period: 'month',
+            visEventForm: false,
+            action: '',
+            eventId: '',
+            eventData: ''
         };
     },
 
@@ -24,23 +31,18 @@ var AppView = React.createClass({
         var target = event.target;
 
         if (target.id === 'day' || target.id === 'week' || target.id === 'month') {
-            this.setState( function(previousState) {
-                return {
-                    day: previousState.day,
-                    period: target.id
-                };
-            });
+            let state = this.state;
+            state.period = target.id;
+            this.setState(state);
 
         } else if (target.id === 'today') {
-            this.setState( function(previousState) {
-                return {
-                    day: date,
-                    period: 'day'
-                };
-            });
+            let state = this.state;
+            state.day = date;
+            state.period = 'day';
+            this.setState(state);
 
         } else if (target.id === 'prev-period' || target.id === 'next-period'){
-            var year = this.state.day.getFullYear(),
+            let year = this.state.day.getFullYear(),
                 month = this.state.day.getMonth(),
                 day = this.state.day.getDate(),
                 selectedDate;
@@ -64,24 +66,38 @@ var AppView = React.createClass({
                 }
             }
 
-            this.setState(function(previousState) {
-                return {
-                    day: selectedDate,
-                    period: previousState.period
-                };
-            });
+            let state = this.state;
+            state.day = selectedDate;
+            this.setState(state);
         }
     },
 
     changeDay: function(event) {
         var target = event.target;
         if (target.className === 'curr-month' || target.className === 'other-month') {
-            this.setState( function(previousState) {
-                return {
-                    day: new Date(+target.id),
-                    period: previousState.period
-                };
-            });
+            let state = this.state;
+            state.day = new Date(+target.id);
+            this.setState(state);
+        }
+    },
+
+    getFullEvent: function(event) {
+        var target = event.target;
+        if (target.className === 'home' || target.className === 'work') {
+            let state = this.state;
+            state.eventData = target.getAttribute('data-event');
+            this.setState(state);
+        }
+    },
+
+    editEvent: function(event) {
+        var target = event.target;
+        if (target.className === 'button edit') {
+            let state = this.state;
+            state.visEventForm = true;
+            state.action = 'edit';
+            state.iventId = target.getAttribute('data-id');
+            this.setState(state);
         }
     },
 
@@ -93,11 +109,16 @@ var AppView = React.createClass({
                 </div>
                 <div className='page-body'>
                     <div onClick={this.changeDay}>
-                        <SidebarMenu day={this.state.day} period={this.state.period} />
+                        <SidebarMenu day={this.state.day} period={this.state.period}
+                                     visible={this.visEventForm} action={this.state.action}
+                                     eventId={this.state.eventId} />
                     </div>
-                    <div>
+                    <div onClick={this.getFullEvent}>
                         <EventsTable day={this.state.day} period={this.state.period} />
                     </div>
+                    {/*}<div onClick={this.editEvent}>
+                        <Event event={this.state.eventData} />
+                    </div>*/}
                 </div>
             </div>
         );

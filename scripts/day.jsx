@@ -1,11 +1,17 @@
 'use strict'
 
 import React from 'react';
+import requests from './request.js';
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MS_IN_HOUR = 360000;
 
 var IventsOfDay = React.createClass({
+    componentWillReceiveProps: function(nextProps) {
+        var events = requests.getDayEvents(nextProps.day);
+
+    },
+
     render: function() {
         var date = this.props.day,
             DOW_date = DAYS_OF_WEEK[date.getDay()],
@@ -24,8 +30,8 @@ var IventsOfDay = React.createClass({
                 <tr key={i}>
                     <td className='time'>{timeStr}</td>
                     <td className='event'>
-                        <div className={time + i * MS_IN_HOUR}></div>
-                        <div className={time + i * MS_IN_HOUR + MS_IN_HOUR/2}></div>
+                        <div className={'half ' + (time + i * MS_IN_HOUR)}></div>
+                        <div className={'half ' + (time + i * MS_IN_HOUR + MS_IN_HOUR/2)}></div>
                     </td>
                 </tr>
             );
