@@ -1,9 +1,8 @@
 'use strict'
 
 import React from 'react';
-//import {createWeek} from './calendar-widget.jsx';
-import {createMonth} from './calendar-widget.jsx';
 import {Event} from './event.jsx';
+import {CreateEvent} from './create-event.jsx';
 import requests from './request.js';
 
 
@@ -22,53 +21,22 @@ titleTable = titleTable.map(function(v,i) {
 var Week = React.createClass({
     getInitialState: function() {
         return {
-            events: Array.from({length:7}),
-            id: ''
+            events: Array.from({length:7})
         }
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var timeZone = new Date(nextProps.date).getTimezoneOffset()*60*60*100,
-            start = nextProps.date - timeZone,
-            end = start + 6 * MS_IN_DAY;
-        requests.getEvents.call(this, start, end);
+        getEventsSortByDays.call(this, nextProps.events);
     },
 
     componentWillMount: function() {
-        var timeZone = new Date(this.props.date).getTimezoneOffset()*60*60*100,
-            start = this.props.date - timeZone,
-            end = start + 6 * MS_IN_DAY;
-        requests.getEvents.call(this, start, end);
-    },
-
-    getArrOfEvents: function(res) {
-        var arrOfEvents = Array.from({length:7}),
-            date = this.props.date;
-        for (let i = 0; i < 7; i++) {
-            let arr = res.filter(function(value) {
-                var start = new Date(value.start_date).getTime(),
-                    end = new Date(value.end_date).getTime(),
-                    day = new Date(date + i * MS_IN_DAY).getTime();
-                return start === day ||
-                       end === day ||
-                       start < day && end > day;
-            });
-            arrOfEvents[i] = arr;
-        };
-        this.setState({events: arrOfEvents});
-    },
-
-    updateEvents: function() {
-        var timeZone = new Date(this.props.date).getTimezoneOffset()*60*60*100,
-            start = this.props.date - timeZone,
-            end = start + 6 * MS_IN_DAY;
-        requests.getEvents.call(this, start, end);
+        getEventsSortByDays.call(this, this.props.events);
     },
 
     render: function() {
-        var firstDay = this.props.date,
-            dateFirst = new Date(this.props.year, this.props.month, 1),
-            month = this.props.month,
+        var firstDay = this.props.currDay,
+            month = this.props.day.getMonth(),
+            dateFirst = new Date(this.props.day.getFullYear(), month, 1),
             events = this.state.events,
             allDays = Array.from({length: 7}),
             today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
@@ -81,7 +49,7 @@ var Week = React.createClass({
                 let arr = value.map(function(item) {
                     var start = item.start_time.slice(0, -3);
                     if (new Date(item.start_date).getTime() < (firstDay + index * MS_IN_DAY)) start = '00:00';
-                    return <Event key={item.id} event={item} start={start} scope={call} />;
+                    return <Event key={item.id} event={item} start={start} scope={call.props.scope} />;
                 });
 
                 return arr;
@@ -93,7 +61,7 @@ var Week = React.createClass({
                 thisDay = date.getDate(),
                 thisDayMs = date.getTime();
 
-            if (date.getMonth() !== dateFirst.getMonth()) {
+            if (date.getMonth() !== month) {
                 return (<td key={i} className='other-month' id={thisDayMs}>
                             <div className='day'>{thisDay}</div>
                             {events[i]}
@@ -119,19 +87,101 @@ var Week = React.createClass({
 });
 
 
-
 var Month = React.createClass({
     render: function() {
-        var period = this.props.period || '',
-            selDay = this.props.sel_day || '';
-        return createMonth(MS_IN_DAY, Week, selDay, this.props.day, period);
+        var currDay = this.props.currDay,
+            events = this.props.events,
+            weeks = [];
+        for (let n = 1; currDay <= this.props.dateLast; currDay = currDay + 7*MS_IN_DAY, n++) {
+            let eventsWeek = events.filter(function(value) {
+                return new Date(value.start_date).getTime() >= currDay
+                       && new Date(value.start_date).getTime() < currDay + 7*MS_IN_DAY
+                       || new Date(value.end_date).getTime() >= currDay
+                       && new Date(value.end_date).getTime() < currDay + 7*MS_IN_DAY
+                       || new Date(value.start_date).getTime() < currDay
+                       && new Date(value.end_date).getTime() >= currDay + 7*MS_IN_DAY;
+            });
+            weeks.push(
+                <Week key = {n} currDay={currDay} day={this.props.day} events={eventsWeek}
+                    scope={this.props.scope} />
+            );
+        }
+
+        return (
+            <tbody className='monthTable'>
+                {weeks}
+            </tbody>
+        );
     }
 });
 
 
-
 var IventsOfMonth = React.createClass({
+    getInitialState: function() {
+        return {
+            currDay: '',
+            dateLast: '',
+            events: [],
+            eventId: '',
+            visible: this.props.visEventForm,
+            action: this.props.action
+        }
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        var state = this.state;
+        state.visible = nextProps.visEventForm;
+        this.setState(state);
+        if (this.props.day.getMonth() !== nextProps.day.getMonth()) {
+            getEventsOfMonth.call(this, nextProps);
+        };
+    },
+
+    componentWillMount: function() {
+        getEventsOfMonth.call(this, this.props);
+    },
+
+    getArrOfEvents: function(res) {
+        var arrOfEvents = res;
+        this.setState({events: arrOfEvents});
+    },
+
+    updateEvents: function() {
+        getEventsOfMonth.call(this, this.props);
+    },
+
+    editEvent: function(e) {
+        var target = e.target;
+        if (target.className === 'button edit') {
+            let state = this.state;
+            state.visible = true;
+            state.eventId = target.getAttribute('data-event');
+            this.setState(state);
+            var elem = document.querySelector('.events-block .vis');
+            console.log(elem);
+            if (elem) elem.className = 'full-event none';
+        };
+    },
+
+    hidingForm: function(e) {
+        var target = e.target;
+        if (target.className === 'button') {
+            let state = this.state;
+            state.visible = false;
+            state.eventId = '';
+            this.setState(state);
+        }
+    },
+
     render: function() {
+        var editableEvent,
+            eventId = this.state.eventId;
+        if (this.state.eventId !== '') {
+            editableEvent = this.state.events.filter(function(value) {
+                return value.id === eventId;
+            })[0];
+        };
+
         return (
             <div className='events-block'>
                 <table className='date'>
@@ -141,18 +191,61 @@ var IventsOfMonth = React.createClass({
                         </tr>
                     </tbody>
                 </table>
-                <table className='event-list month'>
+                <table className='event-list month' onClick={this.editEvent}>
                     <thead>
                         <tr>
                             {titleTable}
                         </tr>
                     </thead>
-                    <Month day={this.props.day} />
+                    <Month day={this.props.day} currDay={this.state.currDay} dateLast={this.state.dateLast}
+                           events={this.state.events} scope={this} />
                 </table>
+                <div onClick={this.hidingForm}>
+                    <CreateEvent action={this.state.action} visible={this.state.visible} scope={this}
+                                 editableEvent={editableEvent} />
+                </div>
             </div>
         )
     }
 });
+
+
+function getEventsOfMonth(props) {
+    var month = props.day.getMonth(),
+        year = props.day.getFullYear(),
+        lastDayOfMonth = new Date(year ,month+1, 0).getDate(),
+        dateLast = new Date(year, month, lastDayOfMonth),
+        DOW_last = dateLast.getDay(),
+        dateFirst = new Date(year, month, 1),
+        DOW_first = dateFirst.getDay(),
+        currDay = dateFirst.getTime() - DOW_first * MS_IN_DAY,
+        timeZone = new Date(props.day).getTimezoneOffset()*60*60*100,
+        start = currDay - timeZone,
+        end = dateLast.getTime() + (6 - DOW_last) * MS_IN_DAY;
+
+    requests.getEvents.call(this, start, end);
+    var state = this.state;
+    state.currDay = currDay;
+    state.dateLast = dateLast.getTime();
+    this.setState(state);
+}
+
+function getEventsSortByDays(eventsArr) {
+    var arrOfEvents = Array.from({length:7}),
+        date = this.props.currDay;
+    for (let i = 0; i < 7; i++) {
+        let arr = eventsArr.filter(function(value) {
+            let start = new Date(value.start_date).getTime(),
+                end = new Date(value.end_date).getTime(),
+                day = new Date(date + i * MS_IN_DAY).getTime();
+            return start === day ||
+                   end === day ||
+                   start < day && end > day;
+        });
+        arrOfEvents[i] = arr;
+    };
+    this.setState({events: arrOfEvents});
+}
 
 
 export {IventsOfMonth};

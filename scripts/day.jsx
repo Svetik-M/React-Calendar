@@ -7,10 +7,10 @@ const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'F
 const MS_IN_HOUR = 360000;
 
 var IventsOfDay = React.createClass({
-    componentWillReceiveProps: function(nextProps) {
-        var events = requests.getDayEvents(nextProps.day);
-
-    },
+    // componentWillReceiveProps: function(nextProps) {
+    //     var events = requests.getDayEvents(nextProps.day);
+    //
+    // },
 
     render: function() {
         var date = this.props.day,

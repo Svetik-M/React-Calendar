@@ -5,7 +5,6 @@ import requests from './request.js';
 
 var Event = React.createClass({
     deletEvent: function() {
-        console.log(this.props.scope);
         requests.deletEvent.call(this.props.scope, this.props.event.id);
     },
 
@@ -24,7 +23,7 @@ var Event = React.createClass({
         var ev = this.props.event;
         return (
             <div>
-                <div id={ev.id} className={ev.category} onClick={this.isVisible}>
+                <div id={ev.id} className={'category ' + ev.category} onClick={this.isVisible}>
                     {this.props.start + ' ' + ev.title}
                 </div>
                 <div className={'full-event none'}>

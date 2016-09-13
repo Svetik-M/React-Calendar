@@ -13,17 +13,14 @@ import '../styles/style.scss';
 
 var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
-window['EVENT'];
+//window['EVENT'];
 
 var AppView = React.createClass({
     getInitialState: function() {
         return {
             day: date,
             period: 'month',
-            visEventForm: false,
-            action: '',
-            eventId: '',
-            eventData: ''
+            visEventForm: false
         };
     },
 
@@ -72,31 +69,17 @@ var AppView = React.createClass({
         }
     },
 
-    changeDay: function(event) {
+    sidebarEventHandler: function(event) {
         var target = event.target;
-        if (target.className === 'curr-month' || target.className === 'other-month') {
+        if (target.className.includes('curr-month')
+            || target.className.includes('other-month')) {
             let state = this.state;
             state.day = new Date(+target.id);
             this.setState(state);
-        }
-    },
-
-    getFullEvent: function(event) {
-        var target = event.target;
-        if (target.className === 'home' || target.className === 'work') {
-            let state = this.state;
-            state.eventData = target.getAttribute('data-event');
-            this.setState(state);
-        }
-    },
-
-    editEvent: function(event) {
-        var target = event.target;
-        if (target.className === 'button edit') {
+        } else if (target.parentElement.className === 'create-event'
+                   || target.className === 'create-event') {
             let state = this.state;
             state.visEventForm = true;
-            state.action = 'edit';
-            state.iventId = target.getAttribute('data-id');
             this.setState(state);
         }
     },
@@ -108,13 +91,12 @@ var AppView = React.createClass({
                     <TitleMenu day={this.state.day} period={this.state.period} />
                 </div>
                 <div className='page-body'>
-                    <div onClick={this.changeDay}>
-                        <SidebarMenu day={this.state.day} period={this.state.period}
-                                     visible={this.visEventForm} action={this.state.action}
-                                     eventId={this.state.eventId} />
+                    <div onClick={this.sidebarEventHandler}>
+                        <SidebarMenu day={this.state.day} period={this.state.period} />
                     </div>
                     <div onClick={this.getFullEvent}>
-                        <EventsTable day={this.state.day} period={this.state.period} />
+                        <EventsTable day={this.state.day} period={this.state.period}
+                            visEventForm={this.state.visEventForm} />
                     </div>
                     {/*}<div onClick={this.editEvent}>
                         <Event event={this.state.eventData} />

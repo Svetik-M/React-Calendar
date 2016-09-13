@@ -2,22 +2,11 @@
 
 var requests = {
 
-    sendEventForm: function() {
-        var caregory = this.refs.home.checked ? this.refs.home.value : this.refs.work.value;
-
-        var form = {
-            title: this.refs.title.value,
-            start_date: this.refs.start_date.value,
-            start_time: this.refs.start_time.value,
-            end_date: this.refs.end_date.value,
-            end_time: this.refs.end_time.value,
-            place: this.refs.place.value,
-            category: caregory,
-            discription: this.refs.discription.value
-        };
-
-        if (this.props.action === 'add') {
-            let body = JSON.stringify(form);
+    sendEventForm: function(form, id) {
+            console.log(id);
+            if (id === undefined) {
+            let body = JSON.stringify(form),
+                call = this;
 
             let xhr = new XMLHttpRequest();
 
@@ -29,15 +18,17 @@ var requests = {
                     if (xhr.status === 200) {
                         console.log(xhr.responseText);
                         document.getElementById('event-form').reset();
+                        call.updateEvents();
                     }
                 }
             };
 
             xhr.send(body);
 
-        } else if (this.props.action === 'edit') {
-            form.id = this.props.eventId;
-            let body = JSON.stringify(form);
+        } else {
+            form.id = id;
+            let body = JSON.stringify(form),
+                call = this;
 
             let xhr = new XMLHttpRequest();
 
@@ -49,6 +40,7 @@ var requests = {
                     if (xhr.status === 200) {
                         console.log(xhr.responseText);
                         document.getElementById('event-form').reset();
+                        call.updateEvents()
                     }
                 }
             };

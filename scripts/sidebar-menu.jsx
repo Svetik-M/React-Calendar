@@ -44,9 +44,9 @@ var SidebarMenu = React.createClass({
                     <span> Create event</span>
                  </div>
                 <CalendarWidget day={this.props.day} period={this.props.period} />
-                <div onClick={this.hidingForm}>
+                {/*<div onClick={this.hidingForm}>
                     <CreateEvent  action={this.state.action} visible={this.state.visible} />
-                </div>
+                </div>*/}
             </div>
         );
     }
