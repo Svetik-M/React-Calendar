@@ -4,7 +4,7 @@ import React from 'react';
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MS_IN_DAY = 86400000;
-const MS_IN_HOUR = 360000;
+const MS_IN_HOUR = 3600000;
 
 
 var IventsOfWeek = React.createClass({

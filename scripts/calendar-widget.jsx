@@ -96,11 +96,14 @@ var CalendarWidget = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        this.setState({
-            selDay: nextProps.day,
-            date: nextProps.day,
-            period: nextProps.period
-        })
+        if (this.props.day.getTime() !== nextProps.day.getTime()
+            || this.props.period !== nextProps.period) {
+                this.setState({
+                    selDay: nextProps.day,
+                    date: nextProps.day,
+                    period: nextProps.period
+                })
+            }
     },
 
     getPrevMonth: function() {
@@ -114,7 +117,7 @@ var CalendarWidget = React.createClass({
         var year = this.state.date.getFullYear(),
             month = this.state.date.getMonth(),
             day = this.state.date.getDate();
-        this.setState({date: new Date(year, month+1, day)})
+        this.setState({date: new Date(year, month+1, day)});
     },
 
     render: function() {

@@ -193,6 +193,7 @@ body {
   padding: 1rem 0;
   text-align: center;
   font-size: 1rem;
+  color: #595959;
 }
 
 .nav-title .fa {
@@ -241,6 +242,10 @@ body {
 .calendar .monthTable td:first-child,
 .calendar .monthTable td:last-child {
   color: #a2083b;
+}
+
+.calendar .monthTable td.curr-month {
+  color: #595959;
 }
 
 .calendar .monthTable td.other-month {
@@ -497,16 +502,21 @@ body {
   -moz-user-select: none;
 }
 
-.event-form form > label {
+.event-form form > label,
+.event-form form .start label,
+.event-form form .end label {
   display: block;
   font-size: 1.2rem;
   color: #ba2c5c;
-  width: 37rem;
-  margin: 0 1.5rem 1rem;
+  margin: 0 0 1rem 1.5rem;
 }
 
 .event-form form > label input,
-.event-form form > label textarea {
+.event-form form > label textarea,
+.event-form form .start label input,
+.event-form form .start label textarea,
+.event-form form .end label input,
+.event-form form .end label textarea {
   height: 1.8rem;
   padding: 0 1rem;
   margin: 0 0.5rem;
@@ -516,7 +526,11 @@ body {
 }
 
 .event-form form > label input:focus,
-.event-form form > label textarea:focus {
+.event-form form > label textarea:focus,
+.event-form form .start label input:focus,
+.event-form form .start label textarea:focus,
+.event-form form .end label input:focus,
+.event-form form .end label textarea:focus {
   border: 2px solid #ba2c5c;
   outline: 0;
 }
@@ -524,6 +538,65 @@ body {
 .event-form form .title-event input {
   width: 25rem;
   font-size: 1.1rem;
+}
+
+.event-form form .category {
+  display: inline-flex;
+  align-items: flex-end;
+  margin: 0 1.5rem 1rem;
+}
+
+.event-form form .category span {
+  font-size: 1.2rem;
+  color: #ba2c5c;
+  margin-right: 1rem;
+}
+
+.event-form form .category label {
+  font-size: 0.9rem;
+  margin-right: 1.5rem;
+}
+
+.event-form form .category label input {
+  margin-right: 0.3rem;
+}
+
+.event-form form .start,
+.event-form form .end {
+  display: inline-flex;
+}
+
+.event-form form .start label i,
+.event-form form .end label i {
+  margin-left: -2rem;
+  font-size: 1rem;
+  color: #b5b1b1;
+}
+
+.event-form form .start label i:hover,
+.event-form form .end label i:hover {
+  color: #ba2c5c;
+  cursor: pointer;
+}
+
+.event-form form .start label input,
+.event-form form .end label input {
+  width: 5rem;
+  padding: 0 2rem 0 0.5rem;
+}
+
+.event-form form .start label:last-child,
+.event-form form .end label:last-child {
+  margin-left: 0;
+}
+
+.event-form form .start label:last-child input,
+.event-form form .end label:last-child input {
+  width: 4rem;
+}
+
+.event-form form .end label:first-child input {
+  margin-left: 1.03rem;
 }
 
 .event-form form .place input {
@@ -569,21 +642,38 @@ body {
   border: 2px solid #a2083b;
 }
 
-.event-form form .category {
-  display: inline-flex;
-  align-items: flex-end;
-  margin: 0 1.5rem 1rem;
+.event-form form .select-date {
+  position: absolute;
+  left: calc((100vw - 40rem)/2 + 5.4rem);
+  z-index: 110;
+  background-color: white;
+  border: 1px solid #ba2c5c;
+  box-shadow: 0px 0px 10px #595959;
+  margin-top: -1.1rem;
 }
 
-.event-form form .category span {
-  font-size: 1.2rem;
-  color: #ba2c5c;
-  margin-right: 1rem;
+.event-form form .select-date .nav-date {
+  position: relative;
+  top: 0;
+  padding: 0 0.5rem 0.5rem;
 }
 
-.event-form form .category label {
-  font-size: 0.9rem;
-  margin-right: 1rem;
+.event-form form .select-time {
+  position: absolute;
+  left: calc((100vw - 40rem)/2 + 14.1rem);
+  z-index: 110;
+  background-color: white;
+  border: 1px solid #ba2c5c;
+  box-shadow: 0px 0px 10px #595959;
+  margin-top: -1.1rem;
+  padding: 0.5rem;
+  height: 10rem;
+  overflow-y: scroll;
+}
+
+.event-form form .select-time .time:hover {
+  background-color: #e6e6e6;
+  cursor: pointer;
 }
 
 .none {

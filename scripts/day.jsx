@@ -4,7 +4,7 @@ import React from 'react';
 import requests from './request.js';
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const MS_IN_HOUR = 360000;
+const MS_IN_HOUR = 3600000;
 
 var IventsOfDay = React.createClass({
     // componentWillReceiveProps: function(nextProps) {

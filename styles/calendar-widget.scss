@@ -12,6 +12,7 @@
     padding: 1rem 0;
     text-align: center;
     font-size: 1rem;
+    color: $color-grey;
     .fa {
         width: 1.9rem;
         color: $main-color;
@@ -53,6 +54,9 @@
         }
         td:first-child, td:last-child {
             color: $button-color;
+        }
+        td.curr-month {
+            color: $color-grey;
         }
         td.other-month {
             color: $color-pale-grey;
