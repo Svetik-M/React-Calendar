@@ -53,8 +53,8 @@ var requests = {
 
     getEvents: function(start, end) {
         var body = JSON.stringify({
-            start: new Date(start).toISOString(),
-            end: new Date(end).toISOString()
+            start: new Date(start),
+            end: new Date(end)
         });
 
         var call = this;

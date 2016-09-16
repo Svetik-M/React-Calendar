@@ -1,7 +1,3 @@
-/*a2083b;*/
-
-/*ba2c5c;*/
-
 body {
   font: 14px 'Nunito', sans-serif;
   color: #595959;
@@ -239,13 +235,13 @@ body {
   border: 0.15rem solid white;
 }
 
+.calendar .monthTable td.curr-month {
+  color: #595959;
+}
+
 .calendar .monthTable td:first-child,
 .calendar .monthTable td:last-child {
   color: #a2083b;
-}
-
-.calendar .monthTable td.curr-month {
-  color: #595959;
 }
 
 .calendar .monthTable td.other-month {
@@ -482,7 +478,7 @@ body {
 }
 
 .event-form form {
-  width: 40rem;
+  width: 42rem;
   height: 34.5rem;
   background: white;
   box-shadow: 0px 0px 10px #595959;
@@ -508,7 +504,7 @@ body {
   display: block;
   font-size: 1.2rem;
   color: #ba2c5c;
-  margin: 0 0 1rem 1.5rem;
+  margin: 0 1.5rem 1rem 1.5rem;
 }
 
 .event-form form > label input,
@@ -561,42 +557,104 @@ body {
   margin-right: 0.3rem;
 }
 
-.event-form form .start,
-.event-form form .end {
+.event-form form .date-time {
   display: inline-flex;
+  flex-wrap: nowrap;
+  margin-right: 1rem;
 }
 
-.event-form form .start label i,
-.event-form form .end label i {
+.event-form form .date-time .start,
+.event-form form .date-time .end {
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+
+.event-form form .date-time .start label,
+.event-form form .date-time .end label {
+  margin-right: 0;
+}
+
+.event-form form .date-time .start label i,
+.event-form form .date-time .end label i {
   margin-left: -2rem;
   font-size: 1rem;
   color: #b5b1b1;
 }
 
-.event-form form .start label i:hover,
-.event-form form .end label i:hover {
+.event-form form .date-time .start label i:hover,
+.event-form form .date-time .end label i:hover {
   color: #ba2c5c;
   cursor: pointer;
 }
 
-.event-form form .start label input,
-.event-form form .end label input {
+.event-form form .date-time .start label input,
+.event-form form .date-time .end label input {
   width: 5rem;
-  padding: 0 2rem 0 0.5rem;
+  padding: 0 1.7rem 0 0.5rem;
 }
 
-.event-form form .start label:last-child,
-.event-form form .end label:last-child {
+.event-form form .date-time .start label:last-child,
+.event-form form .date-time .end label:last-child {
   margin-left: 0;
 }
 
-.event-form form .start label:last-child input,
-.event-form form .end label:last-child input {
+.event-form form .date-time .start label:last-child input,
+.event-form form .date-time .end label:last-child input {
   width: 4rem;
 }
 
-.event-form form .end label:first-child input {
-  margin-left: 1.03rem;
+.event-form form .select-start-date,
+.event-form form .select-end-date {
+  position: absolute;
+  z-index: 110;
+  background-color: white;
+  border: 1px solid #ba2c5c;
+  box-shadow: 0px 0px 10px #595959;
+  margin-top: -1.1rem;
+}
+
+.event-form form .select-start-date .nav-date,
+.event-form form .select-end-date .nav-date {
+  position: relative;
+  top: 0;
+  padding: 0 0.5rem 0.5rem;
+}
+
+.event-form form .select-start-date {
+  left: calc((100vw - 40rem)/2 + 4.4rem);
+}
+
+.event-form form .select-end-date {
+  left: calc((100vw - 40rem)/2 + 24.5rem);
+}
+
+.event-form form .select-start-time,
+.event-form form .select-end-time {
+  position: absolute;
+  z-index: 110;
+  background-color: white;
+  border: 1px solid #ba2c5c;
+  box-shadow: 0px 0px 10px #595959;
+  margin-top: -1.1rem;
+  text-align: right;
+  padding: 0.5rem;
+  padding-right: 1rem;
+  height: 10rem;
+  overflow-y: scroll;
+}
+
+.event-form form .select-start-time .time:hover,
+.event-form form .select-end-time .time:hover {
+  background-color: #e6e6e6;
+  cursor: pointer;
+}
+
+.event-form form .select-start-time {
+  left: calc((100vw - 40rem)/2 + 12.85rem);
+}
+
+.event-form form .select-end-time {
+  left: calc((100vw - 40rem)/2 + 32.95rem);
 }
 
 .event-form form .place input {
@@ -604,14 +662,14 @@ body {
 }
 
 .event-form form .discription textarea {
-  width: calc(35rem - 4px);
+  width: calc(37rem - 4px);
   height: 6rem;
   padding: 0.5rem 1rem;
   margin: 0;
 }
 
 .event-form form .button-block {
-  width: 40rem;
+  width: 100%;
   display: inline-flex;
   justify-content: center;
 }
@@ -642,38 +700,25 @@ body {
   border: 2px solid #a2083b;
 }
 
-.event-form form .select-date {
-  position: absolute;
-  left: calc((100vw - 40rem)/2 + 5.4rem);
-  z-index: 110;
-  background-color: white;
-  border: 1px solid #ba2c5c;
-  box-shadow: 0px 0px 10px #595959;
-  margin-top: -1.1rem;
+.event-form form .error {
+  width: 100%;
+  height: 2.4rem;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
 }
 
-.event-form form .select-date .nav-date {
-  position: relative;
-  top: 0;
-  padding: 0 0.5rem 0.5rem;
+.event-form form .error div {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #fb0109;
+  text-align: center;
+  background-color: rgba(249, 239, 6, 0.49);
+  border-radius: 0.3rem;
 }
 
-.event-form form .select-time {
-  position: absolute;
-  left: calc((100vw - 40rem)/2 + 14.1rem);
-  z-index: 110;
-  background-color: white;
-  border: 1px solid #ba2c5c;
-  box-shadow: 0px 0px 10px #595959;
-  margin-top: -1.1rem;
-  padding: 0.5rem;
-  height: 10rem;
-  overflow-y: scroll;
-}
-
-.event-form form .select-time .time:hover {
-  background-color: #e6e6e6;
-  cursor: pointer;
+.event-form form .error div i {
+  margin-right: 0.5rem;
 }
 
 .none {

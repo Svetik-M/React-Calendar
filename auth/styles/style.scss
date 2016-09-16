@@ -5,6 +5,7 @@ $form-color: rgb(64, 38, 47);
 $color-grey: rgb(89, 89, 89);
 $color-pale-grey: rgb(181, 177, 177);
 $background-color: rgb(230, 230, 230);
+$error-color: rgb(251, 1, 9);
 
 @mixin user-select {
     -webkit-user-select: none;
@@ -112,14 +113,14 @@ body {
         width: 28rem;
         height: 1.5rem;
         margin: 0 1rem;
-        color: rgb(251, 1, 9);
+        color: $error-color;
     }
     .message {
         color: $color-pale-grey;
     }
     .error {
-        border: 2px solid rgb(251, 1, 9);
-        box-shadow: inset 0 0 10px rgb(251, 1, 9);
+        border: 2px solid $error-color;
+        box-shadow: inset 0 0 10px $error-color;
     }
     .button, .button-block {
         width: 28rem;

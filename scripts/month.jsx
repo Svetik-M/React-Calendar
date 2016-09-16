@@ -47,8 +47,9 @@ var Week = React.createClass({
                 return value;
             } else {
                 let arr = value.map(function(item) {
-                    var start = item.start_time.slice(0, -3);
-                    if (new Date(item.start_date).getTime() < (firstDay + index * MS_IN_DAY)) start = '00:00';
+                    var start = new Date(item.start_date).toLocaleString('en-US',
+                                {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
+                    if (new Date(item.start_date).getTime() < (firstDay + index * MS_IN_DAY)) start = '12:00am';
                     return <Event key={item.id} event={item} start={start} scope={call.props.scope} />;
                 });
 
@@ -92,6 +93,7 @@ var Month = React.createClass({
         var currDay = this.props.currDay,
             events = this.props.events,
             weeks = [];
+
         for (let n = 1; currDay <= this.props.dateLast; currDay = currDay + 7*MS_IN_DAY, n++) {
             let eventsWeek = events.filter(function(value) {
                 return new Date(value.start_date).getTime() >= currDay
@@ -123,8 +125,7 @@ var IventsOfMonth = React.createClass({
             dateLast: '',
             events: [],
             eventId: '',
-            visible: this.props.visEventForm,
-            action: this.props.action
+            visible: this.props.visEventForm
         }
     },
 
@@ -142,7 +143,15 @@ var IventsOfMonth = React.createClass({
     },
 
     getArrOfEvents: function(res) {
-        var arrOfEvents = res;
+        var arrOfEvents = res.map(function(value) {
+            value.start_date = new Date(value.start_date).getTime();
+            value.end_date = new Date(value.start_date).getTime();
+            return value;
+        });
+        arrOfEvents.sort(function(a, b) {
+            //a.start_date < b.start_date ? -1 : a.start_date > b.start_date ? 1 : 0;
+            return a.start_date - b.start_date;
+        });
         this.setState({events: arrOfEvents});
     },
 
@@ -201,7 +210,7 @@ var IventsOfMonth = React.createClass({
                            events={this.state.events} scope={this} />
                 </table>
                 <div onClick={this.hidingForm}>
-                    <CreateEvent action={this.state.action} visible={this.state.visible} scope={this}
+                    <CreateEvent visible={this.state.visible} scope={this}
                                  editableEvent={editableEvent} />
                 </div>
             </div>
@@ -220,7 +229,7 @@ function getEventsOfMonth(props) {
         DOW_first = dateFirst.getDay(),
         currDay = dateFirst.getTime() - DOW_first * MS_IN_DAY,
         timeZone = new Date(props.day).getTimezoneOffset()*60*60*100,
-        start = currDay - timeZone,
+        start = currDay,
         end = dateLast.getTime() + (6 - DOW_last) * MS_IN_DAY;
 
     requests.getEvents.call(this, start, end);
@@ -232,11 +241,13 @@ function getEventsOfMonth(props) {
 
 function getEventsSortByDays(eventsArr) {
     var arrOfEvents = Array.from({length:7}),
-        date = this.props.currDay;
+        date = this.props.currDay,
+        optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
+
     for (let i = 0; i < 7; i++) {
         let arr = eventsArr.filter(function(value) {
-            let start = new Date(value.start_date).getTime(),
-                end = new Date(value.end_date).getTime(),
+            let start = new Date(new Date(value.start_date).toLocaleString('en-US', optionsDate)).getTime(),
+                end = new Date(new Date(value.end_date).toLocaleString('en-US', optionsDate)).getTime(),
                 day = new Date(date + i * MS_IN_DAY).getTime();
             return start === day ||
                    end === day ||

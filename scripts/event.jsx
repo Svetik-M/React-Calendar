@@ -20,7 +20,20 @@ var Event = React.createClass({
     },
 
     render: function() {
-        var ev = this.props.event;
+        var ev = this.props.event,
+            optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'},
+            optionsTime = {hour: '2-digit', minute: '2-digit'},
+            optionsDateTime = Object.assign({}, optionsDate, optionsTime),
+            date;
+        if (new Date(ev.start_date).toLocaleString('en-US', optionsDate)
+        === new Date(ev.end_date).toLocaleString('en-US', optionsDate)) {
+            date = new Date(ev.start_date).toLocaleString('en-US', optionsDateTime) + ' - '
+                + new Date(ev.end_date).toLocaleString('en-US', optionsTime);
+        } else {
+            date = new Date(ev.start_date).toLocaleString('en-US', optionsDateTime) + ' - '
+                + new Date(ev.end_date).toLocaleString('en-US', optionsDateTime)
+        }
+
         return (
             <div>
                 <div id={ev.id} className={'category ' + ev.category} onClick={this.isVisible}>
@@ -31,8 +44,7 @@ var Event = React.createClass({
                     <div>
                         <p>{ev.title}</p>
                         <p>{'Category: ' + ev.category}</p>
-                        <p>{new Date(ev.start_date).toLocaleDateString() + ' ' + ev.start_time.slice(0, -3) + ' - '
-                            + new Date(ev.end_date).toLocaleDateString() + ' ' + ev.end_time.slice(0, -3)}</p>
+                        <p>{date}</p>
                         <p>{ev.place !== '' ? 'Place: ' + ev.place : ''}</p>
                         <p>{ev.discription !== '' ? 'Discription: ' + ev.discription : ''}</p>
                     </div>

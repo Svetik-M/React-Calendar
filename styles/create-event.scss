@@ -1,3 +1,13 @@
+@mixin display-select {
+    position: absolute;
+    z-index: 110;
+    background-color: white;
+    border: 1px solid $main-color;
+    box-shadow: 0px 0px 10px $color-grey;
+    margin-top: -1.1rem;
+}
+
+
 .event-form {
     position: fixed;
     top: 0;
@@ -9,7 +19,7 @@
     z-index: 100;
     background-color: rgba(64, 38, 47, 0.5);
     form {
-        width: 40rem;
+        width: 42rem;
         height: 34.5rem;
         background: white;
         box-shadow: 0px 0px 10px $color-grey;
@@ -28,7 +38,7 @@
             display: block;
             font-size: 1.2rem;
             color: $main-color;
-            margin: 0 0 1rem 1.5rem;
+            margin: 0 1.5rem 1rem 1.5rem;
             input, textarea {
                 height: 1.8rem;
                 padding: 0 1rem;
@@ -63,45 +73,80 @@
                 }
             }
         }
-        .start, .end {
+        .date-time {
             display: inline-flex;
-            label {
-                i {
-                    margin-left: -2rem;
-                    font-size: 1rem;
-                    color: $color-pale-grey;
+            flex-wrap: nowrap;
+            margin-right: 1rem;
+            .start, .end {
+                display: inline-flex;
+                flex-wrap: nowrap;
+                label {
+                    margin-right: 0;
+                    i {
+                        margin-left: -2rem;
+                        font-size: 1rem;
+                        color: $color-pale-grey;
+                    }
+                    i:hover {
+                        color: $main-color;
+                        cursor: pointer;
+                    }
+                    input {
+                        width: 5rem;
+                        padding: 0 1.7rem 0 0.5rem;
+                    }
                 }
-                i:hover {
-                    color: $main-color;
-                    cursor: pointer;
-                }
-                input {
-                    width: 5rem;
-                    padding: 0 2rem 0 0.5rem;
+                label:last-child {
+                    margin-left: 0;
+                    input {
+                        width: 4rem;
+                    }
                 }
             }
-            label:last-child {
-                margin-left: 0;
-                input {
-                    width: 4rem;
-                }
-            }
-
         }
-        .end label:first-child input {
-            margin-left: 1.03rem;
+        .select-start-date, .select-end-date {
+            @include display-select;
+            .nav-date {
+                position: relative;
+                top: 0;
+                padding: 0 0.5rem 0.5rem;
+            }
+        }
+        .select-start-date{
+            left: calc((100vw - 40rem)/2 + 4.4rem);
+        }
+        .select-end-date {
+            left: calc((100vw - 40rem)/2 + 24.5rem);
+        }
+        .select-start-time, .select-end-time {
+            @include display-select;
+            text-align: right;
+            padding: 0.5rem;
+            padding-right: 1rem;
+            height: 10rem;
+            overflow-y: scroll;
+            .time:hover {
+                background-color: $background-color;
+                cursor: pointer;
+            }
+        }
+        .select-start-time {
+            left: calc((100vw - 40rem)/2 + 12.85rem);
+        }
+        .select-end-time {
+            left: calc((100vw - 40rem)/2 + 32.95rem);
         }
         .place input {
             width: 15rem;
         }
         .discription textarea {
-            width: calc(35rem - 4px);
+            width: calc(37rem - 4px);
             height: 6rem;
             padding: 0.5rem 1rem;
             margin: 0;
         }
         .button-block {
-            width: 40rem;
+            width: 100%;
             display: inline-flex;
             justify-content: center;
             .button {
@@ -126,36 +171,23 @@
                 border: 2px solid $button-color;
             }
         }
-        .select-date {
-            position: absolute;
-            left: calc((100vw - 40rem)/2 + 5.4rem);
-            z-index: 110;
-            background-color: white;
-            border: 1px solid $main-color;
-            box-shadow: 0px 0px 10px $color-grey;
-            margin-top: -1.1rem;
-            .nav-date {
-                position: relative;
-                top: 0;
-                padding: 0 0.5rem 0.5rem;
+        .error {
+            width: 100%;
+            height: 2.4rem;
+            margin: 1rem 0;
+            display: flex;
+            justify-content: center;
+            div {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                color: $error-color;
+                text-align: center;
+                background-color: rgba(249, 239, 6, 0.49);
+                border-radius: 0.3rem;
+                i {
+                    margin-right: 0.5rem;
+                }
             }
-        }
-        .select-time {
-            position: absolute;
-            left: calc((100vw - 40rem)/2 + 14.1rem);
-            z-index: 110;
-            background-color: white;
-            border: 1px solid $main-color;
-            box-shadow: 0px 0px 10px $color-grey;
-            margin-top: -1.1rem;
-            padding: 0.5rem;
-            height: 10rem;
-            overflow-y: scroll;
-            .time:hover {
-                background-color: $background-color;
-                cursor: pointer;
-            }
-
         }
     }
 }

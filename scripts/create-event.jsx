@@ -1,13 +1,19 @@
 'use strict'
 
 import React from 'react';
+import ReactDOM from 'react-dom';
+
 import requests from './request.js';
+import validation from './validation.js';
 import {CalendarWidget} from './calendar-widget.jsx';
 
-var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+
 const MS_IN_HOUR = 3600000,
       MS_IN_MIN = 60000;
-var timeZone = date.getTimezoneOffset()*MS_IN_MIN
+var date = new Date(),
+    timeZone = date.getTimezoneOffset()*MS_IN_MIN,
+    optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
+
 
 var SelectTime = React.createClass({
     render: function() {
@@ -21,7 +27,7 @@ var SelectTime = React.createClass({
             else if (a < 12) timeStr = a + ':' + minutes + 'am';
             else if (a === 12) timeStr = '12:' + minutes + 'pm';
             else if (a > 12) timeStr = a-12 + ':' + minutes + 'pm';
-            return <div key={i} className='time' data-time={i * MS_IN_HOUR/2 + timeZone}>{timeStr}</div>
+            return <div key={i} className='time' data-time={i * MS_IN_HOUR/2}>{timeStr}</div>
         });
         return (
             <div>
@@ -34,47 +40,19 @@ var SelectTime = React.createClass({
 
 var CreateEvent = React.createClass({
     getInitialState: function() {
-        var ev = this.props.editableEvent;
-        return {
-            visible: this.props.visible,
-            id: ev ? ev.id : undefined,
-            eventData: {
-                title: ev ? ev.title : '',
-                start_date: ev ? new Date(new Date(ev.start_date).getTime() -
-                                          timeZone).toLocaleString('en-US').split(',')[0]
-                               : date.toLocaleString('en-US').slice(0, 10),
-                start_time: ev ? ev.start_time.slice(0, -3) : timeZone,
-                end_date: ev ? new Date(new Date(ev.end_date).getTime() -
-                                          timeZone).toLocaleString('en-US').split(',')[0]
-                               : date.toLocaleString('en-US').split(',')[0],
-                end_time: ev ? ev.end_time.slice(0, -3) : timeZone,
-                place: ev ? ev.place : '',
-                category: ev ? ev.category : '',
-                discription: ev ? ev.discription : ''
-            }
-        };
+        var state = setState(this.props);
+        return state;
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var ev =  nextProps.editableEvent;
-        this.setState({
-            visible: nextProps.visible,
-            id: ev ? ev.id : undefined,
-            eventData: {
-                title: ev ? ev.title : '',
-                start_date: ev ? new Date(new Date(ev.start_date).getTime() -
-                                          timeZone).toLocaleString('en-US').split(',')[0]
-                               : date.toLocaleString('en-US').split(',')[0],
-                start_time: ev ? ev.start_time.slice(0, -3) : timeZone,
-                end_date: ev ? new Date(new Date(ev.end_date).getTime() -
-                                          timeZone).toLocaleString('en-US').split(',')[0]
-                               : date.toLocaleString('en-US').split(',')[0],
-                end_time: ev ? ev.end_time.slice(0, -3) : timeZone,
-                place: ev ? ev.place : '',
-                category: ev ? ev.category : '',
-                discription: ev ? ev.discription : ''
-            }
-        });
+        var state;
+        if (nextProps.visible === true) {
+            state = setState(nextProps);
+        } else {
+            state = this.state;
+            state.visible = false;
+        }
+        this.setState(state);
     },
 
     handleChange: function(e) {
@@ -87,17 +65,31 @@ var CreateEvent = React.createClass({
 
     handleSubmit: function(e) {
         e.preventDefault();
-        var form = eventData;
-        requests.sendEventForm.call(this.props.scope, form, this.state.id);
+        var valid = validation.validForm.call(this);
+        if (valid === false) {
+            let state = this.state;
+            state.visible = true;
+            this.setState(state);
+        } else {
+            let eventData = this.state.eventData,
+                form = Object.assign({}, eventData);
+
+            form.start_date = new Date(new Date(eventData.start_date).getTime() + (+this.state.start_time));
+            form.end_date = new Date(new Date(eventData.end_date).getTime() + (+this.state.end_time));
+
+            requests.sendEventForm.call(this.props.scope, form, this.state.id);
+        }
     },
 
     changeVisible: function(e) {
         var target = e.target,
             state = Object.assign({}, this.state);
+
         state.visCalendarStart = false;
         state.visTimeStart = false;
         state.visCalendarEnd = false;
         state.visTimeEnd = false;
+
         if (target.previousElementSibling.name === 'start_date') {
             state.visCalendarStart = (!this.state.visCalendarStart);
         } else if (target.previousElementSibling.name === 'start_time') {
@@ -107,6 +99,7 @@ var CreateEvent = React.createClass({
         } else if (target.previousElementSibling.name === 'end_time') {
             state.visTimeEnd = (!this.state.visTimeEnd);
         }
+
         this.setState(state);
     },
 
@@ -126,8 +119,13 @@ var CreateEvent = React.createClass({
         selectTime.call(this, e.target, 'end_time', 'visTimeEnd')
     },
 
+    componentDidMount: function() {
+        ReactDOM.findDOMNode(this.refs.title).focus();
+    },
+
     render: function() {
-        var eventData = this.state.eventData
+        var eventData = this.state.eventData;
+
         return (
             <div className={'event-form' + (this.state.visible ? '' : ' none')}>
                 <form id='event-form' onSubmit={this.handleSubmit}>
@@ -152,52 +150,54 @@ var CreateEvent = React.createClass({
                         </label>
                     </div>
 
-                    <div className='start'>
-                        <label>
-                            Start*
-                            <input type='text' name='start_date' ref='start_date'
-                                value={eventData.start_date} readOnly />
-                            <i className='fa fa-chevron-down' aria-hidden='true'
-                                onClick={this.changeVisible} />
-                        </label>
-                        <label>
-                            <input type='text' name='start_time' ref='start_time'
-                                value={eventData ? viewTime(eventData.start_time) : ''} readOnly />
-                            <i className='fa fa-chevron-down' aria-hidden='true'
-                                onClick={this.changeVisible} />
-                        </label>
+                    <div className='date-time'>
+                        <div className='start'>
+                            <label>
+                                Start*
+                                <input type='text' name='start_date' ref='start_date'
+                                    value={eventData.start_date} readOnly />
+                                <i className='fa fa-chevron-down' aria-hidden='true'
+                                    onClick={this.changeVisible} />
+                            </label>
+                            <label>
+                                <input type='text' name='start_time' ref='start_time'
+                                    value={eventData ? viewTime(this.state.start_time) : ''} readOnly />
+                                <i className='fa fa-chevron-down' aria-hidden='true'
+                                    onClick={this.changeVisible} />
+                            </label>
+                        </div>
+
+                        <div className='end'>
+                            <label>
+                                End*
+                                <input type='text' name='end_date' ref='end_date'
+                                    value={eventData.end_date} readOnly />
+                                <i className='fa fa-chevron-down' aria-hidden='true'
+                                    onClick={this.changeVisible} />
+                            </label>
+                            <label>
+                                <input type='text' name='end_time' ref='end_time'
+                                    value={eventData ? viewTime(this.state.end_time) : ''} readOnly />
+                                <i className='fa fa-chevron-down' aria-hidden='true'
+                                    onClick={this.changeVisible} />
+                            </label>
+                        </div>
                     </div>
 
-                    <div className={'select-date' + (this.state.visCalendarStart ? '' : ' none')}
+                    <div className={'select-start-date' + (this.state.visCalendarStart ? '' : ' none')}
                         onClick={this.selectStartDate}>
                         <CalendarWidget day={new Date(eventData.start_date)} period='day' />
                     </div>
-                    <div className={'select-time' + (this.state.visTimeStart ? '' : ' none')}
+                    <div className={'select-start-time' + (this.state.visTimeStart ? '' : ' none')}
                         onClick={this.selectStartTime}>
                         <SelectTime />
                     </div>
 
-                    <div className='end'>
-                        <label>
-                            End*
-                            <input type='text' name='end_date' ref='end_date'
-                                value={eventData.end_date} readOnly />
-                            <i className='fa fa-chevron-down' aria-hidden='true'
-                                onClick={this.changeVisible} />
-                        </label>
-                        <label>
-                            <input type='text' name='end_time' ref='end_time'
-                                value={eventData ? viewTime(eventData.end_time) : ''} readOnly />
-                            <i className='fa fa-chevron-down' aria-hidden='true'
-                                onClick={this.changeVisible} />
-                        </label>
-                    </div>
-
-                    <div className={'select-date' + (this.state.visCalendarEnd ? '' : ' none')}
+                    <div className={'select-end-date' + (this.state.visCalendarEnd ? '' : ' none')}
                         onClick={this.selectEndDate}>
                         <CalendarWidget day={new Date(eventData.start_date)} period='day' />
                     </div>
-                    <div className={'select-time' + (this.state.visTimeEnd ? '' : ' none')}
+                    <div className={'select-end-time' + (this.state.visTimeEnd ? '' : ' none')}
                         onClick={this.selectEndTime}>
                         <SelectTime />
                     </div>
@@ -215,6 +215,14 @@ var CreateEvent = React.createClass({
                             value={eventData.discription}
                             onChange={this.handleChange}></textarea>
                     </label>
+
+                    <div className='error'>
+                        <div className={'err' + (this.state.invalid ? '' : ' none')}>
+                            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
+                            {this.state.invalid}
+                        </div>
+                    </div>
+
                     <div className='button-block'>
                         <button type='submit' className='button'>Save</button>
                         <button type='reset' className='button'>Cancel</button>
@@ -225,11 +233,35 @@ var CreateEvent = React.createClass({
     }
 });
 
+function setState(props) {
+    var ev = props.editableEvent,
+        startDate = ev ? new Date(ev.start_date).toLocaleString('en-US', optionsDate)
+                       : date.toLocaleString('en-US', optionsDate),
+        endDate = ev ? new Date(ev.end_date).toLocaleString('en-US', optionsDate)
+                       : date.toLocaleString('en-US', optionsDate);
+
+    return {
+        visible: props.visible,
+        id: ev ? ev.id : undefined,
+        eventData: {
+            title: ev ? ev.title : '',
+            start_date: startDate,
+            end_date: endDate,
+            place: ev ? ev.place : '',
+            category: ev ? ev.category : '',
+            discription: ev ? ev.discription : ''
+        },
+        start_time: ev ? ev.start_date - new Date(startDate).getTime() : '',
+        end_time: ev ? ev.end_date - new Date(endDate).getTime() : '',
+        invalid: ''
+    };
+}
+
 function selectDate(target, changeState, visState) {
     if (target.className.includes('curr-month')
         || target.className.includes('other-month')) {
         let state = this.state;
-        state.eventData[changeState] = new Date(+target.id).toLocaleString('en-US').split(',')[0];
+        state.eventData[changeState] = new Date(+target.id).toLocaleString('en-US', optionsDate);
         state[visState] = false;
         this.setState(state);
     };
@@ -238,7 +270,7 @@ function selectDate(target, changeState, visState) {
 function selectTime(target, changeState, visState) {
     if (target.className === 'time') {
         let state = this.state;
-        state.eventData[changeState] = target.getAttribute('data-time');
+        state[changeState] = target.getAttribute('data-time');
         state[visState] = false;
         this.setState(state);
     };
@@ -246,7 +278,7 @@ function selectTime(target, changeState, visState) {
 
 function viewTime(time) {
     var options = {hour: '2-digit', minute: '2-digit'};
-    return new Date(+time).toLocaleTimeString('en-US', options).toLowerCase();
+    return new Date(+time + timeZone).toLocaleTimeString('en-US', options).toLowerCase().replace(' ', '');
 }
 
 export {CreateEvent};

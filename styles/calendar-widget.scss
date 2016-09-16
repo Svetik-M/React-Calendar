@@ -52,11 +52,11 @@
         td {
             border: 0.15rem solid white;
         }
-        td:first-child, td:last-child {
-            color: $button-color;
-        }
         td.curr-month {
             color: $color-grey;
+        }
+        td:first-child, td:last-child {
+            color: $button-color;
         }
         td.other-month {
             color: $color-pale-grey;

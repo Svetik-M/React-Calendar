@@ -133,9 +133,10 @@ app.get('/logout', function(req, res){
 });
 
 app.post('/add_event', isLogin.ensureLoggedIn('/login'), function(req, res) {
-    db.one('INSERT INTO events(user_id, title, start_date, start_time, end_date, end_time, place, category, discription) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) returning id',
-    [req.user.id, req.body.title, req.body.start_date, req.body.start_time, req.body.end_date, req.body.end_time,
-        req.body.place, req.body.category, req.body.discription])
+    db.one('INSERT INTO events(user_id, title, start_date, end_date, place, category, discription)'
+            + ' VALUES($1, $2, $3, $4, $5, $6, $7) returning id',
+            [req.user.id, req.body.title, req.body.start_date, req.body.end_date, req.body.place,
+            req.body.category, req.body.discription])
         .then(data => res.send('Perfect'))
         .catch(error => {
             console.log(error);
@@ -144,9 +145,9 @@ app.post('/add_event', isLogin.ensureLoggedIn('/login'), function(req, res) {
 });
 
 app.post('/edit_event', isLogin.ensureLoggedIn('/login'), function(req, res) {
-    db.none('UPDATE events SET  title=$3, start_date=$4, start_time=$5, end_date=$6, end_time=$7, place=$8, category=$9, discription=$10 WHERE id = $1 and user_id = $2',
-    [req.body.id, req.user.id, req.body.title, req.body.start_date, req.body.start_time, req.body.end_date,
-        req.body.end_time,req.body.place, req.body.category, req.body.discription])
+    db.none('UPDATE events SET  title=$3, start_date=$4, end_date=$5, place=$6, category=$7, discription=$8'
+            + 'WHERE id = $1 and user_id = $2', [req.body.id, req.user.id, req.body.title, req.body.start_date,
+            req.body.end_date, req.body.place, req.body.category, req.body.discription])
         .then(function() {
             res.send('Perfect');
         })
