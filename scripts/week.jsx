@@ -20,7 +20,7 @@ var IventsOfWeek = React.createClass({
                 month = parseInt(new Date(firstDay + i * MS_IN_DAY).getMonth())+1,
                 year = new Date(firstDay + i * MS_IN_DAY).getFullYear();
 
-            return (<td key={i} className='event'>
+            return (<td key={i} className='events-group'>
                         {DAYS_OF_WEEK[i] +' '+ day +'/'+ month}
                     </td>);
         });
@@ -40,7 +40,7 @@ var IventsOfWeek = React.createClass({
             eventsDOW = eventsDOW.map(function(v,i) {
                 var bool = (firstDay + i * MS_IN_DAY === today),
                     date = firstDay + i * MS_IN_DAY;
-                return (<td key={i} className={bool ? 'event curr-day' : 'event'}>
+                return (<td key={i} className={bool ? 'events-group curr-day' : 'events-group'}>
                            <div key={i+.0} className={'half ' + (date + ' ' + (time + i * MS_IN_HOUR))}>
                            </div>
                            <div key={i+.1} className={'half ' + (date + ' ' + (time + i * MS_IN_HOUR + MS_IN_HOUR/2))}>
@@ -65,7 +65,7 @@ var IventsOfWeek = React.createClass({
                         </tr>
                     </tbody>
                 </table>
-                <table className='event-list'>
+                <table className='events-list week'>
                     <thead>
                         <tr>
                             <td className='time'></td>

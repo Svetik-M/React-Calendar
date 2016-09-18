@@ -13,13 +13,12 @@ import '../styles/style.scss';
 
 var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
-//window['EVENT'];
 
 var AppView = React.createClass({
     getInitialState: function() {
         return {
             day: date,
-            period: 'month',
+            period: 'day',
             visEventForm: false
         };
     },
@@ -98,9 +97,6 @@ var AppView = React.createClass({
                         <EventsTable day={this.state.day} period={this.state.period}
                             visEventForm={this.state.visEventForm} />
                     </div>
-                    {/*}<div onClick={this.editEvent}>
-                        <Event event={this.state.eventData} />
-                    </div>*/}
                 </div>
             </div>
         );

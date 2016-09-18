@@ -159,7 +159,8 @@ app.post('/edit_event', isLogin.ensureLoggedIn('/login'), function(req, res) {
 
 app.post('/get_events', isLogin.ensureLoggedIn('/login'), function(req, res) {
     db.query('SELECT * FROM events WHERE user_id = $1 AND start_date BETWEEN $2 AND $3' +
-             'OR user_id = $1 AND start_date NOT BETWEEN $2 AND $3 AND end_date BETWEEN $2 AND $3',
+             'OR user_id = $1 AND start_date NOT BETWEEN $2 AND $3 AND end_date > $2 AND end_date <= $3' +
+             'OR user_id = $1 AND start_date < $2 AND end_date > $3',
      [req.user.id, req.body.start, req.body.end])
     .then(date => res.send(date))
     .catch(error => {

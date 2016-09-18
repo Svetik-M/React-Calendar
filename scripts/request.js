@@ -3,7 +3,7 @@
 var requests = {
 
     sendEventForm: function(form, id) {
-            console.log(id);
+
             if (id === undefined) {
             let body = JSON.stringify(form),
                 call = this;

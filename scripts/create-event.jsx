@@ -119,10 +119,6 @@ var CreateEvent = React.createClass({
         selectTime.call(this, e.target, 'end_time', 'visTimeEnd')
     },
 
-    componentDidMount: function() {
-        ReactDOM.findDOMNode(this.refs.title).focus();
-    },
-
     render: function() {
         var eventData = this.state.eventData;
 
@@ -201,6 +197,14 @@ var CreateEvent = React.createClass({
                         onClick={this.selectEndTime}>
                         <SelectTime />
                     </div>
+
+                    {/*<div>
+                        <label className='repeat'>
+                            Repeat
+                            <input name='repeat' ref='repeat' type='checkbox' value='repeat'
+                                onChange={this.handleChange}></input>
+                        </label>
+                    </div>*/}
 
                     <label className='place'>
                         Place
