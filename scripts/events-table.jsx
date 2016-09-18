@@ -34,7 +34,11 @@ var EventsTable = React.createClass({
     },
 
     getArrOfEvents: function(res) {
-        getEvents.sortEvents.call(this, res);
+        var arrSort = getEvents.sortEvents(res),
+            state = this.state;
+
+        state.events = arrSort;
+        this.setState(state);
     },
 
     updateEvents: function() {

@@ -18,11 +18,13 @@ var IventsOfDay = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        getEvents.sortDayEventsByHour.call(this, nextProps.events);
+        var arrOfEvents = getEvents.sortDayEventsByHour(nextProps.events, nextProps.day.getTime());
+        this.setState({events: arrOfEvents});
     },
 
     componentWillMount: function() {
-        getEvents.sortDayEventsByHour.call(this, this.props.events);
+        var arrOfEvents = getEvents.sortDayEventsByHour(this.props.events, this.props.day.getTime());
+        this.setState({events: arrOfEvents});
     },
 
     render: function() {
@@ -34,42 +36,31 @@ var IventsOfDay = React.createClass({
                          </td>),
             events = this.state.events,
             rows = Array.from({length:25}),
-            time = 0,
-            timeStr,
-            call = this;
+            timeStr;
 
-        events = events.map(function(value, index){
+        events = events.map(function(value){
             if (value === undefined) {
                 return value;
             } else {
                 let arr = value.map(function(item) {
                     var startDate = item.start_date,
                         endDate = item.end_date,
-                        start, height, left;
+                        start;
 
                     if (startDate < midnight) {
                         start = '12:00am';
-                        if (index !== 0) {
-                            height = (endDate - midnight) / MS_IN_HOUR * 2 ;
-                        }
                     } else {
                         start = new Date(startDate).toLocaleString('en-US',
                                 {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
-
-                        if (index !== 0 && endDate > midnight + MS_IN_DAY) {
-                            height = (midnight + MS_IN_DAY - startDate) / MS_IN_HOUR * 2;
-                        } else if (index !== 0) {
-                            height = (endDate - startDate) / MS_IN_HOUR * 2;
-                        }
                     }
 
-                    return <Event key={item.id} events={call.props.events} currEvent={item} start={start}
-                        scope={call.props.scope} height={height} midnight={midnight} />;
-                });
+                    return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
+                        scope={this.props.scope} midnight={midnight} />;
+                }, this);
 
                 return arr;
             }
-        });
+        }, this);
 
         rows = rows.map(function(v, i) {
             if (i === 0) {
@@ -91,12 +82,12 @@ var IventsOfDay = React.createClass({
                 <tr key={i}>
                     <td className='time'>{timeStr}</td>
                     <td className='events-group'>
-                        <div className={'half ' + (time + i * MS_IN_HOUR)}>
+                        <div className='half' id={midnight + i * MS_IN_HOUR}>
                             <div>
                                 {events[2 * i - 1]}
                             </div>
                         </div>
-                        <div className={'half ' + (time + i * MS_IN_HOUR + MS_IN_HOUR/2)}>
+                        <div className='half' id={midnight + i * MS_IN_HOUR + MS_IN_HOUR/2}>
                             <div>
                                 {events[2 * i]}
                             </div>

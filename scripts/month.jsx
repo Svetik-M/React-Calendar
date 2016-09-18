@@ -28,11 +28,13 @@ var Week = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        getEvents.sortMonthEventsByDays.call(this, nextProps.events);
+        var arrOfEvents = getEvents.sortWeekEventsByDays(nextProps.events, nextProps.currDay);
+        this.setState({events: arrOfEvents});
     },
 
     componentWillMount: function() {
-        getEvents.sortMonthEventsByDays.call(this, this.props.events);
+        var arrOfEvents = getEvents.sortWeekEventsByDays(this.props.events, this.props.currDay);
+        this.setState({events: arrOfEvents});
     },
 
     render: function() {

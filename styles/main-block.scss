@@ -122,7 +122,7 @@
             flex-wrap: nowrap;
         }
         .event {
-            //width: 10rem;
+            flex-shrink: 1;
             position: relative;
             z-index: 10;
             border: 1px solid $color-grey;
@@ -153,6 +153,7 @@
     }
     p:first-child, p:nth-child(3) {
         font-weight: bold;
+        font-size: 0.8rem;
     }
     p:first-child {
         font-size: 1rem;

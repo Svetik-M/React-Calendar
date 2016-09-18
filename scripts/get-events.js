@@ -2,25 +2,33 @@
 
 import requests from './request.js';
 
+
 const MS_IN_DAY = 86400000,
       MS_IN_HOUR = 3600000,
       MS_IN_MIN = 6000;
+
 
 var getEvents = {
 
     getThisEvents: function(nextProps) {
         var props = nextProps || this.props,
             comparePeriod = this.props.period === props.period;
+
         if (props.period === 'day') {
             if (!comparePeriod || !nextProps || this.props.day.getTime() !== nextProps.day.getTime()) {
                 getEvents.getEventsOfDay.call(this, props);
             }
+
         } else if (props.period === 'week') {
             let firstDayThisProps = this.props.day.getTime() - this.props.day.getDay() * MS_IN_DAY,
-                firstDayNextProps = nextProps ? (nextProps.day.getTime() - nextProps.day.getDay() * MS_IN_DAY) : undefined;
-            if (!comparePeriod || !nextProps || firstDayThisProps !== firstDayNextProps) {
-                getEvents.getEventsOfWeek.call(this, props, firstDayNextProps);
+                firstDayNextProps = nextProps ? (nextProps.day.getTime() - nextProps.day.getDay() * MS_IN_DAY)
+                                              : undefined,
+                firstDay = nextProps ? firstDayNextProps : firstDayThisProps;
+
+            if (!comparePeriod || !nextProps && firstDayThisProps !== firstDayNextProps) {
+                getEvents.getEventsOfWeek.call(this, props, firstDay);
             }
+
         } else if (props.period === 'month') {
             if (!comparePeriod || !nextProps || this.props.day.getMonth() !== nextProps.day.getMonth()) {
                 getEvents.getEventsOfMonth.call(this, props);
@@ -32,14 +40,14 @@ var getEvents = {
     getEventsOfDay: function(props) {
         var start = props.day.getTime(),
             end = start + MS_IN_DAY - MS_IN_MIN;
+
         requests.getEvents.call(this, start, end);
     },
 
 
     getEventsOfWeek: function(props, dateFirst) {
-        var dateLast = dateFirst + 7 * MS_IN_DAY - MS_IN_MIN,
-            start = new Date(dateFirst),
-            end = new Date(dateLast);
+        var start = dateFirst,
+            end = dateFirst + 7 * MS_IN_DAY - MS_IN_MIN;
 
         requests.getEvents.call(this, start, end);
     },
@@ -72,30 +80,35 @@ var getEvents = {
             value.end_date = new Date(value.end_date).getTime();
             return value;
         });
+
         arrOfEvents.sort(function(a, b) {
             return a.start_date - b.start_date;
         });
-        this.setState({events: arrOfEvents});
+
+        return arrOfEvents;
     },
 
 
-    sortDayEventsByHour: function(eventsArr) {
-        var arrOfEvents = Array.from({length: 49}),
-            midnight = this.props.day.getTime();
+    sortDayEventsByHour: function(eventsArr, midnight) {
+        var arrOfEvents = Array.from({length: 49});
+
         for (let i = 0; i < 49; i ++) {
             let arr
+
             if (i === 0) {
                 arr = eventsArr.filter(function(value) {
                     let start = new Date(value.start_date).getTime(),
                         end = new Date(value.end_date).getTime();
                     return start <= midnight && end >= midnight + MS_IN_DAY;
                 });
+
             } else if (i === 1) {
                 arr = eventsArr.filter(function(value) {
                     let start = new Date(value.start_date).getTime(),
                         end = new Date(value.end_date).getTime();
                     return start <= midnight && end < midnight + MS_IN_DAY;
                 });
+
             } else {
                 arr = eventsArr.filter(function(value) {
                     let start = new Date(value.start_date).getTime(),
@@ -103,29 +116,32 @@ var getEvents = {
                     return start === currTime;
                 });
             }
+
             arrOfEvents[i] = arr;
         };
-        this.setState({events: arrOfEvents});
+
+        return arrOfEvents;
     },
 
 
-    sortMonthEventsByDays: function(eventsArr) {
+    sortWeekEventsByDays: function(eventsArr, date) {
         var arrOfEvents = Array.from({length: 7}),
-            date = this.props.currDay,
             optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
 
         for (let i = 0; i < 7; i++) {
             let arr = eventsArr.filter(function(value) {
-                let start = new Date(new Date(value.start_date).toLocaleString('en-US', optionsDate)).getTime(),
-                    end = new Date(new Date(value.end_date).toLocaleString('en-US', optionsDate)).getTime(),
-                    day = new Date(date + i * MS_IN_DAY).getTime();
-                return start === day ||
-                       end === day ||
+                let start = value.start_date,
+                    end = value.end_date,
+                    day = date + i * MS_IN_DAY;
+                return start >= day && start < day + MS_IN_DAY ||
+                       end > day && end <= day + MS_IN_DAY ||
                        start < day && end > day;
             });
+
             arrOfEvents[i] = arr;
         };
-        this.setState({events: arrOfEvents});
+
+        return arrOfEvents;
     }
 }
 

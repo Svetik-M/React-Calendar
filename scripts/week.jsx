@@ -1,6 +1,9 @@
 'use strict'
 
 import React from 'react';
+import {Event} from './event.jsx';
+import getEvents from './get-events.js';
+
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MS_IN_DAY = 86400000;
@@ -8,16 +11,45 @@ const MS_IN_HOUR = 3600000;
 
 
 var IventsOfWeek = React.createClass({
+    getInitialState: function() {
+        return {
+            events: Array.from({length: 7})
+        }
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        var firstDay = nextProps.day.getTime() - nextProps.day.getDay() * MS_IN_DAY,
+            arr = getEvents.sortWeekEventsByDays(nextProps.events, firstDay),
+            arrOfEvents = arr.map(function(val, ind) {
+                var midnight = firstDay + ind * MS_IN_DAY;
+                return getEvents.sortDayEventsByHour(val, midnight);
+            });
+        this.setState({events: arrOfEvents});
+    },
+
+    componentWillMount: function() {
+        var firstDay = this.props.day.getTime() - this.props.day.getDay() * MS_IN_DAY,
+            arr = getEvents.sortWeekEventsByDays(this.props.events, firstDay),
+            arrOfEvents = arr.map(function(val, ind) {
+                var midnight = firstDay + ind * MS_IN_DAY;
+                return getEvents.sortDayEventsByHour(val, midnight);
+            });
+        this.setState({events: arrOfEvents});
+    },
+
     render: function() {
         var date = this.props.day,
             DOW_date = date.getDay(),
-            firstDay = date.getTime() - DOW_date*MS_IN_DAY;
-
-        var titleTable = Array.from({length:7});
+            firstDay = date.getTime() - DOW_date*MS_IN_DAY,
+            titleTable = Array.from({length:7}),
+            events = this.state.events,
+            timeRows = Array.from({length:24}),
+            timeStr;
+            //console.log(events);
 
         titleTable = titleTable.map(function(v,i) {
             var day = new Date(firstDay + i * MS_IN_DAY).getDate(),
-                month = parseInt(new Date(firstDay + i * MS_IN_DAY).getMonth())+1,
+                month = parseInt(new Date(firstDay + i * MS_IN_DAY).getMonth()) + 1,
                 year = new Date(firstDay + i * MS_IN_DAY).getFullYear();
 
             return (<td key={i} className='events-group'>
@@ -25,31 +57,92 @@ var IventsOfWeek = React.createClass({
                     </td>);
         });
 
-        var timeRows = Array.from({length:24}),
-            time;
-        timeRows = timeRows.map(function(v,i) {
+        events = events.map(function(value, index){
+            var midnight = firstDay + index * MS_IN_DAY;
+
+            var arrDay = value.map(function(val) {
+                if (val === undefined) {
+                    return val;
+
+                } else {
+                    let arrTime = val.map(function(item) {
+                        var startDate = item.start_date,
+                            endDate = item.end_date,
+                            start;
+
+                        if (startDate < midnight) {
+                            start = '12:00am';
+                        } else {
+                            start = new Date(startDate).toLocaleString('en-US',
+                                    {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
+                        }
+
+                        return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
+                            scope={this.props.scope} midnight={midnight} />;
+                    }, this);
+
+                    return arrTime;
+                }
+            }, this);
+
+            return arrDay;
+
+        }, this);
+
+        timeRows = timeRows.map(function(value, index) {
             var eventsDOW  = Array.from({length:7}),
                 d = new Date(),
                 today = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 
-            if (i === 0) time = '12am';
-            else if (i < 12) time = i + 'am';
-            else if (i === 12) time = '12pm';
-            else if (i > 12) time = i-12 + 'pm';
+            if (index === 1) timeStr = '12am';
+            else if (index < 13) timeStr = (index - 1) + 'am';
+            else if (index === 13) timeStr = '12pm';
+            else if (index > 13) timeStr = (index - 13) + 'pm';
 
-            eventsDOW = eventsDOW.map(function(v,i) {
+
+            eventsDOW = eventsDOW.map(function(v, i) {
                 var bool = (firstDay + i * MS_IN_DAY === today),
                     date = firstDay + i * MS_IN_DAY;
-                return (<td key={i} className={bool ? 'events-group curr-day' : 'events-group'}>
-                           <div key={i+.0} className={'half ' + (date + ' ' + (time + i * MS_IN_HOUR))}>
-                           </div>
-                           <div key={i+.1} className={'half ' + (date + ' ' + (time + i * MS_IN_HOUR + MS_IN_HOUR/2))}>
-                           </div>
-                       </td>)
+
+                if (index === 0) {
+                    return (
+                        <td key={i} className='events-group all-day'>
+                            {events[i][0]}
+                        </td>
+                    );
+                }
+
+                return (
+                    <td key={i} className={bool ? 'events-group curr-day' : 'events-group'}>
+                        <div key={i+.0} className='half'
+                            id={firstDay + i * MS_IN_DAY + index * MS_IN_HOUR}>
+                            <div>
+                                {events[i][2 * index - 1]}
+                            </div>
+                        </div>
+                        <div key={i+.1} className='half'
+                            id={firstDay + i * MS_IN_DAY + i * MS_IN_HOUR + MS_IN_HOUR/2}>
+                            <div>
+                                {events[i][2 * index]}
+                            </div>
+                        </div>
+                    </td>
+                );
             });
+
+            if (index === 0) {
+                return (
+                    <tr key={index}>
+                        <td className='time all-day'>All Day</td>
+                        {eventsDOW}
+                    </tr>
+                );
+            }
+
+
             return (
-                <tr key={i}>
-                    <td className='time'>{time}</td>
+                <tr key={index}>
+                    <td className='time'>{timeStr}</td>
                     {eventsDOW}
                 </tr>
             );

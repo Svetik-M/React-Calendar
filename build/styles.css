@@ -409,6 +409,7 @@ body {
 
 .events-block .week .event,
 .events-block .day .event {
+  flex-shrink: 1;
   position: relative;
   z-index: 10;
   border: 1px solid #595959;
@@ -440,6 +441,7 @@ body {
 .full-event p:first-child,
 .full-event p:nth-child(3) {
   font-weight: bold;
+  font-size: 0.8rem;
 }
 
 .full-event p:first-child {

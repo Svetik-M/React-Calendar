@@ -17,7 +17,10 @@ var Event = React.createClass({
     },
 
     componentWillMount: function() {
-        if (this.props.scope.props.period === 'day') {
+        if (this.props.currEvent.start_date >= this.props.midnight + MS_IN_DAY
+        || this.props.currEvent.end_date <= this.props.midnight) {return}
+
+        if (this.props.scope.props.period === 'day' || this.props.scope.props.period === 'week') {
             if (!(this.props.currEvent.start_date <= this.props.midnight
             && this.props.currEvent.end_date >= this.props.midnight + MS_IN_DAY)) {
                 getElementHeight.call(this, this.props);
@@ -27,7 +30,10 @@ var Event = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        if (nextProps.scope.props.period === 'day') {
+        if (nextProps.currEvent.start_date >= nextProps.midnight + MS_IN_DAY
+        || nextProps.currEvent.end_date <= nextProps.midnight) {return}
+
+        if (nextProps.scope.props.period === 'day' || nextProps.scope.props.period === 'week') {
             if (!(nextProps.currEvent.start_date <= nextProps.midnight
             && nextProps.currEvent.end_date >= nextProps.midnight + MS_IN_DAY)) {
                 getElementHeight.call(this, nextProps);
@@ -154,7 +160,7 @@ function getElementLeftShift(props) {
         if (ev.start_date >= midnight || ev.end_date < midnight + MS_IN_DAY) {
             let coordsStart = getCoords(document.querySelector('.events-group')),
                 coordsEl = getCoords(document.getElementById(elem.id));
-            leftEl = coordsEl.right - coordsStart.left + 4; // по 1px на границы элементов и отступы
+            leftEl = coordsEl.left - coordsStart.left + 5;
         }
     }
 
