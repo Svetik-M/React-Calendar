@@ -33,8 +33,8 @@ var EventsTable = React.createClass({
         getEvents.getThisEvents.call(this);
     },
 
-    getArrOfEvents: function(res) {
-        var arrSort = getEvents.sortEvents(res),
+    getArrOfEvents: function(res, start, end) {
+        var arrSort = getEvents.sortEvents(res, start, end),
             state = this.state;
 
         state.events = arrSort;
@@ -57,11 +57,10 @@ var EventsTable = React.createClass({
         };
     },
 
-    hidingForm: function(e) {
+    clearForm: function(e) {
         var target = e.target;
-        if (target.className === 'button') {
+        if (target.className === 'create button') {
             let state = this.state;
-            state.visible = false;
             state.eventId = '';
             this.setState(state);
         }
@@ -89,7 +88,7 @@ var EventsTable = React.createClass({
         return (
             <div  onClick={this.editEvent}>
                 {body}
-                <div onClick={this.hidingForm}>
+                <div onClick={this.clearForm}>
                     <CreateEvent visible={this.state.visible} scope={this}
                                  editableEvent={editableEvent} />
                 </div>

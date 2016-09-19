@@ -67,7 +67,7 @@ var requests = {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    call.getArrOfEvents(JSON.parse(xhr.responseText));
+                    call.getArrOfEvents(JSON.parse(xhr.responseText), start, end);
                 }
             }
         }

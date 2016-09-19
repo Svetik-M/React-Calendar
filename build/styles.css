@@ -539,7 +539,8 @@ body {
 
 .event-form form > label,
 .event-form form .start label,
-.event-form form .end label {
+.event-form form .end label,
+.event-form form .repeat div {
   display: block;
   font-size: 1.2rem;
   color: #ba2c5c;
@@ -551,8 +552,10 @@ body {
 .event-form form .start label input,
 .event-form form .start label textarea,
 .event-form form .end label input,
-.event-form form .end label textarea {
-  height: 1.8rem;
+.event-form form .end label textarea,
+.event-form form .repeat div input,
+.event-form form .repeat div textarea {
+  height: 1.5rem;
   padding: 0 1rem;
   margin: 0 0.5rem;
   font-size: 0.9rem;
@@ -565,34 +568,41 @@ body {
 .event-form form .start label input:focus,
 .event-form form .start label textarea:focus,
 .event-form form .end label input:focus,
-.event-form form .end label textarea:focus {
+.event-form form .end label textarea:focus,
+.event-form form .repeat div input:focus,
+.event-form form .repeat div textarea:focus {
   border: 2px solid #ba2c5c;
   outline: 0;
 }
 
 .event-form form .title-event input {
+  height: 1.8rem;
   width: 25rem;
   font-size: 1.1rem;
 }
 
-.event-form form .category {
+.event-form form .category,
+.event-form form .repeat {
   display: inline-flex;
-  align-items: flex-end;
+  align-items: baseline;
   margin: 0 1.5rem 1rem;
 }
 
-.event-form form .category span {
+.event-form form .category span,
+.event-form form .repeat span {
   font-size: 1.2rem;
   color: #ba2c5c;
   margin-right: 1rem;
 }
 
-.event-form form .category label {
+.event-form form .category label,
+.event-form form .repeat label {
   font-size: 0.9rem;
   margin-right: 1.5rem;
 }
 
-.event-form form .category label input {
+.event-form form .category label input,
+.event-form form .repeat label input {
   margin-right: 0.3rem;
 }
 
@@ -642,8 +652,9 @@ body {
   width: 4rem;
 }
 
-.event-form form .select-start-date,
-.event-form form .select-end-date {
+.event-form form .select_start_date,
+.event-form form .select_end_date,
+.event-form form .select_repeat_end {
   position: absolute;
   z-index: 110;
   background-color: white;
@@ -652,23 +663,24 @@ body {
   margin-top: -1.1rem;
 }
 
-.event-form form .select-start-date .nav-date,
-.event-form form .select-end-date .nav-date {
+.event-form form .select_start_date .nav-date,
+.event-form form .select_end_date .nav-date,
+.event-form form .select_repeat_end .nav-date {
   position: relative;
   top: 0;
   padding: 0 0.5rem 0.5rem;
 }
 
-.event-form form .select-start-date {
+.event-form form .select_start_date {
   left: calc((100vw - 40rem)/2 + 4.4rem);
 }
 
-.event-form form .select-end-date {
+.event-form form .select_end_date {
   left: calc((100vw - 40rem)/2 + 24.5rem);
 }
 
-.event-form form .select-start-time,
-.event-form form .select-end-time {
+.event-form form .select_start_time,
+.event-form form .select_end_time {
   position: absolute;
   z-index: 110;
   background-color: white;
@@ -682,18 +694,108 @@ body {
   overflow-y: scroll;
 }
 
-.event-form form .select-start-time .time:hover,
-.event-form form .select-end-time .time:hover {
+.event-form form .select_start_time .time:hover,
+.event-form form .select_end_time .time:hover {
   background-color: #e6e6e6;
   cursor: pointer;
 }
 
-.event-form form .select-start-time {
+.event-form form .select_start_time {
   left: calc((100vw - 40rem)/2 + 12.85rem);
 }
 
-.event-form form .select-end-time {
+.event-form form .select_end_time {
   left: calc((100vw - 40rem)/2 + 32.95rem);
+}
+
+.event-form form .repeat {
+  align-items: center;
+  height: 1.8rem;
+}
+
+.event-form form .repeat span {
+  margin-right: 0.5rem;
+}
+
+.event-form form .repeat > input {
+  margin-right: 1rem;
+}
+
+.event-form form .repeat div {
+  margin: 0;
+}
+
+.event-form form .repeat div i {
+  margin-left: -2rem;
+  font-size: 1rem;
+  color: #b5b1b1;
+}
+
+.event-form form .repeat div i:hover {
+  color: #ba2c5c;
+  cursor: pointer;
+}
+
+.event-form form .repeat div input {
+  width: 5rem;
+  padding: 0 1.7rem 0 0.5rem;
+}
+
+.event-form form .repeat .rep-rate input,
+.event-form form .repeat .rep-duration input {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.event-form form .repeat .rep-rate input {
+  width: 6.5rem;
+}
+
+.event-form form .repeat .rep-duration input {
+  width: 5.5rem;
+}
+
+.event-form form .repeat div:last-child {
+  margin-left: 1rem;
+}
+
+.event-form form .select_repeat_rate,
+.event-form form .select_repeat_duration {
+  position: absolute;
+  z-index: 110;
+  background-color: white;
+  border: 1px solid #ba2c5c;
+  box-shadow: 0px 0px 10px #595959;
+  margin-top: -1.1rem;
+  width: 7.2rem;
+}
+
+.event-form form .select_repeat_rate div,
+.event-form form .select_repeat_duration div {
+  width: 100%;
+  text-align: center;
+}
+
+.event-form form .select_repeat_rate div:hover,
+.event-form form .select_repeat_duration div:hover {
+  background-color: #e6e6e6;
+  cursor: pointer;
+}
+
+.event-form form .select_repeat_rate {
+  left: calc((100vw - 40rem)/2 + 7.4rem);
+}
+
+.event-form form .select_repeat_duration {
+  left: calc((100vw - 40rem)/2 + 15.8rem);
+}
+
+.event-form form .select_repeat_end {
+  left: calc((100vw - 40rem)/2 + 25.2rem);
+}
+
+.event-form form div .none {
+  display: none;
 }
 
 .event-form form .place input {
@@ -702,7 +804,7 @@ body {
 
 .event-form form .discription textarea {
   width: calc(37rem - 4px);
-  height: 6rem;
+  height: 3rem;
   padding: 0.5rem 1rem;
   margin: 0;
 }

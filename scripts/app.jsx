@@ -83,6 +83,15 @@ var AppView = React.createClass({
         }
     },
 
+    hidingForm: function(e) {
+        var target = e.target;
+        if (target.className === 'create button') {
+            let state = this.state;
+            state.visEventForm = false;
+            this.setState(state);
+        }
+    },
+
     render: function() {
         return (
             <div>
@@ -93,7 +102,7 @@ var AppView = React.createClass({
                     <div onClick={this.sidebarEventHandler}>
                         <SidebarMenu day={this.state.day} period={this.state.period} />
                     </div>
-                    <div onClick={this.getFullEvent}>
+                    <div onClick={this.hidingForm}>
                         <EventsTable day={this.state.day} period={this.state.period}
                             visEventForm={this.state.visEventForm} />
                     </div>
