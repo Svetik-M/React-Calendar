@@ -25,8 +25,7 @@ var EventsTable = React.createClass({
     componentWillReceiveProps: function(nextProps) {
         var state = this.state;
         state.visible = nextProps.visEventForm;
-        this.setState(state);
-        getEvents.getThisEvents.call(this, nextProps);
+        getEvents.getThisEvents.call(this, state, nextProps);
     },
 
     componentWillMount: function() {

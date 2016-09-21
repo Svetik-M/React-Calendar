@@ -56,7 +56,7 @@ var requests = {
             start: new Date(start),
             end: new Date(end)
         });
-
+        
         var call = this;
 
         var xhr = new XMLHttpRequest();

@@ -111,6 +111,7 @@ var CreateEvent = React.createClass({
     },
 
     changeVisible: function(e) {
+        e.stopPropagation();
         var target = e.target,
             elem = target.previousElementSibling,
             state = Object.assign({}, this.state);
@@ -123,14 +124,17 @@ var CreateEvent = React.createClass({
     },
 
     selectStartDate: function(e) {
-        selectDate.call(this, e.target, 'start_date', 'startDate')
+        e.stopPropagation();
+        selectDate.call(this, e.target, 'start_date', 'startDate');
     },
 
     selectEndDate: function(e) {
-        selectDate.call(this, e.target, 'end_date', 'endDate')
+        e.stopPropagation();
+        selectDate.call(this, e.target, 'end_date', 'endDate');
     },
 
     selectTime: function(e) {
+        e.stopPropagation();
         var target = e.target;
         if (target.className === 'time') {
             let state = this.state,
@@ -144,6 +148,7 @@ var CreateEvent = React.createClass({
     },
 
     selectRepeatOptions: function(e) {
+        e.stopPropagation();
         var target = e.target;
         if (target.className === 'options') {
             let state = this.state,
@@ -162,14 +167,21 @@ var CreateEvent = React.createClass({
     },
 
     selectRepeatEnd: function(e) {
+        e.stopPropagation();
         selectDate.call(this, e.target, 'repeat_end', 'repEnd');
+    },
+
+    hidden: function(e) {
+        var state = this.state;
+        state.vis = {};
+        this.setState(state);
     },
 
     render: function() {
         var eventData = this.state.eventData;
 
         return (
-            <div className={'event-form' + (this.state.visible ? '' : ' none')}>
+            <div className={'event-form' + (this.state.visible ? '' : ' none')} onClick={this.hidden}>
                 <form id='event-form' onSubmit={this.handleSubmit}>
                     <div className='title-form'>Create event</div>
                     <label className='title-event'>
@@ -197,13 +209,14 @@ var CreateEvent = React.createClass({
                             <label>
                                 Start*
                                 <input type='text' name='startDate' ref='start_date'
-                                    value={eventData.start_date} readOnly />
+                                    value={eventData.start_date} readOnly onClick={e => e.stopPropagation()}/>
                                 <i className='fa fa-chevron-down' aria-hidden='true'
                                     onClick={this.changeVisible} />
                             </label>
                             <label>
                                 <input type='text' name='startTime' ref='start_time'
-                                    value={eventData ? viewTime(this.state.start_time) : ''} readOnly />
+                                    value={eventData ? viewTime(this.state.start_time) : ''} readOnly
+                                    onClick={e => e.stopPropagation()} />
                                 <i className='fa fa-chevron-down' aria-hidden='true'
                                     onClick={this.changeVisible} />
                             </label>
@@ -213,13 +226,14 @@ var CreateEvent = React.createClass({
                             <label>
                                 End*
                                 <input type='text' name='endDate' ref='end_date'
-                                    value={eventData.end_date} readOnly />
+                                    value={eventData.end_date} readOnly onClick={e => e.stopPropagation()} />
                                 <i className='fa fa-chevron-down' aria-hidden='true'
                                     onClick={this.changeVisible} />
                             </label>
                             <label>
                                 <input type='text' name='endTime' ref='end_time'
-                                    value={eventData ? viewTime(this.state.end_time) : ''} readOnly />
+                                    value={eventData ? viewTime(this.state.end_time) : ''} readOnly
+                                    onClick={e => e.stopPropagation()} />
                                 <i className='fa fa-chevron-down' aria-hidden='true'
                                     onClick={this.changeVisible} />
                             </label>

@@ -18,7 +18,7 @@ var AppView = React.createClass({
     getInitialState: function() {
         return {
             day: date,
-            period: 'week',
+            period: 'month',
             visEventForm: false
         };
     },

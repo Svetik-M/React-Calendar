@@ -1,6 +1,6 @@
 body {
   font: 14px 'Nunito', sans-serif;
-  color: #595959;
+  color: #494646;
 }
 
 .page-body {
@@ -11,7 +11,7 @@ body {
 .logo {
   font: small-caps 36px 'Chewy', sans-serif;
   color: #ba2c5c;
-  text-shadow: 1px 1px 3px #595959;
+  text-shadow: 1px 1px 3px #494646;
   text-align: center;
   min-width: 15rem;
   width: 15rem;
@@ -26,7 +26,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 0 10px #595959;
+  box-shadow: 0 0 10px #494646;
   height: 3.1rem;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -89,7 +89,7 @@ body {
 
 .header .nav {
   display: inline-flex;
-  color: #595959;
+  color: #494646;
 }
 
 .header .nav .selected-period {
@@ -118,7 +118,7 @@ body {
 
 .header .logout {
   text-decoration: none;
-  color: #595959;
+  color: #494646;
   cursor: pointer;
   text-align: center;
   white-space: nowrap;
@@ -189,7 +189,7 @@ body {
   padding: 1rem 0;
   text-align: center;
   font-size: 1rem;
-  color: #595959;
+  color: #494646;
 }
 
 .nav-title .fa {
@@ -236,7 +236,7 @@ body {
 }
 
 .calendar .monthTable td.curr-month {
-  color: #595959;
+  color: #494646;
 }
 
 .calendar .monthTable td:first-child,
@@ -268,10 +268,10 @@ body {
   position: relative;
   left: 15.2rem;
   flex-grow: 1;
-  box-shadow: 0 0 10px #595959;
+  box-shadow: 0 0 10px #494646;
 }
 
-.events-block .date {
+.events-block .title-date {
   position: fixed;
   z-index: 20;
   background-color: #ba2c5c;
@@ -285,14 +285,15 @@ body {
   padding-bottom: 1px;
 }
 
-.events-block .date .time {
+.events-block .title-date .time {
   width: 55px;
 }
 
 .events-block .event {
   font-size: 0.8rem;
   text-align: left;
-  color: #121112;
+  color: #252425;
+  padding: 1px 2px;
 }
 
 .events-block .event:hover {
@@ -300,11 +301,13 @@ body {
 }
 
 .events-block .home {
-  background-color: #d57afa;
+  background-color: rgba(209, 142, 210, 0.7);
+  border-left: 3px solid #a93db6;
 }
 
 .events-block .work {
-  background-color: #fb7d54;
+  background-color: rgba(236, 151, 123, 0.7);
+  border-left: 3px solid #df6036;
 }
 
 .events-block .events-list {
@@ -314,6 +317,7 @@ body {
 }
 
 .events-block .events-list tbody tr td {
+  vertical-align: top;
   height: 48px;
 }
 
@@ -363,15 +367,14 @@ body {
 }
 
 .events-block .events-list .month-table tr td {
-  vertical-align: top;
   text-align: right;
 }
 
-.events-block .events-list .month-table tr td > div {
+.events-block .events-list .month-table tr td > div:first-child {
   height: 1.1rem;
 }
 
-.events-block .events-list .month-table tr td .day {
+.events-block .events-list .month-table tr td .date {
   width: calc(100% - 2rem);
   padding: 0 1rem;
   text-align: right;
@@ -383,21 +386,46 @@ body {
 }
 
 .events-block .events-list .month-table tr td.today {
-  border: 3px solid #ba2c5c;
+  border: 2px solid #ba2c5c;
+}
+
+.events-block .events-list .month-table tr td.today .date {
+  margin-top: -2px;
 }
 
 .events-block .events-list .month-table tr td.other-month {
   background-color: #e6e6e6;
-  color: #595959;
+  color: #494646;
 }
 
 .events-block .month {
   height: calc(100vh - 3.5rem);
 }
 
-.events-block .month .event {
+.events-block .month td > div:last-child {
+  overflow: hidden;
   width: 100%;
+  height: calc(100% - 1.1rem);
+  display: block;
+}
+
+.events-block .month td div {
+  position: relative;
+}
+
+.events-block .month .event {
+  position: relative;
+  width: calc(100% - 7px);
   margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+.events-block .week td,
+.events-block .day td {
+  box-sizing: border-box;
 }
 
 .events-block .week .half > div,
@@ -412,25 +440,50 @@ body {
   flex-shrink: 1;
   position: relative;
   z-index: 10;
-  border: 1px solid #595959;
   margin: 1px;
   padding: 0 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.events-block .week .home,
+.events-block .day .home {
+  border: 1px solid #a93db6;
+}
+
+.events-block .week .work,
+.events-block .day .work {
+  border: 1px solid #df6036;
+}
+
+.events-block .week .all-day div,
+.events-block .day .all-day div {
+  box-sizing: border-box;
+}
+
+.events-block .day .half > div > div {
+  width: 90%;
+}
+
+.events-block .day .half > div > div .event {
+  flex-grow: 1;
 }
 
 .full-event {
   position: absolute;
   width: 20rem;
   z-index: 30;
-  color: #595959;
+  color: #494646;
   background-color: white;
   border: 2px solid #ba2c5c;
-  box-shadow: 0px 0px 10px #595959;
+  box-shadow: 0px 0px 10px #494646;
   display: flex;
   flex-wrap: wrap;
 }
 
 .full-event .fa-times {
-  color: #595959;
+  color: #494646;
   margin: 0.5rem 0.5rem 0 18.5rem;
 }
 
@@ -454,6 +507,10 @@ body {
   text-align: left;
 }
 
+.full-event p span {
+  color: #999696;
+}
+
 .full-event .button-block {
   width: 100%;
   display: inline-flex;
@@ -462,7 +519,7 @@ body {
 
 .full-event .button-block .button {
   background-color: #b5b1b1;
-  color: #595959;
+  color: #494646;
   text-transform: uppercase;
   border: none;
   margin: 0.5rem;
@@ -476,14 +533,14 @@ body {
 }
 
 .full-event .button-block .button:hover {
-  background-color: #595959;
+  background-color: #494646;
   color: white;
 }
 
 .full-event .button-block .button:focus {
   outline: 0;
   background-color: #b5b1b1;
-  color: #595959;
+  color: #494646;
 }
 
 .full-event .button-block .edit {
@@ -520,7 +577,7 @@ body {
   width: 42rem;
   height: 34.5rem;
   background: white;
-  box-shadow: 0px 0px 10px #595959;
+  box-shadow: 0px 0px 10px #494646;
   margin: 0 auto;
   margin-top: calc(50vh - 17.3rem);
 }
@@ -559,7 +616,7 @@ body {
   padding: 0 1rem;
   margin: 0 0.5rem;
   font-size: 0.9rem;
-  color: #595959;
+  color: #494646;
   border: 2px solid #b5b1b1;
 }
 
@@ -659,7 +716,7 @@ body {
   z-index: 110;
   background-color: white;
   border: 1px solid #ba2c5c;
-  box-shadow: 0px 0px 10px #595959;
+  box-shadow: 0px 0px 10px #494646;
   margin-top: -1.1rem;
 }
 
@@ -672,7 +729,7 @@ body {
 }
 
 .event-form form .select_start_date {
-  left: calc((100vw - 40rem)/2 + 4.4rem);
+  left: calc((100vw - 40rem)/2 + 4.3rem);
 }
 
 .event-form form .select_end_date {
@@ -685,7 +742,7 @@ body {
   z-index: 110;
   background-color: white;
   border: 1px solid #ba2c5c;
-  box-shadow: 0px 0px 10px #595959;
+  box-shadow: 0px 0px 10px #494646;
   margin-top: -1.1rem;
   text-align: right;
   padding: 0.5rem;
@@ -718,7 +775,7 @@ body {
 }
 
 .event-form form .repeat > input {
-  margin-right: 1rem;
+  margin-right: 0.5rem;
 }
 
 .event-form form .repeat div {
@@ -765,9 +822,9 @@ body {
   z-index: 110;
   background-color: white;
   border: 1px solid #ba2c5c;
-  box-shadow: 0px 0px 10px #595959;
+  box-shadow: 0px 0px 10px #494646;
   margin-top: -1.1rem;
-  width: 7.2rem;
+  width: 8.75rem;
 }
 
 .event-form form .select_repeat_rate div,
@@ -783,15 +840,16 @@ body {
 }
 
 .event-form form .select_repeat_rate {
-  left: calc((100vw - 40rem)/2 + 7.4rem);
+  left: calc((100vw - 40rem)/2 + 6.8rem);
 }
 
 .event-form form .select_repeat_duration {
-  left: calc((100vw - 40rem)/2 + 15.8rem);
+  width: 7.7rem;
+  left: calc((100vw - 40rem)/2 + 16.8rem);
 }
 
 .event-form form .select_repeat_end {
-  left: calc((100vw - 40rem)/2 + 25.2rem);
+  left: calc((100vw - 40rem)/2 + 26.7rem);
 }
 
 .event-form form div .none {

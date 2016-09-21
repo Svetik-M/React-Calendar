@@ -124,7 +124,7 @@
             }
         }
         .select_start_date{
-            left: calc((100vw - 40rem)/2 + 4.4rem);
+            left: calc((100vw - 40rem)/2 + 4.3rem);
         }
         .select_end_date {
             left: calc((100vw - 40rem)/2 + 24.5rem);
@@ -156,7 +156,7 @@
                 margin-right: 0.5rem;
             }
             > input {
-                margin-right: 1rem;
+                margin-right: 0.5rem;
             }
             div {
                 margin: 0;
@@ -190,7 +190,7 @@
         }
         .select_repeat_rate, .select_repeat_duration {
             @include display-select;
-            width: 7.2rem;
+            width: 8.75rem;
             div {
                 width: 100%;
                 text-align: center;
@@ -201,13 +201,14 @@
             }
         }
         .select_repeat_rate {
-            left: calc((100vw - 40rem)/2 + 7.4rem);
+            left: calc((100vw - 40rem)/2 + 6.8rem);
         }
         .select_repeat_duration {
-            left: calc((100vw - 40rem)/2 + 15.8rem);
+            width: 7.7rem;
+            left: calc((100vw - 40rem)/2 + 16.8rem);
         }
         .select_repeat_end {
-            left: calc((100vw - 40rem)/2 + 25.2rem);
+            left: calc((100vw - 40rem)/2 + 26.7rem);
         }
         div .none {
             display: none;

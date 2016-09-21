@@ -10,13 +10,14 @@ const MS_IN_DAY = 86400000,
 
 var getEvents = {
 
-    getThisEvents: function(nextProps) {
+    getThisEvents: function(state, nextProps) {
         var props = nextProps || this.props,
             comparePeriod = this.props.period === props.period;
 
         if (props.period === 'day') {
             if (!comparePeriod || !nextProps || this.props.day.getTime() !== nextProps.day.getTime()) {
                 getEvents.getEventsOfDay.call(this, props);
+                if (state) state.events = [];
             }
 
         } else if (props.period === 'week') {
@@ -26,13 +27,17 @@ var getEvents = {
                 firstDay = nextProps ? firstDayNextProps : firstDayThisProps;
             if (!comparePeriod || !nextProps || firstDayThisProps !== firstDayNextProps) {
                 getEvents.getEventsOfWeek.call(this, props, firstDay);
+                if (state) state.events = [];
             }
 
         } else if (props.period === 'month') {
             if (!comparePeriod || !nextProps || this.props.day.getMonth() !== nextProps.day.getMonth()) {
                 getEvents.getEventsOfMonth.call(this, props);
+                if (state) state.events = [];
             }
         }
+
+        if (state) this.setState(state);
     },
 
 
@@ -144,21 +149,15 @@ var getEvents = {
                 arr = eventsArr.filter(value => {
                     let start = new Date(value.start_date).getTime(),
                         end = new Date(value.end_date).getTime();
-                    return start <= midnight && end >= midnight + MS_IN_DAY;
-                });
-
-            } else if (i === 1) {
-                arr = eventsArr.filter(value => {
-                    let start = new Date(value.start_date).getTime(),
-                        end = new Date(value.end_date).getTime();
-                    return start <= midnight && end < midnight + MS_IN_DAY;
+                    return start <= midnight || end >= midnight + MS_IN_DAY;
                 });
 
             } else {
                 arr = eventsArr.filter(value => {
                     let start = new Date(value.start_date).getTime(),
+                        end = new Date(value.end_date).getTime(),
                         currTime = midnight + (i - 1) * MS_IN_HOUR / 2;
-                    return start === currTime;
+                    return start === currTime && end < midnight + MS_IN_DAY;
                 });
             }
 
@@ -186,6 +185,24 @@ var getEvents = {
             arrOfEvents[i] = arr;
         };
 
+        return arrOfEvents;
+    },
+
+
+    sortWeekEventsByDuration: function(arr, date) {
+        var arrOfEvents = arr.map((value, index) => {
+            var evSomeDays = value.filter(val => {
+                return val.start_date < date + MS_IN_DAY * index
+                    || val.end_date > date + MS_IN_DAY * (index + 1);
+            });
+
+            var evOneDay = value.filter(val => {
+                return val.start_date >= date + MS_IN_DAY * index
+                    && val.end_date <= date + MS_IN_DAY * (index + 1);
+            });
+            
+            return [evSomeDays, evOneDay];
+        });
         return arrOfEvents;
     }
 }

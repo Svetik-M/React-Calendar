@@ -48,7 +48,7 @@ var IventsOfDay = React.createClass({
                         start;
 
                     if (startDate < midnight) {
-                        start = '12:00am';
+                        start = '';
                     } else {
                         start = new Date(startDate).toLocaleString('en-US',
                                 {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
@@ -99,7 +99,7 @@ var IventsOfDay = React.createClass({
 
         return (
             <div className='events-block'>
-                <table className='date'>
+                <table className='title-date'>
                     <tbody>
                         <tr>
                             <td className='time'></td>

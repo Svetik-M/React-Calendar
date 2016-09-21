@@ -45,7 +45,6 @@ var IventsOfWeek = React.createClass({
             events = this.state.events,
             timeRows = Array.from({length:24}),
             timeStr;
-            //console.log(events);
 
         titleTable = titleTable.map(function(v,i) {
             var day = new Date(firstDay + i * MS_IN_DAY).getDate(),
@@ -68,17 +67,30 @@ var IventsOfWeek = React.createClass({
                     let arrTime = val.map(function(item) {
                         var startDate = item.start_date,
                             endDate = item.end_date,
-                            start;
+                            start, coefWidth;
 
-                        if (startDate < midnight) {
-                            start = '12:00am';
+                        if (startDate < midnight && index !== 0) {
+                            return undefined;
+
+                        } else if (startDate < midnight && index === 0) {
+                            start = '';
+                            coefWidth = Math.ceil((endDate - midnight) / MS_IN_DAY);
+                            if (coefWidth >  7) coefWidth = 7;
+
+                        } else if (startDate >= midnight && startDate < midnight + MS_IN_DAY) {
+                            start = new Date(startDate).toLocaleString('en-US',
+                                    {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
+                            coefWidth = Math.ceil((endDate - startDate) / MS_IN_DAY);
+
+                            if (coefWidth >  6 - index + 1) coefWidth = 6 - index + 1;
+
                         } else {
                             start = new Date(startDate).toLocaleString('en-US',
                                     {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
                         }
 
                         return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
-                            scope={this.props.scope} midnight={midnight} />;
+                            scope={this.props.scope} midnight={midnight} coefWidth={coefWidth} DOW={index} />;
                     }, this);
 
                     return arrTime;
@@ -105,8 +117,11 @@ var IventsOfWeek = React.createClass({
                     date = firstDay + i * MS_IN_DAY;
 
                 if (index === 0) {
+                    let tdStyle = {
+                        height: 'calc(' + (events[i][0].length * 1.2) + 'rem + ' + (events[i][0].length + 6)  + 'px)'
+                    };
                     return (
-                        <td key={i} className='events-group all-day'>
+                        <td key={i} className='events-group all-day' style={tdStyle}>
                             {events[i][0]}
                         </td>
                     );
@@ -150,7 +165,7 @@ var IventsOfWeek = React.createClass({
 
         return (
             <div className='events-block'>
-                <table className='date'>
+                <table className='title-date'>
                     <tbody>
                         <tr>
                             <td className='time'></td>

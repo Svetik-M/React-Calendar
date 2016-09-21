@@ -4,7 +4,7 @@
     left: 15.2rem;
     flex-grow: 1;
     box-shadow: 0 0 10px $color-grey;
-    .date {
+    .title-date {
         position: fixed;
         z-index: 20;
         background-color: $main-color;
@@ -23,16 +23,19 @@
     .event {
         font-size: 0.8rem;
         text-align: left;
-        color: rgb(18, 17, 18);
+        color: rgb(37, 36, 37);
+        padding: 1px 2px;
     }
     .event:hover {
         cursor: pointer;
     }
     .home {
-        background-color: rgb(213, 122, 250)
+        background-color: rgba(209, 142, 210, 0.7);
+        border-left: 3px solid   rgb(169, 61, 182); //rgb(203, 70, 219)
     }
     .work {
-        background-color: rgb(251, 125, 84)
+        background-color: rgba(236, 151, 123, 0.7);
+        border-left: 3px solid  rgb(223, 96, 54); //rgb(249, 98, 48)
     }
     .events-list {
         width: 100%;
@@ -41,6 +44,7 @@
         tbody {
             tr {
                 td {
+                    vertical-align: top;
                     height: 48px;
                 }
                 td.curr-day {
@@ -84,12 +88,11 @@
         .month-table {
             tr {
                 td {
-                    vertical-align: top;
                     text-align: right;
-                    > div {
+                    > div:first-child {
                         height: 1.1rem;
                     }
-                    .day {
+                    .date {
                         width: calc(100% - 2rem);
                         padding: 0 1rem;
                         text-align: right;
@@ -99,7 +102,10 @@
                     color: $button-color;
                 }
                 td.today {
-                    border: 3px solid $main-color;
+                    border: 2px solid $main-color;
+                    .date {
+                        margin-top: -2px;
+                    }
                 }
                 td.other-month {
                     background-color: $background-color;
@@ -110,12 +116,29 @@
     }
     .month {
         height: calc(100vh - 3.5rem);
-        .event {
+        td > div:last-child {
+            overflow: hidden;
             width: 100%;
+            height: calc(100% - 1.1rem);
+            display: block;
+        }
+        td div {
+            position: relative;
+        }
+        .event {
+            position: relative;
+            width: calc(100% - 7px);
             margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-sizing: border-box;
         }
     }
     .week, .day {
+        td {
+            box-sizing: border-box;
+        }
         .half > div {
             width: 100%;
             display: inline-flex;
@@ -125,11 +148,31 @@
             flex-shrink: 1;
             position: relative;
             z-index: 10;
-            border: 1px solid $color-grey;
             margin: 1px;
             padding: 0 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+        }
+        .home {
+            border: 1px solid  rgb(169, 61, 182);
+        }
+        .work {
+            border: 1px solid  rgb(223, 96, 54);
+        }
+        .all-day div {
+            //margin: 1px 0;
+            box-sizing: border-box;
         }
 
+    }
+    .day {
+        .half >div >div {
+            width: 90%;
+            .event {
+                flex-grow: 1;
+            }
+        }
     }
 }
 
@@ -162,6 +205,9 @@
     p {
         margin: 0.5rem;
         text-align: left;
+        span {
+            color: rgb(153, 150, 150);
+        }
     }
     .button-block {
         width: 100%;
