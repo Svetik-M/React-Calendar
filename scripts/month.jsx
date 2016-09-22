@@ -80,6 +80,8 @@ var Week = React.createClass({
                                     {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
                         }
 
+                        if (coefWidth === 0) coefWidth = 1;
+                        
                         var id  = Math.ceil(lastDay / 7) + '.' + item.id;
 
                         return <Event key={item.id}  id={id} events={this.props.events} currEvent={item}
@@ -106,13 +108,10 @@ var Week = React.createClass({
                 evSomeDaysStyle;
 
             if (events[i][0].length > 0 && events[i][0][0] === undefined) {
-                let topEl = getBlockTopShift(this.props.events, date, lastDay);
-                evSomeDaysStyle = {top: topEl};
-                let arr = events[i][0].filter(value => {
-                    return value !== undefined;
-                }),
-                len = arr.length;
-                evOneDayStyle.top = 'calc(' + topEl + 'px + ' + len + ' * (' + 1.2 + 'rem + ' + 2 + 'px))';
+                let topEl = getBlockTopShift(this.props.events, date);
+
+                evSomeDaysStyle = {top: 'calc(' + topEl + ' * (' + 1.2 + 'rem + ' + 2 + 'px))'};
+                evOneDayStyle.top = evSomeDaysStyle.top;
             }
 
             if (date.getMonth() !== month) {

@@ -403,7 +403,7 @@ body {
 }
 
 .events-block .month td > div:last-child {
-  overflow: hidden;
+  overflow-y: auto;
   width: 100%;
   height: calc(100% - 1.1rem);
   display: block;
@@ -415,7 +415,6 @@ body {
 
 .events-block .month .event {
   position: relative;
-  width: calc(100% - 7px);
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -430,9 +429,13 @@ body {
 
 .events-block .week .half > div,
 .events-block .day .half > div {
-  width: 100%;
   display: inline-flex;
   flex-wrap: nowrap;
+}
+
+.events-block .week .half > div > div,
+.events-block .day .half > div > div {
+  width: 100%;
 }
 
 .events-block .week .event,
@@ -445,6 +448,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
+  width: 100%;
 }
 
 .events-block .week .home,
@@ -460,14 +464,6 @@ body {
 .events-block .week .all-day div,
 .events-block .day .all-day div {
   box-sizing: border-box;
-}
-
-.events-block .day .half > div > div {
-  width: 90%;
-}
-
-.events-block .day .half > div > div .event {
-  flex-grow: 1;
 }
 
 .full-event {

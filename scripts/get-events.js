@@ -139,6 +139,25 @@ var getEvents = {
     },
 
 
+    sortEvForCountMaxLength: function(eventsArr, midnight) {
+        var arrOfEvents = Array.from({length: 48});
+        for (let i = 0; i < 48; i ++) {
+            let arr = eventsArr.filter(value => {
+                let currTime = midnight + (i - 1) * MS_IN_HOUR / 2;
+
+                return value.start_date >= midnight
+                    && value.start_date <= currTime
+                    && value.end_date > currTime
+                    && value.end_date < midnight + MS_IN_DAY;
+            });
+
+            arrOfEvents[i] = arr;
+        };
+
+        return arrOfEvents;
+    },
+
+
     sortDayEventsByHour: function(eventsArr, midnight) {
         var arrOfEvents = Array.from({length: 49});
 
@@ -147,17 +166,12 @@ var getEvents = {
 
             if (i === 0) {
                 arr = eventsArr.filter(value => {
-                    let start = new Date(value.start_date).getTime(),
-                        end = new Date(value.end_date).getTime();
-                    return start <= midnight || end >= midnight + MS_IN_DAY;
-                });
+                    return value.start_date <= midnight && value.end_date >= midnight + MS_IN_DAY});
 
             } else {
                 arr = eventsArr.filter(value => {
-                    let start = new Date(value.start_date).getTime(),
-                        end = new Date(value.end_date).getTime(),
-                        currTime = midnight + (i - 1) * MS_IN_HOUR / 2;
-                    return start === currTime && end < midnight + MS_IN_DAY;
+                    let currTime = midnight + (i - 1) * MS_IN_HOUR / 2;
+                    return value.start_date === currTime && value.end_date < midnight + MS_IN_DAY;
                 });
             }
 
@@ -178,8 +192,8 @@ var getEvents = {
                     end = value.end_date,
                     day = date + i * MS_IN_DAY;
                 return start >= day && start < day + MS_IN_DAY ||
-                       end > day && end <= day + MS_IN_DAY ||
-                       start < day && end > day;
+                       start < day + MS_IN_DAY && end > day && end <= day + MS_IN_DAY ||
+                       start <= day && end >= day;
             });
 
             arrOfEvents[i] = arr;
@@ -200,7 +214,7 @@ var getEvents = {
                 return val.start_date >= date + MS_IN_DAY * index
                     && val.end_date <= date + MS_IN_DAY * (index + 1);
             });
-            
+
             return [evSomeDays, evOneDay];
         });
         return arrOfEvents;

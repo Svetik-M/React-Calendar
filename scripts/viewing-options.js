@@ -66,7 +66,7 @@ function getElementLeftShift(props) {
             let coordsStart = getCoords(document.getElementById(elem.id).parentElement),
                 coordsEl = getCoords(document.getElementById(elem.id));
 
-            leftEl = coordsEl.left - coordsStart.left + 6;
+            leftEl = coordsEl.left - coordsStart.left + (props.scope.props.period === 'week' ? 6 : 15);
         }
     }
     return leftEl;
@@ -95,24 +95,21 @@ function getElementTopShift(props) {
 }
 
 
-function getBlockTopShift(events, date, lastDay) {
+function getBlockTopShift(events, date) {
     var midnight = date,
         topEl = 0;
 
-    var prevEvents = events.filter(function(val, ind) {
-        return val.start_date < date
-            && val.end_date > date;
-    });
+    var prevEvents = events.filter(val => val.start_date < date && val.end_date > date);
 
-    var elem = prevEvents[prevEvents.length - 1];
+    if (prevEvents.length > 0) {
+        let prevDate = date - MS_IN_DAY,
+            prevDayPrevEv = events.filter(val => {
+                return val.start_date < prevDate && val.end_date > prevDate
+                    || val.start_date > prevDate && val.start_date < date  && val.end_date > date
+            }),
+            index = prevDayPrevEv.findIndex(v => v.id === prevEvents[prevEvents.length - 1].id);
 
-    let id = Math.ceil(lastDay / 7) + '.' + elem.id;
-
-    if (elem && document.getElementById(id)) {
-        let coordsStart = getCoords(document.getElementById(id).parentElement.parentElement.parentElement),
-            coordsEl = getCoords(document.getElementById(id));
-
-        topEl = coordsEl.bottom - coordsStart.top + 3;
+        topEl = index + 1;
     }
     return topEl;
 }

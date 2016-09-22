@@ -16,7 +16,6 @@ var requests = {
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        console.log(xhr.responseText);
                         document.getElementById('event-form').reset();
                         call.updateEvents();
                     }
@@ -38,7 +37,6 @@ var requests = {
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        console.log(xhr.responseText);
                         document.getElementById('event-form').reset();
                         call.updateEvents()
                     }
@@ -56,7 +54,7 @@ var requests = {
             start: new Date(start),
             end: new Date(end)
         });
-        
+
         var call = this;
 
         var xhr = new XMLHttpRequest();
@@ -88,7 +86,6 @@ var requests = {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    console.log(xhr.responseText);
                     call.updateEvents();
 
                 }

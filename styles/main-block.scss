@@ -117,7 +117,7 @@
     .month {
         height: calc(100vh - 3.5rem);
         td > div:last-child {
-            overflow: hidden;
+            overflow-y: auto;
             width: 100%;
             height: calc(100% - 1.1rem);
             display: block;
@@ -127,7 +127,6 @@
         }
         .event {
             position: relative;
-            width: calc(100% - 7px);
             margin-top: 2px;
             white-space: nowrap;
             overflow: hidden;
@@ -140,9 +139,11 @@
             box-sizing: border-box;
         }
         .half > div {
-            width: 100%;
             display: inline-flex;
             flex-wrap: nowrap;
+            >div {
+                width: 100%;
+            }
         }
         .event {
             flex-shrink: 1;
@@ -153,6 +154,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             word-break: break-all;
+            width: 100%;
         }
         .home {
             border: 1px solid  rgb(169, 61, 182);
@@ -166,14 +168,11 @@
         }
 
     }
-    .day {
-        .half >div >div {
-            width: 90%;
-            .event {
-                flex-grow: 1;
-            }
-        }
-    }
+    // .day {
+    //     .half >div >div {
+    //         width: 95%;
+    //     }
+    // }
 }
 
 

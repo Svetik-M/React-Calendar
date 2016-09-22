@@ -18,23 +18,13 @@ var IventsOfWeek = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var firstDay = nextProps.day.getTime() - nextProps.day.getDay() * MS_IN_DAY,
-            arr = getEvents.sortWeekEventsByDays(nextProps.events, firstDay),
-            arrOfEvents = arr.map(function(val, ind) {
-                var midnight = firstDay + ind * MS_IN_DAY;
-                return getEvents.sortDayEventsByHour(val, midnight);
-            });
-        this.setState({events: arrOfEvents});
+        var state = getNewState(nextProps);
+        this.setState(state);
     },
 
     componentWillMount: function() {
-        var firstDay = this.props.day.getTime() - this.props.day.getDay() * MS_IN_DAY,
-            arr = getEvents.sortWeekEventsByDays(this.props.events, firstDay),
-            arrOfEvents = arr.map(function(val, ind) {
-                var midnight = firstDay + ind * MS_IN_DAY;
-                return getEvents.sortDayEventsByHour(val, midnight);
-            });
-        this.setState({events: arrOfEvents});
+        var state = getNewState(this.props);
+        this.setState(state);
     },
 
     render: function() {
@@ -121,29 +111,32 @@ var IventsOfWeek = React.createClass({
                         height: 'calc(' + (events[i][0].length * 1.2) + 'rem + ' + (events[i][0].length + 6)  + 'px)'
                     };
                     return (
-                        <td key={i} className='events-group all-day' style={tdStyle}>
+                        <td key={i} className={bool ? 'events-group curr-day all-day' : 'events-group all-day'}
+                            style={tdStyle}>
                             {events[i][0]}
                         </td>
                     );
                 }
 
+                var divStyle = {width: 'calc(100% - ' + (7 * this.state.maxLen[i] + 2) + 'px)'};
+
                 return (
                     <td key={i} className={bool ? 'events-group curr-day' : 'events-group'}>
                         <div key={i+.0} className='half'
                             id={firstDay + i * MS_IN_DAY + index * MS_IN_HOUR}>
-                            <div>
+                            <div style={divStyle}>
                                 {events[i][2 * index - 1]}
                             </div>
                         </div>
                         <div key={i+.1} className='half'
                             id={firstDay + i * MS_IN_DAY + i * MS_IN_HOUR + MS_IN_HOUR/2}>
-                            <div>
+                            <div style={divStyle}>
                                 {events[i][2 * index]}
                             </div>
                         </div>
                     </td>
                 );
-            });
+            }, this);
 
             if (index === 0) {
                 return (
@@ -161,7 +154,7 @@ var IventsOfWeek = React.createClass({
                     {eventsDOW}
                 </tr>
             );
-        });
+        }, this);
 
         return (
             <div className='events-block'>
@@ -189,5 +182,26 @@ var IventsOfWeek = React.createClass({
     }
 });
 
+
+function getNewState(props) {
+    var firstDay = props.day.getTime() - props.day.getDay() * MS_IN_DAY,
+        arr = getEvents.sortWeekEventsByDays(props.events, firstDay),
+        arrOfEvents = arr.map(function(val, ind) {
+            var midnight = firstDay + ind * MS_IN_DAY;
+            return getEvents.sortDayEventsByHour(val, midnight);
+        }),
+
+        arrOfEv = arr.map(function(val, ind) {
+            var midnight = firstDay + ind * MS_IN_DAY;
+            return getEvents.sortEvForCountMaxLength(val, midnight);
+        }),
+
+        arrLength = arrOfEv.map(val => {
+            var arrLen = val.map(v => v.length);
+            return Math.max.apply(null, arrLen);
+        });
+
+    return {events: arrOfEvents, maxLen: arrLength};
+}
 
 export {IventsOfWeek};

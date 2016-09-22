@@ -18,13 +18,13 @@ var IventsOfDay = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var arrOfEvents = getEvents.sortDayEventsByHour(nextProps.events, nextProps.day.getTime());
-        this.setState({events: arrOfEvents});
+        var state = getNewState(nextProps)
+        this.setState(state);
     },
 
     componentWillMount: function() {
-        var arrOfEvents = getEvents.sortDayEventsByHour(this.props.events, this.props.day.getTime());
-        this.setState({events: arrOfEvents});
+        var state = getNewState(this.props)
+        this.setState(state);
     },
 
     render: function() {
@@ -78,24 +78,27 @@ var IventsOfDay = React.createClass({
             else if (i < 13) timeStr = (i - 1) + 'am';
             else if (i === 13) timeStr = '12pm';
             else if (i > 13) timeStr = (i - 13) + 'pm';
+
+            var divStyle = {width: 'calc(95% - ' + 16 * this.state.maxLen + 'px)'}
+
             return (
                 <tr key={i}>
                     <td className='time'>{timeStr}</td>
                     <td className='events-group'>
                         <div className='half' id={midnight + i * MS_IN_HOUR}>
-                            <div>
+                            <div style={divStyle}>
                                 {events[2 * i - 1]}
                             </div>
                         </div>
                         <div className='half' id={midnight + i * MS_IN_HOUR + MS_IN_HOUR/2}>
-                            <div>
+                            <div style={divStyle}>
                                 {events[2 * i]}
                             </div>
                         </div>
                     </td>
                 </tr>
             );
-        });
+        }, this);
 
         return (
             <div className='events-block'>
@@ -123,16 +126,13 @@ var IventsOfDay = React.createClass({
     }
 });
 
-function getCoords(elem) {
-  var box = elem.getBoundingClientRect();
 
-  return {
-    top: box.top + pageYOffset,
-    left: box.left + pageXOffset,
-    right: box.right + pageXOffset,
-    bottom: box.bottom + pageYOffset
-  };
-
+function getNewState(props) {
+var arrOfEvents = getEvents.sortDayEventsByHour(props.events, props.day.getTime()),
+    arrOfEv = getEvents.sortEvForCountMaxLength(props.events, props.day.getTime()),
+    arrLen = arrOfEv.map(val => val.length),
+    maxLen =  Math.max.apply(null, arrLen);
+    return {events: arrOfEvents, maxLen: maxLen};
 }
 
 

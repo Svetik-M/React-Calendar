@@ -86,24 +86,28 @@ var CreateEvent = React.createClass({
             form.start_date = new Date(new Date(eventData.start_date).getTime() + (+this.state.start_time));
             form.end_date = new Date(new Date(eventData.end_date).getTime() + (+this.state.end_time));
 
-            if (eventData.repeat = 'repeat') {
+            if (eventData.repeat === 'repeat') {
                 let duration = this.state.repeat_duration,
                     start = eventData.start_date,
                     repEndDate;
 
-                function repl(match) { return +match + 1; }
+                function repl(match) { return + match + 1; }
 
                 if (duration === 'to date') {
                     repEndDate = new Date(eventData.repeat_end).getTime();
                 } else if (duration === 'one week') {
-                    repEndDate =  new Date(start).getTime() + MS_IN_DAY * 7;
+                    repEndDate =  new Date(start).getTime() + MS_IN_DAY * 6;
                 } else if (duration === 'one month') {
-                    repEndDate = new Date(start.replace(start.slice(0,2), repl)).getTime();
+                    repEndDate = new Date(start.replace(start.slice(0, 2), repl)).getTime();
                 } else if (duration === 'one year') {
                     repEndDate = new Date(start.replace(start.slice(-4), repl)).getTime();
                 }
 
                 form.repeat_end = new Date(repEndDate + (+this.state.start_time));
+
+            } else {
+                form.repeat_rate = undefined;
+                form.repeat_end = undefined;
             }
 
             requests.sendEventForm.call(this.props.scope, form, this.state.id);
@@ -258,8 +262,6 @@ var CreateEvent = React.createClass({
                         <SelectTime />
                     </div>
 
-
-
                     <div className='repeat'>
                         <span>Repeat</span>
                         <input type='checkbox' name='repeat' ref='repeat' value='repeat'
@@ -304,8 +306,6 @@ var CreateEvent = React.createClass({
                         onClick={this.selectRepeatEnd}>
                         <CalendarWidget day={new Date(eventData.repeat_end)} period='day' />
                     </div>
-
-
 
                     <label className='place'>
                         Place
