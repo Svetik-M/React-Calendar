@@ -1,13 +1,14 @@
 'use strict'
 
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import validation from './validation.js';
-import request from './request.js';
+import validation from '../validation.js';
+import request from '../requests.js';
 
 
-var Login = React.createClass({
+const Login = React.createClass({
     getInitialState: function() {
         return {
             valid: false,
@@ -23,7 +24,7 @@ var Login = React.createClass({
     handleSubmit: function(e) {
         e.preventDefault();
 
-        var form = {
+        let form = {
             username: this.refs.login.value,
             password: this.refs.password.value
         };
@@ -41,7 +42,7 @@ var Login = React.createClass({
                     <div className='field-wrap'>
                         <label>
                             <i className='fa fa-user' aria-hidden='true' />
-                            <input type='email' name='username' ref='login'
+                            <input type='email' ref='login'
                                    className={'login' + (this.state.mesEmail ? ' error' : '')}
                                    onBlur={validation.validLogin.bind(this)}
                                    onChange={validation.validAuthForm.bind(this)}
@@ -55,7 +56,7 @@ var Login = React.createClass({
                     <div className='field-wrap'>
                         <label>
                             <i className='fa fa-lock' aria-hidden='true' />
-                            <input type='password' name='password' ref='password'
+                            <input type='password' ref='password'
                                    className={'password' + (this.state.mesPassword ? ' error' : '')}
                                    onBlur={validation.validPass.bind(this)}
                                    onChange={validation.validAuthForm.bind(this)}
@@ -80,5 +81,6 @@ var Login = React.createClass({
         );
     }
 });
+
 
 export default Login;

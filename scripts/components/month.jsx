@@ -1,18 +1,20 @@
 'use strict'
 
+
 import React from 'react';
 
-import {Event} from './event.jsx';
-import {CreateEvent} from './create-event.jsx';
+import Event from './event.jsx';
+import CreateEvent from './create-event.jsx';
 
-import getEvents from './get-events.js';
-import {getBlockTopShift} from './viewing-options.js';
+import getEvents from '../get-events.js';
+import {getBlockTopShift} from '../viewing-options.js';
+
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       MS_IN_DAY = 86400000;
 
 
-var titleTable = Array.from({length:7});
+let titleTable = Array.from({length:7});
 titleTable = titleTable.map(function(v,i) {
     return (<td key={i} className='events-group'>
                {DAYS_OF_WEEK[i]}
@@ -20,7 +22,7 @@ titleTable = titleTable.map(function(v,i) {
 });
 
 
-var Week = React.createClass({
+const Week = React.createClass({
     getInitialState: function() {
         return {
             events: Array.from({length:7})
@@ -28,19 +30,19 @@ var Week = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var arrOfEvents = getEvents.sortWeekEventsByDays(nextProps.events, nextProps.currDay);
+        let arrOfEvents = getEvents.sortWeekEventsByDays(nextProps.events, nextProps.currDay);
         arrOfEvents =  getEvents.sortWeekEventsByDuration(arrOfEvents, nextProps.currDay);
         this.setState({events: arrOfEvents});
     },
 
     componentWillMount: function() {
-        var arrOfEvents = getEvents.sortWeekEventsByDays(this.props.events, this.props.currDay);
+        let arrOfEvents = getEvents.sortWeekEventsByDays(this.props.events, this.props.currDay);
         arrOfEvents =  getEvents.sortWeekEventsByDuration(arrOfEvents, this.props.currDay);
         this.setState({events: arrOfEvents});
     },
 
     render: function() {
-        var firstDay = this.props.currDay,
+        let firstDay = this.props.currDay,
             month = this.props.day.getMonth(),
             dateFirst = new Date(this.props.day.getFullYear(), month, 1),
             events = this.state.events,
@@ -49,14 +51,14 @@ var Week = React.createClass({
             lastDay = new Date(firstDay + 6 * MS_IN_DAY).getDate();
 
         events = events.map(function(value, index) {
-            var midnight = firstDay + index * MS_IN_DAY;
+            let midnight = firstDay + index * MS_IN_DAY;
 
             let arrDay = value.map(function(val, ind) {
                 if (val === undefined) {
                     return val;
                 } else {
                     let arr = val.map(function(item) {
-                        var startDate = item.start_date,
+                        let startDate = item.start_date,
                             endDate = item.end_date,
                             start, coefWidth;
 
@@ -81,8 +83,8 @@ var Week = React.createClass({
                         }
 
                         if (coefWidth === 0) coefWidth = 1;
-                        
-                        var id  = Math.ceil(lastDay / 7) + '.' + item.id;
+
+                        let id  = Math.ceil(lastDay / 7) + '.' + item.id;
 
                         return <Event key={item.id}  id={id} events={this.props.events} currEvent={item}
                             start={start} scope={this.props.scope} midnight={midnight} coefWidth={coefWidth}
@@ -98,7 +100,7 @@ var Week = React.createClass({
         }, this);
 
         allDays = allDays.map(function(v, i) {
-            var date = new Date(firstDay + i * MS_IN_DAY),
+            let date = new Date(firstDay + i * MS_IN_DAY),
                 thisDay = date.getDate(),
                 thisDayMs = date.getTime(),
                 evOneDayStyle = {
@@ -109,7 +111,6 @@ var Week = React.createClass({
 
             if (events[i][0].length > 0 && events[i][0][0] === undefined) {
                 let topEl = getBlockTopShift(this.props.events, date);
-
                 evSomeDaysStyle = {top: 'calc(' + topEl + ' * (' + 1.2 + 'rem + ' + 2 + 'px))'};
                 evOneDayStyle.top = evSomeDaysStyle.top;
             }
@@ -143,9 +144,9 @@ var Week = React.createClass({
 });
 
 
-var Month = React.createClass({
+const Month = React.createClass({
     render: function() {
-        var currDay = this.props.currDay,
+        let currDay = this.props.currDay,
             events = this.props.events,
             weeks = [];
 
@@ -173,7 +174,7 @@ var Month = React.createClass({
 });
 
 
-var IventsOfMonth = React.createClass({
+const IventsOfMonth = React.createClass({
     render: function() {
         return (
             <div className='events-block'>
@@ -199,4 +200,4 @@ var IventsOfMonth = React.createClass({
 });
 
 
-export {IventsOfMonth};
+export default IventsOfMonth;

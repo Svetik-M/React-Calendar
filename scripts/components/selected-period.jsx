@@ -1,6 +1,8 @@
 'use strict'
 
+
 import React from 'react';
+
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
                      'July', 'August', 'September', 'October', 'November', 'December'];
@@ -8,7 +10,7 @@ const MS_IN_DAY = 86400000;
 
 
 function getWeekPeriod(date) {
-    var period,
+    let period,
         currDOW = date.getDay(),
         firstDay = new Date(date.getTime() - currDOW * MS_IN_DAY),
         lastDay = new Date (date.getTime() + (6 - currDOW) * MS_IN_DAY);
@@ -31,14 +33,14 @@ function getWeekPeriod(date) {
 }
 
 
-var SelectedPeriod = React.createClass({
+const SelectedPeriod = React.createClass({
     getInitialState: function() {
-        var date = this.props.day;
+        let date = this.props.day;
         return {period: MONTH_NAMES[date.getMonth()] + ' ' + date.getFullYear()};
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var date = nextProps.day;
+        let date = nextProps.day;
         if (nextProps.period === 'day') {
             this.setState({
                 period: MONTH_NAMES[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear()
@@ -56,5 +58,4 @@ var SelectedPeriod = React.createClass({
 });
 
 
-
-export {SelectedPeriod};
+export default SelectedPeriod;

@@ -1,15 +1,17 @@
 'use strict'
 
+
 import React from 'react';
 
+
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
-                     'July', 'August', 'September', 'October', 'November', 'December'];
-const MS_IN_DAY = 86400000;
+                     'July', 'August', 'September', 'October', 'November', 'December'],
+      MS_IN_DAY = 86400000;
 
 
-var Week = React.createClass({
+const Week = React.createClass({
     render: function() {
-        var firstDay = this.props.date,
+        let firstDay = this.props.date,
             dateFirst = new Date(this.props.year, this.props.month, 1),
             month = this.props.month,
             selDay = this.props.sel_day,
@@ -24,7 +26,7 @@ var Week = React.createClass({
         }
 
         allDays = allDays.map(function(v,i) {
-            var date = new Date(firstDay + i*MS_IN_DAY),
+            let date = new Date(firstDay + i*MS_IN_DAY),
                 thisDay = date.getDate(),
                 thisDayMs = date.getTime(),
                 select = selPeriod;
@@ -57,9 +59,9 @@ var Week = React.createClass({
 });
 
 
-var Month = React.createClass({
+const Month = React.createClass({
     render: function() {
-        var selDay = this.props.sel_day || '',
+        let selDay = this.props.sel_day || '',
             period = this.props.period || '',
             day = this.props.day,
             month = day.getMonth(),
@@ -86,7 +88,7 @@ var Month = React.createClass({
 });
 
 
-var CalendarWidget = React.createClass({
+const CalendarWidget = React.createClass({
     getInitialState: function() {
         return {
             selDay: this.props.day,
@@ -107,21 +109,21 @@ var CalendarWidget = React.createClass({
     },
 
     getPrevMonth: function() {
-        var year = this.state.date.getFullYear(),
+        let year = this.state.date.getFullYear(),
             month = this.state.date.getMonth(),
             day = this.state.date.getDate();
         this.setState({date: new Date(year, month-1, day)});
     },
 
     getNextMonth: function() {
-        var year = this.state.date.getFullYear(),
+        let year = this.state.date.getFullYear(),
             month = this.state.date.getMonth(),
             day = this.state.date.getDate();
         this.setState({date: new Date(year, month+1, day)});
     },
 
     render: function() {
-        var date = this.state.date,
+        let date = this.state.date,
             month = date.getMonth(),
             year = date.getFullYear();
 
@@ -158,4 +160,4 @@ var CalendarWidget = React.createClass({
 });
 
 
-export {CalendarWidget};
+export default CalendarWidget;

@@ -1,23 +1,24 @@
 'use strict'
 
-var validation = {
+
+let validation = {
 
     regExpLogin: function(log) {
         log.trim();
-        var regExp = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i;
+        let regExp = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i;
         return regExp.test(log);
     },
 
 
     regExpPass: function(pass) {
         pass.trim();
-        var regExp = /^[a-z0-9]{7,15}$/i;
+        let regExp = /^[a-z0-9]{7,15}$/i;
         return pass !== '' && regExp.test(pass);
     },
 
 
     validAuthForm: function(e) {
-        var state = this.state,
+        let state = this.state,
             login = this.refs.login.value,
             password = this.refs.password.value,
             first_name = this.refs.first_name ? this.refs.first_name.value : 'first',
@@ -36,7 +37,7 @@ var validation = {
 
 
     validLogin: function(e) {
-        var state = this.state;
+        let state = this.state;
         if (!e.target.value) {
             state.mesEmail = 'Enter your E-mail Address';
         } else if (!validation.regExpLogin(e.target.value)) {
@@ -49,7 +50,7 @@ var validation = {
 
 
     validPass: function(e) {
-        var state = this.state;
+        let state = this.state;
         if (!e.target.value) {
             state.mesPassword = 'Enter your Password';
         } else if (!validation.regExpPass(e.target.value)) {
@@ -106,7 +107,7 @@ var validation = {
 
 
     validDate: function() {
-        var start = new Date(this.state.eventData.start_date).getTime() + (+this.state.start_time),
+        let start = new Date(this.state.eventData.start_date).getTime() + (+this.state.start_time),
             end = new Date(this.state.eventData.end_date).getTime() + (+this.state.end_time);
 
         if (start > end) {

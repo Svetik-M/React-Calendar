@@ -1,8 +1,10 @@
 'use strict'
 
+
 import React from 'react';
-import {Event} from './event.jsx';
-import getEvents from './get-events.js';
+
+import Event from './event.jsx';
+import getEvents from '../get-events.js';
 
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -10,7 +12,7 @@ const MS_IN_DAY = 86400000;
 const MS_IN_HOUR = 3600000;
 
 
-var IventsOfWeek = React.createClass({
+const IventsOfWeek = React.createClass({
     getInitialState: function() {
         return {
             events: Array.from({length: 7})
@@ -18,17 +20,17 @@ var IventsOfWeek = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var state = getNewState(nextProps);
+        let state = getNewState(nextProps);
         this.setState(state);
     },
 
     componentWillMount: function() {
-        var state = getNewState(this.props);
+        let state = getNewState(this.props);
         this.setState(state);
     },
 
     render: function() {
-        var date = this.props.day,
+        let date = this.props.day,
             DOW_date = date.getDay(),
             firstDay = date.getTime() - DOW_date*MS_IN_DAY,
             titleTable = Array.from({length:7}),
@@ -37,7 +39,7 @@ var IventsOfWeek = React.createClass({
             timeStr;
 
         titleTable = titleTable.map(function(v,i) {
-            var day = new Date(firstDay + i * MS_IN_DAY).getDate(),
+            let day = new Date(firstDay + i * MS_IN_DAY).getDate(),
                 month = parseInt(new Date(firstDay + i * MS_IN_DAY).getMonth()) + 1,
                 year = new Date(firstDay + i * MS_IN_DAY).getFullYear();
 
@@ -47,15 +49,15 @@ var IventsOfWeek = React.createClass({
         });
 
         events = events.map(function(value, index){
-            var midnight = firstDay + index * MS_IN_DAY;
+            let midnight = firstDay + index * MS_IN_DAY;
 
-            var arrDay = value.map(function(val) {
+            let arrDay = value.map(function(val) {
                 if (val === undefined) {
                     return val;
 
                 } else {
                     let arrTime = val.map(function(item) {
-                        var startDate = item.start_date,
+                        let startDate = item.start_date,
                             endDate = item.end_date,
                             start, coefWidth;
 
@@ -92,7 +94,7 @@ var IventsOfWeek = React.createClass({
         }, this);
 
         timeRows = timeRows.map(function(value, index) {
-            var eventsDOW  = Array.from({length:7}),
+            let eventsDOW  = Array.from({length:7}),
                 d = new Date(),
                 today = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 
@@ -103,7 +105,7 @@ var IventsOfWeek = React.createClass({
 
 
             eventsDOW = eventsDOW.map(function(v, i) {
-                var bool = (firstDay + i * MS_IN_DAY === today),
+                let bool = (firstDay + i * MS_IN_DAY === today),
                     date = firstDay + i * MS_IN_DAY;
 
                 if (index === 0) {
@@ -118,7 +120,7 @@ var IventsOfWeek = React.createClass({
                     );
                 }
 
-                var divStyle = {width: 'calc(100% - ' + (7 * this.state.maxLen[i] + 2) + 'px)'};
+                let divStyle = {width: 'calc(100% - ' + (7 * this.state.maxLen[i] + 2) + 'px)'};
 
                 return (
                     <td key={i} className={bool ? 'events-group curr-day' : 'events-group'}>
@@ -184,24 +186,25 @@ var IventsOfWeek = React.createClass({
 
 
 function getNewState(props) {
-    var firstDay = props.day.getTime() - props.day.getDay() * MS_IN_DAY,
+    let firstDay = props.day.getTime() - props.day.getDay() * MS_IN_DAY,
         arr = getEvents.sortWeekEventsByDays(props.events, firstDay),
         arrOfEvents = arr.map(function(val, ind) {
-            var midnight = firstDay + ind * MS_IN_DAY;
+            let midnight = firstDay + ind * MS_IN_DAY;
             return getEvents.sortDayEventsByHour(val, midnight);
         }),
 
         arrOfEv = arr.map(function(val, ind) {
-            var midnight = firstDay + ind * MS_IN_DAY;
+            let midnight = firstDay + ind * MS_IN_DAY;
             return getEvents.sortEvForCountMaxLength(val, midnight);
         }),
 
         arrLength = arrOfEv.map(val => {
-            var arrLen = val.map(v => v.length);
+            let arrLen = val.map(v => v.length);
             return Math.max.apply(null, arrLen);
         });
 
     return {events: arrOfEvents, maxLen: arrLength};
 }
 
-export {IventsOfWeek};
+
+export default IventsOfWeek;

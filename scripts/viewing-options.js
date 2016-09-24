@@ -35,7 +35,7 @@ function getElementPosition(props) {
 
 
 function getElementHeight(props) {
-    var ev = props.currEvent,
+    let ev = props.currEvent,
         midnight = props.midnight,
         heightRow = 26,
         heightEl = 0;
@@ -49,18 +49,18 @@ function getElementHeight(props) {
 
 
 function getElementLeftShift(props) {
-    var ev = props.currEvent,
+    let ev = props.currEvent,
         midnight = props.midnight,
         leftEl = 0;
 
-    var prevEvents = props.events.filter(function(val, ind) {
+    let prevEvents = props.events.filter(function(val, ind) {
         return val.start_date < ev.start_date
             && val.end_date > ev.start_date
             && (val.start_date >= midnight && val.end_date < midnight + MS_IN_DAY
             || val.start_date > midnight && val.end_date <= midnight + MS_IN_DAY)
     });
 
-    var elem = prevEvents[prevEvents.length - 1];
+    let elem = prevEvents[prevEvents.length - 1];
     if (elem && document.getElementById(elem.id)) {
         if (ev.start_date >= midnight || ev.end_date < midnight + MS_IN_DAY) {
             let coordsStart = getCoords(document.getElementById(elem.id).parentElement),
@@ -74,17 +74,17 @@ function getElementLeftShift(props) {
 
 
 function getElementTopShift(props) {
-    var ev = props.currEvent,
+    let ev = props.currEvent,
         midnight = props.midnight,
         topEl = 0;
 
-    var prevEvents = props.events.filter(function(val, ind) {
+    let prevEvents = props.events.filter(function(val, ind) {
         return val.start_date < ev.start_date
             && val.end_date > ev.start_date
              && (val.start_date <= midnight || val.end_date > midnight + MS_IN_DAY);
     });
 
-    var elem = prevEvents[prevEvents.length - 1];
+    let elem = prevEvents[prevEvents.length - 1];
     if (elem && document.getElementById(elem.id)) {
         let coordsStart = getCoords(document.getElementById(elem.id).parentElement.parentElement),
             coordsEl = getCoords(document.getElementById(elem.id));
@@ -96,10 +96,10 @@ function getElementTopShift(props) {
 
 
 function getBlockTopShift(events, date) {
-    var midnight = date,
+    let midnight = date,
         topEl = 0;
 
-    var prevEvents = events.filter(val => val.start_date < date && val.end_date > date);
+    let prevEvents = events.filter(val => val.start_date < date && val.end_date > date);
 
     if (prevEvents.length > 0) {
         let prevDate = date - MS_IN_DAY,
@@ -116,7 +116,7 @@ function getBlockTopShift(events, date) {
 
 
 function getCoords(elem) {
-    var box = elem.getBoundingClientRect();
+    let box = elem.getBoundingClientRect();
 
     return {
         top: box.top + pageYOffset,
@@ -124,7 +124,6 @@ function getCoords(elem) {
         left: box.left + pageXOffset
     };
 }
-
 
 
 export {getElementPosition, getBlockTopShift}

@@ -1,10 +1,13 @@
 'use strict'
 
-import React from 'react';
-import requests from './request.js';
-import {getElementPosition} from './viewing-options.js'
 
-var Event = React.createClass({
+import React from 'react';
+
+import requests from '../requests.js';
+import {getElementPosition} from '../viewing-options.js';
+
+
+const Event = React.createClass({
     getInitialState: function() {
         return {
             heightEl: 0,
@@ -14,12 +17,12 @@ var Event = React.createClass({
     },
 
     componentWillMount: function() {
-        var state = getElementPosition(this.props);
+        let state = getElementPosition(this.props);
         this.setState(state);
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var state = getElementPosition(nextProps);
+        let state = getElementPosition(nextProps);
         this.setState(state);
     },
 
@@ -28,7 +31,7 @@ var Event = React.createClass({
     },
 
     isVisible: function(e) {
-        var elem = document.querySelector('.events-block .vis');
+        let elem = document.querySelector('.events-block .vis');
         if (elem) elem.className = 'full-event none';
         e.target.nextElementSibling.className = 'full-event vis';
     },
@@ -38,7 +41,7 @@ var Event = React.createClass({
     },
 
     render: function() {
-        var ev = this.props.currEvent,
+        let ev = this.props.currEvent,
             optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'},
             optionsTime = {hour: '2-digit', minute: '2-digit'},
             optionsDateTime = Object.assign({}, optionsDate, optionsTime),
@@ -68,7 +71,7 @@ var Event = React.createClass({
 
         if (this.props.coefWidth) {
             divStyle.width = 'calc(' + this.props.coefWidth*100 + '%' + ' + '
-                            + (this.props.coefWidth * 3.5 - 5.5) + 'px)';
+                            + (this.props.coefWidth * 3 - 5.5) + 'px)';
             if(this.state.topEl) divStyle.top = this.state.topEl + 'px';
         }
 
@@ -99,4 +102,4 @@ var Event = React.createClass({
 });
 
 
-export {Event};
+export default Event;

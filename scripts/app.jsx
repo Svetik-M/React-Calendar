@@ -1,21 +1,23 @@
 'use strict'
 
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Link, browserHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 
-import {TitleMenu} from './title-menu.jsx';
-import {SidebarMenu} from './sidebar-menu.jsx';
-import {EventsTable} from './events-table.jsx';
-import {Event} from './event.jsx';
-import AuthorizationForm from './auth.jsx';
+import TitleMenu from './components/title-menu.jsx';
+import SidebarMenu from './components/sidebar-menu.jsx';
+import EventsTable from './components/events-table.jsx';
+import Event from './components/event.jsx';
+import AuthorizationForm from './auth/auth.jsx';
 
 import '../styles/style.scss';
 
-var date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+
+let date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
 
-var AppView = React.createClass({
+const AppView = React.createClass({
     getInitialState: function() {
         return {
             day: date,
@@ -25,7 +27,7 @@ var AppView = React.createClass({
     },
 
     changePeriod: function(event) {
-        var target = event.target;
+        let target = event.target;
 
         if (target.id === 'day' || target.id === 'week' || target.id === 'month') {
             let state = this.state;
@@ -70,12 +72,14 @@ var AppView = React.createClass({
     },
 
     sidebarEventHandler: function(event) {
-        var target = event.target;
+        let target = event.target;
+
         if (target.className.includes('curr-month')
             || target.className.includes('other-month')) {
             let state = this.state;
             state.day = new Date(+target.id);
             this.setState(state);
+
         } else if (target.parentElement.className === 'create-event'
                    || target.className === 'create-event') {
             let state = this.state;
@@ -85,7 +89,7 @@ var AppView = React.createClass({
     },
 
     hidingForm: function(e) {
-        var target = e.target;
+        let target = e.target;
         if (target.className === 'create button') {
             let state = this.state;
             state.visEventForm = false;

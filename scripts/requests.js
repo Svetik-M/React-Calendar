@@ -1,11 +1,13 @@
 'use strict'
 
-var requests = {
+
+let requests = {
+
     sendLoginForm: function(form) {
-        var body = JSON.stringify(form),
+        let body = JSON.stringify(form),
             call = this;
 
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
 
         xhr.open('POST', '/login');
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -27,10 +29,10 @@ var requests = {
 
 
     sendSignupForm: function(form) {
-        var body = JSON.stringify(form),
+        let body = JSON.stringify(form),
             call = this;
 
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
 
         xhr.open('POST', '/signup');
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -109,14 +111,14 @@ var requests = {
 
 
     getEvents: function(start, end) {
-        var body = JSON.stringify({
+        let body = JSON.stringify({
             start: new Date(start),
             end: new Date(end)
         });
 
-        var call = this;
+        let call = this;
 
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
 
         xhr.open('POST', '/get_events');
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -132,12 +134,13 @@ var requests = {
         xhr.send(body);
     },
 
+
     deletEvent: function(id) {
         console.log(id);
-        var body = JSON.stringify({id: id}),
+        let body = JSON.stringify({id: id}),
             call = this;
 
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
 
         xhr.open('POST', '/delete_event');
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -154,5 +157,6 @@ var requests = {
         xhr.send(body);
     }
 }
+
 
 export default requests;

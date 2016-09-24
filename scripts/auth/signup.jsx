@@ -3,11 +3,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import validation from './validation.js';
-import request from './request.js';
+import validation from '../validation.js';
+import request from '../requests.js';
 
 
-var Signup = React.createClass({
+const Signup = React.createClass({
     getInitialState: function() {
         return {
             mesFirstN: '',
@@ -24,7 +24,7 @@ var Signup = React.createClass({
     handleSubmit: function(e) {
         e.preventDefault();
 
-        var form = {
+        let form = {
             first_name: this.refs.first_name.value,
             last_name: this.refs.last_name.value,
             username: this.refs.login.value,
@@ -41,12 +41,12 @@ var Signup = React.createClass({
 
                 <form onSubmit={this.handleSubmit}>
                     <div className='top-row'>
-                        <input type='text' name='first_name' ref='first_name'
+                        <input type='text' ref='first_name'
                                className={'first_name' + (this.state.mesFirstN ? ' error' : '')}
                                onBlur={validation.validFirstName.bind(this)}
                                onChange={validation.validAuthForm.bind(this)}
                                defaultValue='' placeholder='First Name*' />
-                           <input type='text' name='last_name' ref='last_name'
+                           <input type='text' ref='last_name'
                                className={'last_name' + (this.state.mesLastN ? ' error' : '')}
                                onBlur={validation.validLastName.bind(this)}
                                onChange={validation.validAuthForm.bind(this)}
@@ -60,7 +60,7 @@ var Signup = React.createClass({
                     </div>
 
                     <div className='main'>
-                        <input type='email' name='username' ref='login'
+                        <input type='email' ref='login'
                                className={'login' + (this.state.mesEmail ? ' error' : '')}
                                onBlur={validation.validLogin.bind(this)}
                                onChange={validation.validAuthForm.bind(this)}
@@ -71,7 +71,7 @@ var Signup = React.createClass({
                     </div>
 
                     <div className='main'>
-                        <input type='password' name='password' ref='password'
+                        <input type='password' ref='password'
                                className={'password' + (this.state.mesPassword ? ' error' : '')}
                                onBlur={validation.validPass.bind(this)}
                                onChange={validation.validAuthForm.bind(this)}

@@ -1,19 +1,20 @@
 'use strict'
 
+
 import React from 'react';
 
-import {IventsOfDay} from './day.jsx';
-import {IventsOfWeek} from './week.jsx';
-import {IventsOfMonth} from './month.jsx';
-import {CreateEvent} from './create-event.jsx';
+import IventsOfDay from './day.jsx';
+import IventsOfWeek from './week.jsx';
+import IventsOfMonth from './month.jsx';
+import CreateEvent from './create-event.jsx';
 
-import getEvents from './get-events.js';
+import getEvents from '../get-events.js';
 
 
 const MS_IN_DAY = 86400000;
 
 
-var EventsTable = React.createClass({
+const EventsTable = React.createClass({
     getInitialState: function() {
         return {
             events: [],
@@ -23,7 +24,7 @@ var EventsTable = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var state = this.state;
+        let state = this.state;
         state.visible = nextProps.visEventForm;
         getEvents.getThisEvents.call(this, state, nextProps);
     },
@@ -33,7 +34,7 @@ var EventsTable = React.createClass({
     },
 
     getArrOfEvents: function(res, start, end) {
-        var arrSort = getEvents.sortEvents(res, start, end),
+        let arrSort = getEvents.sortEvents(res, start, end),
             state = this.state;
 
         state.events = arrSort;
@@ -45,19 +46,23 @@ var EventsTable = React.createClass({
     },
 
     editEvent: function(e) {
-        var target = e.target;
+        let target = e.target;
+
         if (target.className === 'button edit') {
             let state = this.state;
+
             state.visible = true;
             state.eventId = target.getAttribute('data-event');
             this.setState(state);
-            var elem = document.querySelector('.events-block .vis')
+
+            let elem = document.querySelector('.events-block .vis');
+
             if (elem) elem.className = 'full-event none';
         };
     },
 
     clearForm: function(e) {
-        var target = e.target;
+        let target = e.target;
         if (target.className === 'create button') {
             let state = this.state;
             state.eventId = '';
@@ -66,7 +71,7 @@ var EventsTable = React.createClass({
     },
 
     render: function() {
-        var body;
+        let body;
         if (this.props.period === 'day') {
             body = <IventsOfDay day={this.props.day} events={this.state.events} scope={this} />
         } else if (this.props.period === 'week') {
@@ -76,7 +81,7 @@ var EventsTable = React.createClass({
                                   dateLast={this.state.dateLast} events={this.state.events} scope={this} />;
         }
 
-        var editableEvent,
+        let editableEvent,
             eventId = this.state.eventId;
         if (this.state.eventId !== '') {
             editableEvent = this.state.events.filter(function(value) {
@@ -96,4 +101,5 @@ var EventsTable = React.createClass({
     }
 });
 
-export {EventsTable};
+
+export default EventsTable;

@@ -1,5 +1,6 @@
 'use strict'
 
+
 import React from 'react';
 import { Link } from 'react-router';
 
@@ -7,7 +8,7 @@ import Login from './login.jsx';
 import Signup from './signup.jsx';
 
 
-var AuthorizationForm = React.createClass({
+const AuthorizationForm = React.createClass({
     getInitialState: function () {
         return {
             formType: this.props.params.form,

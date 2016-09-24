@@ -1,29 +1,31 @@
 'use strict'
 
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import requests from './request.js';
-import validation from './validation.js';
-import {CalendarWidget} from './calendar-widget.jsx';
+import CalendarWidget from './calendar-widget.jsx';
+
+import requests from '../requests.js';
+import validation from '../validation.js';
 
 
 const MS_IN_HOUR = 3600000,
       MS_IN_MIN = 60000,
       MS_IN_DAY = 86400000;
 
-var date = new Date(),
+let date = new Date(),
     timeZone = date.getTimezoneOffset()*MS_IN_MIN,
     optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
 
 
-var SelectTime = React.createClass({
+const SelectTime = React.createClass({
     render: function() {
-        var options = Array.from({length: 48}),
+        let options = Array.from({length: 48}),
             time = 0,
             timeStr;
         options = options.map(function(v, i) {
-            var minutes = (i%2 === 0 ? '00' : '30'),
+            let minutes = (i%2 === 0 ? '00' : '30'),
                 a = Math.floor(i/2);
             if (a === 0) timeStr = '12:' + minutes + 'am';
             else if (a < 12) timeStr = a + ':' + minutes + 'am';
@@ -40,14 +42,14 @@ var SelectTime = React.createClass({
 });
 
 
-var CreateEvent = React.createClass({
+const CreateEvent = React.createClass({
     getInitialState: function() {
-        var state = setState(this.props);
+        let state = setState(this.props);
         return state;
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var state;
+        let state;
         if (nextProps.visible === true) {
             state = setState(nextProps);
         } else {
@@ -58,21 +60,21 @@ var CreateEvent = React.createClass({
     },
 
     handleChange: function(e) {
-        var target = e.target,
+        let target = e.target,
             state = this.state;
         state.eventData[ target.name] = target.value;
         this.setState(state);
     },
 
     changeIsRepeatable: function(e) {
-        var state = this.state;
+        let state = this.state;
         state.eventData.repeat = state.eventData.repeat ? '' : 'repeat';
         this.setState(state);
     },
 
     handleSubmit: function(e) {
         e.preventDefault();
-        var valid = validation.validEventForm.call(this);
+        let valid = validation.validEventForm.call(this);
 
         if (valid === false) {
             let state = this.state;
@@ -116,7 +118,7 @@ var CreateEvent = React.createClass({
 
     changeVisible: function(e) {
         e.stopPropagation();
-        var target = e.target,
+        let target = e.target,
             elem = target.previousElementSibling,
             state = Object.assign({}, this.state);
 
@@ -139,7 +141,7 @@ var CreateEvent = React.createClass({
 
     selectTime: function(e) {
         e.stopPropagation();
-        var target = e.target;
+        let target = e.target;
         if (target.className === 'time') {
             let state = this.state,
                 changeState = target.parentElement.parentElement.className.slice(7),
@@ -153,7 +155,7 @@ var CreateEvent = React.createClass({
 
     selectRepeatOptions: function(e) {
         e.stopPropagation();
-        var target = e.target;
+        let target = e.target;
         if (target.className === 'options') {
             let state = this.state,
                 changeState = target.parentElement.className.slice(7),
@@ -176,13 +178,17 @@ var CreateEvent = React.createClass({
     },
 
     hidden: function(e) {
-        var state = this.state;
+        let state = this.state;
         state.vis = {};
         this.setState(state);
     },
 
+    componentDidMount: function() {
+        ReactDOM.findDOMNode(this.refs.title).focus();
+    },
+
     render: function() {
-        var eventData = this.state.eventData;
+        let eventData = this.state.eventData;
 
         return (
             <div className={'event-form' + (this.state.visible ? '' : ' none')} onClick={this.hidden}>
@@ -339,9 +345,8 @@ var CreateEvent = React.createClass({
 });
 
 
-
 function setState(props) {
-    var ev = props.editableEvent,
+    let ev = props.editableEvent,
         startDate = ev ? new Date(ev.start_date).toLocaleString('en-US', optionsDate)
                        : date.toLocaleString('en-US', optionsDate),
         endDate = ev ? new Date(ev.end_date).toLocaleString('en-US', optionsDate)
@@ -371,6 +376,7 @@ function setState(props) {
     };
 }
 
+
 function selectDate(target, changeState, visState) {
     if (target.className.includes('curr-month')
         || target.className.includes('other-month')) {
@@ -381,10 +387,11 @@ function selectDate(target, changeState, visState) {
     };
 }
 
+
 function viewTime(time) {
-    var options = {hour: '2-digit', minute: '2-digit'};
+    let options = {hour: '2-digit', minute: '2-digit'};
     return new Date(+time + timeZone).toLocaleTimeString('en-US', options).toLowerCase().replace(' ', '');
 }
 
 
-export {CreateEvent};
+export default CreateEvent;

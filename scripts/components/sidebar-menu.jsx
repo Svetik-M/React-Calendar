@@ -1,10 +1,13 @@
 'use strict'
 
-import React from 'react';
-import {CalendarWidget} from './calendar-widget.jsx';
-import {CreateEvent} from './create-event.jsx';
 
-var SidebarMenu = React.createClass({
+import React from 'react';
+
+import CalendarWidget from './calendar-widget.jsx';
+import CreateEvent from './create-event.jsx';
+
+
+const SidebarMenu = React.createClass({
     getInitialState: function() {
         return {
             visible: this.props.visible,
@@ -27,7 +30,7 @@ var SidebarMenu = React.createClass({
     },
 
     hidingForm: function(event) {
-        var target = event.target;
+        let target = event.target;
         if (target.className === 'button') {
             this.setState({
                 visible: false,
@@ -53,4 +56,4 @@ var SidebarMenu = React.createClass({
 });
 
 
-export {SidebarMenu};
+export default SidebarMenu;

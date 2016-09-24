@@ -1,6 +1,7 @@
 'use strict'
 
-import requests from './request.js';
+
+import requests from './requests.js';
 
 
 const MS_IN_DAY = 86400000,
@@ -8,10 +9,10 @@ const MS_IN_DAY = 86400000,
       MS_IN_MIN = 6000;
 
 
-var getEvents = {
+let getEvents = {
 
     getThisEvents: function(state, nextProps) {
-        var props = nextProps || this.props,
+        let props = nextProps || this.props,
             comparePeriod = this.props.period === props.period;
 
         if (props.period === 'day') {
@@ -42,7 +43,7 @@ var getEvents = {
 
 
     getEventsOfDay: function(props) {
-        var start = props.day.getTime(),
+        let start = props.day.getTime(),
             end = start + MS_IN_DAY - MS_IN_MIN;
 
         requests.getEvents.call(this, start, end);
@@ -50,7 +51,7 @@ var getEvents = {
 
 
     getEventsOfWeek: function(props, dateFirst) {
-        var start = dateFirst,
+        let start = dateFirst,
             end = dateFirst + 7 * MS_IN_DAY - MS_IN_MIN;
 
         requests.getEvents.call(this, start, end);
@@ -58,7 +59,7 @@ var getEvents = {
 
 
     getEventsOfMonth: function(props) {
-        var month = props.day.getMonth(),
+        let month = props.day.getMonth(),
             year = props.day.getFullYear(),
             lastDayOfMonth = new Date(year ,month+1, 0).getDate(),
             dateLast = new Date(year, month, lastDayOfMonth),
@@ -69,7 +70,7 @@ var getEvents = {
             start = currDay,
             end = dateLast.getTime() + (6 - DOW_last + 1) * MS_IN_DAY - MS_IN_MIN;
 
-        var state = this.state;
+        let state = this.state;
         state.currDay = currDay;
         state.dateLast = dateLast.getTime();
         this.setState(state);
@@ -79,22 +80,22 @@ var getEvents = {
 
 
     sortEvents: function(arr, start, end) {
-        var arrOfEvents = arr.map(value => {
+        let arrOfEvents = arr.map(value => {
             value.start_date = new Date(value.start_date).getTime();
             value.end_date = new Date(value.end_date).getTime();
             value.repeat_end = new Date(value.repeat_end).getTime();
             return value;
         });
 
-        var repeatEvents = arrOfEvents.filter(value => {
+        let repeatEvents = arrOfEvents.filter(value => {
             return value.is_repeat === 'repeat';
         });
 
-        var notRepeatEvents = arrOfEvents.filter(value => {
+        let notRepeatEvents = arrOfEvents.filter(value => {
             return value.is_repeat !== 'repeat';
         });
 
-        var arrRepeatEvents = [];
+        let arrRepeatEvents = [];
 
         if (repeatEvents !== []) {
             for (let day = start; day <= end; day += MS_IN_DAY) {
@@ -140,7 +141,7 @@ var getEvents = {
 
 
     sortEvForCountMaxLength: function(eventsArr, midnight) {
-        var arrOfEvents = Array.from({length: 48});
+        let arrOfEvents = Array.from({length: 48});
         for (let i = 0; i < 48; i ++) {
             let arr = eventsArr.filter(value => {
                 let currTime = midnight + (i - 1) * MS_IN_HOUR / 2;
@@ -159,7 +160,7 @@ var getEvents = {
 
 
     sortDayEventsByHour: function(eventsArr, midnight) {
-        var arrOfEvents = Array.from({length: 49});
+        let arrOfEvents = Array.from({length: 49});
 
         for (let i = 0; i < 49; i ++) {
             let arr
@@ -183,7 +184,7 @@ var getEvents = {
 
 
     sortWeekEventsByDays: function(eventsArr, date) {
-        var arrOfEvents = Array.from({length: 7}),
+        let arrOfEvents = Array.from({length: 7}),
             optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
 
         for (let i = 0; i < 7; i++) {
@@ -204,13 +205,13 @@ var getEvents = {
 
 
     sortWeekEventsByDuration: function(arr, date) {
-        var arrOfEvents = arr.map((value, index) => {
-            var evSomeDays = value.filter(val => {
+        let arrOfEvents = arr.map((value, index) => {
+            let evSomeDays = value.filter(val => {
                 return val.start_date < date + MS_IN_DAY * index
                     || val.end_date > date + MS_IN_DAY * (index + 1);
             });
 
-            var evOneDay = value.filter(val => {
+            let evOneDay = value.filter(val => {
                 return val.start_date >= date + MS_IN_DAY * index
                     && val.end_date <= date + MS_IN_DAY * (index + 1);
             });

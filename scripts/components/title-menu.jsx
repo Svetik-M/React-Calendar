@@ -1,9 +1,12 @@
 'use strict'
 
-import React from 'react';
-import {SelectedPeriod} from './selected-period.jsx';
 
-export var TitleMenu  = React.createClass({
+import React from 'react';
+
+import SelectedPeriod from './selected-period.jsx';
+
+
+const TitleMenu  = React.createClass({
     render: function() {
         return (
             <div className='header'>
@@ -35,3 +38,6 @@ export var TitleMenu  = React.createClass({
         );
     }
 });
+
+
+export default TitleMenu;

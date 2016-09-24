@@ -1,8 +1,11 @@
 'use strict'
 
+
 import React from 'react';
-import {Event} from './event.jsx';
-import getEvents from './get-events.js';
+
+import Event from './event.jsx';
+
+import getEvents from '../get-events.js';
 
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -10,7 +13,7 @@ const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'F
       MS_IN_HOUR = 3600000;
 
 
-var IventsOfDay = React.createClass({
+const IventsOfDay = React.createClass({
     getInitialState: function() {
         return {
             events: Array.from({length: 49})
@@ -18,17 +21,17 @@ var IventsOfDay = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var state = getNewState(nextProps)
+        let state = getNewState(nextProps)
         this.setState(state);
     },
 
     componentWillMount: function() {
-        var state = getNewState(this.props)
+        let state = getNewState(this.props)
         this.setState(state);
     },
 
     render: function() {
-        var date = this.props.day,
+        let date = this.props.day,
             midnight = date.getTime(),
             DOW_date = DAYS_OF_WEEK[date.getDay()],
             titleTable = (<td className='events-group'>
@@ -43,7 +46,7 @@ var IventsOfDay = React.createClass({
                 return value;
             } else {
                 let arr = value.map(function(item) {
-                    var startDate = item.start_date,
+                    let startDate = item.start_date,
                         endDate = item.end_date,
                         start;
 
@@ -79,7 +82,7 @@ var IventsOfDay = React.createClass({
             else if (i === 13) timeStr = '12pm';
             else if (i > 13) timeStr = (i - 13) + 'pm';
 
-            var divStyle = {width: 'calc(95% - ' + 16 * this.state.maxLen + 'px)'}
+            let divStyle = {width: 'calc(95% - ' + 16 * this.state.maxLen + 'px)'}
 
             return (
                 <tr key={i}>
@@ -128,12 +131,12 @@ var IventsOfDay = React.createClass({
 
 
 function getNewState(props) {
-var arrOfEvents = getEvents.sortDayEventsByHour(props.events, props.day.getTime()),
-    arrOfEv = getEvents.sortEvForCountMaxLength(props.events, props.day.getTime()),
-    arrLen = arrOfEv.map(val => val.length),
-    maxLen =  Math.max.apply(null, arrLen);
-    return {events: arrOfEvents, maxLen: maxLen};
+    let arrOfEvents = getEvents.sortDayEventsByHour(props.events, props.day.getTime()),
+        arrOfEv = getEvents.sortEvForCountMaxLength(props.events, props.day.getTime()),
+        arrLen = arrOfEv.map(val => val.length),
+        maxLen =  Math.max.apply(null, arrLen);
+        return {events: arrOfEvents, maxLen: maxLen};
 }
 
 
-export {IventsOfDay};
+export default IventsOfDay;
