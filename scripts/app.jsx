@@ -8,6 +8,7 @@ import {TitleMenu} from './title-menu.jsx';
 import {SidebarMenu} from './sidebar-menu.jsx';
 import {EventsTable} from './events-table.jsx';
 import {Event} from './event.jsx';
+import AuthorizationForm from './auth.jsx';
 
 import '../styles/style.scss';
 
@@ -114,7 +115,8 @@ var AppView = React.createClass({
 
 ReactDOM.render(
     <Router history={browserHistory}>
-        <Route path='/user/:userId' component={AppView} />
+        <Route path='/user' component={AppView} />
+        <Route path='/:form' component={AuthorizationForm} />
     </Router>,
     document.getElementById('content')
 );

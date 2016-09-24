@@ -3,7 +3,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Valid from './validation.js';
+import validation from './validation.js';
+import request from './request.js';
 
 
 var Login = React.createClass({
@@ -19,20 +20,31 @@ var Login = React.createClass({
         ReactDOM.findDOMNode(this.refs.login).focus();
     },
 
+    handleSubmit: function(e) {
+        e.preventDefault();
+
+        var form = {
+            username: this.refs.login.value,
+            password: this.refs.password.value
+        };
+
+        request.sendLoginForm.call(this.props.scope, form);
+    },
+
     render: function() {
         return (
             <div id='login'>
                 <h2>Welcome Back!</h2>
 
-                <form action="/login" method="post">
+                <form onSubmit={this.handleSubmit}>
 
                     <div className='field-wrap'>
                         <label>
                             <i className='fa fa-user' aria-hidden='true' />
                             <input type='email' name='username' ref='login'
                                    className={'login' + (this.state.mesEmail ? ' error' : '')}
-                                   onBlur={Valid.validLogin.bind(this)}
-                                   onChange={Valid.validation.bind(this)}
+                                   onBlur={validation.validLogin.bind(this)}
+                                   onChange={validation.validAuthForm.bind(this)}
                                    defaultValue='' placeholder='E-mail Address' />
                         </label>
                         <div className='err'>
@@ -45,8 +57,8 @@ var Login = React.createClass({
                             <i className='fa fa-lock' aria-hidden='true' />
                             <input type='password' name='password' ref='password'
                                    className={'password' + (this.state.mesPassword ? ' error' : '')}
-                                   onBlur={Valid.validPass.bind(this)}
-                                   onChange={Valid.validation.bind(this)}
+                                   onBlur={validation.validPass.bind(this)}
+                                   onChange={validation.validAuthForm.bind(this)}
                                    defaultValue='' placeholder='Password' />
                         </label>
                         <div>
@@ -56,7 +68,7 @@ var Login = React.createClass({
                             <div className='err'>{this.state.mesPassword}</div>
                         </div>
                     </div>
-                    
+
                     <button type='submit' className={this.state.valid ? 'button' : ' button-block'}
                             disabled={!this.state.valid} formNoValidate>
                         Log In
@@ -69,4 +81,4 @@ var Login = React.createClass({
     }
 });
 
-export {Login};
+export default Login;

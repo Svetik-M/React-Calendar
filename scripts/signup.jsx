@@ -3,7 +3,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Valid from './validation.js';
+import validation from './validation.js';
+import request from './request.js';
 
 
 var Signup = React.createClass({
@@ -20,22 +21,35 @@ var Signup = React.createClass({
         ReactDOM.findDOMNode(this.refs.first_name).focus();
     },
 
+    handleSubmit: function(e) {
+        e.preventDefault();
+
+        var form = {
+            first_name: this.refs.first_name.value,
+            last_name: this.refs.last_name.value,
+            username: this.refs.login.value,
+            password: this.refs.password.value
+        };
+
+        request.sendSignupForm.call(this.props.scope, form);
+    },
+
     render: function() {
         return (
             <div id='signup'>
                 <h2>Sign Up for Free</h2>
 
-                <form action="/signup" method="post">
+                <form onSubmit={this.handleSubmit}>
                     <div className='top-row'>
                         <input type='text' name='first_name' ref='first_name'
                                className={'first_name' + (this.state.mesFirstN ? ' error' : '')}
-                               onBlur={Valid.validFirstName.bind(this)}
-                               onChange={Valid.validation.bind(this)}
+                               onBlur={validation.validFirstName.bind(this)}
+                               onChange={validation.validAuthForm.bind(this)}
                                defaultValue='' placeholder='First Name*' />
                            <input type='text' name='last_name' ref='last_name'
                                className={'last_name' + (this.state.mesLastN ? ' error' : '')}
-                               onBlur={Valid.validLastName.bind(this)}
-                               onChange={Valid.validation.bind(this)}
+                               onBlur={validation.validLastName.bind(this)}
+                               onChange={validation.validAuthForm.bind(this)}
                                defaultValue='' placeholder='Last Name*' />
                         <div className='err'>
                             {this.state.mesFirstN}
@@ -48,8 +62,8 @@ var Signup = React.createClass({
                     <div className='main'>
                         <input type='email' name='username' ref='login'
                                className={'login' + (this.state.mesEmail ? ' error' : '')}
-                               onBlur={Valid.validLogin.bind(this)}
-                               onChange={Valid.validation.bind(this)}
+                               onBlur={validation.validLogin.bind(this)}
+                               onChange={validation.validAuthForm.bind(this)}
                                defaultValue=''placeholder='E-mail Address*' />
                         <div className='err'>
                             {this.state.mesEmail}
@@ -59,8 +73,8 @@ var Signup = React.createClass({
                     <div className='main'>
                         <input type='password' name='password' ref='password'
                                className={'password' + (this.state.mesPassword ? ' error' : '')}
-                               onBlur={Valid.validPass.bind(this)}
-                               onChange={Valid.validation.bind(this)}
+                               onBlur={validation.validPass.bind(this)}
+                               onChange={validation.validAuthForm.bind(this)}
                                defaultValue='' placeholder='Set A Password*' />
                         <div>
                             <div className='message'>
@@ -82,4 +96,4 @@ var Signup = React.createClass({
     }
 });
 
-export {Signup};
+export default Signup;

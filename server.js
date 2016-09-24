@@ -75,9 +75,9 @@ passport.deserializeUser(function(id, done) {
 
 var app = express();
 
-app.use('/login', express.static('auth'));
-app.use('/signup', express.static('auth'));
-app.use('/user/:id', express.static('build'));
+app.use('/login', express.static('build'));
+app.use('/signup', express.static('build'));
+app.use('/user', express.static('build'));
 
 //app.use(morgan('combined'));
 app.use(cookieParser());
@@ -97,39 +97,45 @@ app.get('/', isLogin.ensureLoggedIn('/login'),
 });
 
 app.get('/login', function(req, res) {
-    res.sendFile('auth.html', { root: __dirname + '/auth' });
+    res.sendFile('index.html', { root: __dirname });
 });
 
 app.get('/signup', function(req, res) {
-    res.sendFile('auth.html', { root: __dirname + '/auth' });
+    res.sendFile('index.html', { root: __dirname });
 });
 
-app.post('/login', passport.authenticate('login', {failureRedirect: '/login/incorrect'}),
-    function(req, res) {
-        res.redirect('/user/' + req.user.id);
-});
-
-app.get('/login/incorrect', function(req, res) {
-    res.sendFile('auth.html', { root: __dirname + '/auth' });
-});
-
-app.get('/user/:id', isLogin.ensureLoggedIn('/login'),
+app.get('/user', isLogin.ensureLoggedIn('/login'),
     function(req, res){
         res.sendFile('index.html', { root: __dirname });
-});
-
-app.post('/signup', passport.authenticate('signup', {failureRedirect: '/signup/incorrect'}),
-    function(req, res) {
-        res.redirect('/user/' + req.user.id);
-});
-
-app.get('/signup/incorrect', function(req, res) {
-    res.sendFile('auth.html', { root: __dirname + '/auth' });
 });
 
 app.get('/logout', function(req, res){
     req.logout();
     res.redirect('/login');
+});
+
+app.post('/login',
+    function(req, res) {
+        passport.authenticate('login', function(err, user, info) {
+        if (err) { return res.send(err); }
+        if (!user) { return res.send('Unauthorized'); }
+        req.logIn(user, function(err) {
+            if (err) { return res.send(err); }
+            return res.send('Success');
+        });
+      })(req, res);
+});
+
+app.post('/signup',
+    function(req, res) {
+        passport.authenticate('signup', function(err, user, info) {
+        if (err) { return res.send(err); }
+        if (!user) { return res.send('Used'); }
+        req.logIn(user, function(err) {
+            if (err) { return res.send(err); }
+            return res.send('Success');
+        });
+      })(req, res);
 });
 
 app.post('/add_event', isLogin.ensureLoggedIn('/login'), function(req, res) {

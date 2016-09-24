@@ -1,42 +1,39 @@
 'use strict'
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Router, Route, Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 
-import Valid from './validation.js';
-import {Login} from './login.jsx';
-import {Signup} from './signup.jsx';
+import Login from './login.jsx';
+import Signup from './signup.jsx';
 
-import '../styles/style.scss';
 
 var AuthorizationForm = React.createClass({
     getInitialState: function () {
         return {
             formType: this.props.params.form,
-            visible: this.props.params.name === 'incorrect'
+            visible: false
         };
     },
 
     componentWillReceiveProps: function(nextProps) {
         this.setState({
             formType: nextProps.params.form,
-            visible: nextProps.params.name === 'incorrect'
-        })
+            visible: false
+        });
     },
 
     getSignup: function() {
         this.setState({
-            formType: 'sign up',
-            visible: this.props.params.name === 'incorrect'
-        })
+            formType: 'signup',
+            visible: true
+        });
     },
 
     getLogin: function() {
         this.setState({
-            formType: 'log in',
-            visible: this.props.params.name === 'incorrect'
-        })
+            formType: 'login',
+            visible: true
+        });
     },
 
     changeVisible: function() {
@@ -59,7 +56,7 @@ var AuthorizationForm = React.createClass({
                             <li className='form'><Link to='/signup'>Sign Up</Link></li>
                             <li className='form active'>Log In</li>
                         </ul>
-                        <Login/>
+                        <Login scope={this}/>
                     </div>
                     <div className={'incorrect' + (this.state.visible ? '' : ' none')}>
                         <div>
@@ -82,7 +79,7 @@ var AuthorizationForm = React.createClass({
                             <li className='form active'>Sign Up</li>
                             <li className='form'><Link className='link' to='/login'>Log In</Link></li>
                         </ul>
-                        <Signup />
+                        <Signup scope={this} />
                     </div>
                     <div className={'incorrect' + (this.state.visible ? '' : ' none')}>
                         <div>
@@ -99,11 +96,5 @@ var AuthorizationForm = React.createClass({
     }
 });
 
-ReactDOM.render(
-    <Router history={browserHistory}>
-        <Route path='/:form' component={AuthorizationForm} />
-        <Route path='/:form/:name' component={AuthorizationForm} />
-    </Router>,
-    document.getElementById('cont')
-);
-//export {AuthorizationForm};
+
+export default AuthorizationForm;

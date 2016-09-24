@@ -72,7 +72,7 @@ var CreateEvent = React.createClass({
 
     handleSubmit: function(e) {
         e.preventDefault();
-        var valid = validation.validForm.call(this);
+        var valid = validation.validEventForm.call(this);
 
         if (valid === false) {
             let state = this.state;
