@@ -35,7 +35,7 @@ const IventsOfWeek = React.createClass({
             firstDay = date.getTime() - DOW_date*MS_IN_DAY,
             titleTable = Array.from({length:7}),
             events = this.state.events,
-            timeRows = Array.from({length:24}),
+            timeRows = Array.from({length:25}),
             timeStr;
 
         titleTable = titleTable.map(function(v,i) {
@@ -82,7 +82,7 @@ const IventsOfWeek = React.createClass({
                         }
 
                         return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
-                            scope={this.props.scope} midnight={midnight} coefWidth={coefWidth} DOW={index} />;
+                            period='week' midnight={midnight} coefWidth={coefWidth} />;
                     }, this);
 
                     return arrTime;
@@ -120,7 +120,7 @@ const IventsOfWeek = React.createClass({
                     );
                 }
 
-                let divStyle = {width: 'calc(100% - ' + (7 * this.state.maxLen[i] + 2) + 'px)'};
+                let divStyle = {width: 'calc(100% - ' + 7 * (this.state.maxLen[i] - 1) + 'px)'};
 
                 return (
                     <td key={i} className={bool ? 'events-group curr-day' : 'events-group'}>

@@ -7,6 +7,7 @@
     width: 15rem;
 }
 
+
 .header {
     position: fixed;
     z-index: 50;
@@ -19,6 +20,7 @@
     box-shadow: 0 0 10px $color-grey;
     height: 3.1rem;
     @include user-select;
+
     .menu {
         display: flex;
         justify-content: center;
@@ -26,6 +28,7 @@
         width: 100%;
         text-transform: uppercase;
     }
+
     .title-menu {
         display: flex;
         justify-content: space-around;
@@ -34,34 +37,44 @@
         max-width: 800px;
         font-weight: bold;
     }
+
+
     .period-block {
         list-style-type: none;
         display: inline-flex;
         flex-wrap: nowrap;
         padding: 0;
     }
+
     .nav-today, .nav, .period-block, .create-event {
         margin: 0 15px;
     }
+
     .period, .nav-today {
         padding: 5px;
     }
+
     .period {
         margin-right: 10px;
     }
+
     .period:hover, .nav-today:hover {
         padding-bottom: 1px;
         color: $main-color;
         border-bottom: 3px solid $main-color;
         cursor: pointer;
     }
+
     .period:active, .nav-today:active {
         color: $button-color;
         border-bottom: 3px solid white;
     }
+
+
     .nav {
         display: inline-flex;
         color: $color-grey;
+
         .selected-period {
             width: 13rem;
             text-align: center;
@@ -69,20 +82,25 @@
             font-weight: normal;
             font-size: 1rem;
         }
+
         .fa {
             color: $main-color;
             font-size: 1.3rem;
             margin: 0 10px;
         }
+
         .fa:hover {
             cursor: pointer;
             color: $button-color;
         }
+
         .fa:active {
             font-size: 1.2rem;
             padding: 0.05rem;
         }
     }
+
+
     .logout {
         text-decoration: none;
         color: $color-grey;
@@ -94,9 +112,11 @@
         border-radius: 5px;
         margin: 0 1.5rem;
     }
+
     .logout:hover {
         background-color: $background-color;
     }
+
     .logout:active {
         padding: 0.05rem 0.95rem;
         margin: 0 1.55rem;

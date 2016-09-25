@@ -7,8 +7,10 @@ import IventsOfDay from './day.jsx';
 import IventsOfWeek from './week.jsx';
 import IventsOfMonth from './month.jsx';
 import CreateEvent from './create-event.jsx';
+import FullEvent from './full-event.jsx';
 
 import getEvents from '../get-events.js';
+import requests from '../requests.js';
 
 
 const MS_IN_DAY = 86400000;
@@ -19,13 +21,14 @@ const EventsTable = React.createClass({
         return {
             events: [],
             eventId: '',
-            visible: this.props.visEventForm
+            visEventForm: this.props.visEventForm,
+            visFullEvent: false
         }
     },
 
     componentWillReceiveProps: function(nextProps) {
         let state = this.state;
-        state.visible = nextProps.visEventForm;
+        state.visEventForm = nextProps.visEventForm;
         getEvents.getThisEvents.call(this, state, nextProps);
     },
 
@@ -45,22 +48,6 @@ const EventsTable = React.createClass({
         getEvents.getThisEvents.call(this);
     },
 
-    editEvent: function(e) {
-        let target = e.target;
-
-        if (target.className === 'button edit') {
-            let state = this.state;
-
-            state.visible = true;
-            state.eventId = target.getAttribute('data-event');
-            this.setState(state);
-
-            let elem = document.querySelector('.events-block .vis');
-
-            if (elem) elem.className = 'full-event none';
-        };
-    },
-
     clearForm: function(e) {
         let target = e.target;
         if (target.className === 'create button') {
@@ -68,6 +55,59 @@ const EventsTable = React.createClass({
             state.eventId = '';
             this.setState(state);
         }
+    },
+
+    changeFullEvent: function(e) {
+        let target = e.target;
+
+        if (target.className === 'button edit') {
+            let state = this.state;
+
+            state.visEventForm = true;
+            state.visFullEvent = false;
+            state.eventId = target.getAttribute('data-event');
+            this.setState(state);
+
+        } else if (target.className === 'button delete') {
+            requests.deletEvent.call(this, this.state.currEvent.id);
+
+            let state = this.state;
+            state.visFullEvent = false;
+            this.setState(state);
+
+        } else if (target.className === 'fa fa-times') {
+            let state = this.state;
+            state.visFullEvent = false;
+            this.setState(state);
+        }
+    },
+
+    viewFullEvent: function(e) {
+        let target = e.target,
+        state = this.state;
+
+        if (target.className.includes('event ')) {
+            let id = target.id.replace(/-\d*/, ''),
+                startDate = +target.getAttribute('data-start'),
+                currEvent;
+
+            currEvent = this.state.events.find(v => v.id === id && v.start_date === startDate);
+
+            if (this.state.currEvent
+            && this.state.currEvent.id === id
+            && this.state.currEvent.start_date === startDate) {
+                state.visFullEvent = !this.state.visFullEvent;
+            } else {
+                state.visFullEvent = true;
+            }
+
+            state.currEvent = currEvent;
+
+        } else {
+            state.visFullEvent = false;
+        }
+
+        this.setState(state);
     },
 
     render: function() {
@@ -90,11 +130,17 @@ const EventsTable = React.createClass({
         };
 
         return (
-            <div  onClick={this.editEvent}>
-                {body}
+            <div>
+                <div onClick={this.viewFullEvent}>
+                    {body}
+                </div>
                 <div onClick={this.clearForm}>
-                    <CreateEvent visible={this.state.visible} scope={this}
-                                 editableEvent={editableEvent} />
+                    <CreateEvent visible={this.state.visEventForm} scope={this}
+                        editableEvent={editableEvent} />
+                </div>
+                <div onClick={this.changeFullEvent}>
+                    <FullEvent visible={this.state.visFullEvent} scope={this}
+                        currEvent={this.state.currEvent} />
                 </div>
             </div>
         );

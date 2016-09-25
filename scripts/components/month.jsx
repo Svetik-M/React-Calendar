@@ -32,13 +32,25 @@ const Week = React.createClass({
     componentWillReceiveProps: function(nextProps) {
         let arrOfEvents = getEvents.sortWeekEventsByDays(nextProps.events, nextProps.currDay);
         arrOfEvents =  getEvents.sortWeekEventsByDuration(arrOfEvents, nextProps.currDay);
-        this.setState({events: arrOfEvents});
+
+        let arrTopEl = getBlockTopShift(arrOfEvents, nextProps.currDay);
+
+        this.setState({
+            events: arrOfEvents,
+            topEl: arrTopEl
+        });
     },
 
     componentWillMount: function() {
         let arrOfEvents = getEvents.sortWeekEventsByDays(this.props.events, this.props.currDay);
         arrOfEvents =  getEvents.sortWeekEventsByDuration(arrOfEvents, this.props.currDay);
-        this.setState({events: arrOfEvents});
+
+        let arrTopEl = getBlockTopShift(arrOfEvents, this.props.currDay);
+
+        this.setState({
+            events: arrOfEvents,
+            topEl: arrTopEl
+        });
     },
 
     render: function() {
@@ -86,9 +98,8 @@ const Week = React.createClass({
 
                         let id  = Math.ceil(lastDay / 7) + '.' + item.id;
 
-                        return <Event key={item.id}  id={id} events={this.props.events} currEvent={item}
-                            start={start} scope={this.props.scope} midnight={midnight} coefWidth={coefWidth}
-                            DOW={index} />;
+                        return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
+                            period='month' midnight={midnight} coefWidth={coefWidth} />;
                     }, this);
 
                     return arr;
@@ -110,8 +121,7 @@ const Week = React.createClass({
                 evSomeDaysStyle;
 
             if (events[i][0].length > 0 && events[i][0][0] === undefined) {
-                let topEl = getBlockTopShift(this.props.events, date);
-                evSomeDaysStyle = {top: 'calc(' + topEl + ' * (' + 1.2 + 'rem + ' + 2 + 'px))'};
+                evSomeDaysStyle = {top: 'calc(' + this.state.topEl[i] + ' * (' + 1.2 + 'rem + ' + 2 + 'px))'};
                 evOneDayStyle.top = evSomeDaysStyle.top;
             }
 

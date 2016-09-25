@@ -58,7 +58,7 @@ const IventsOfDay = React.createClass({
                     }
 
                     return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
-                        scope={this.props.scope} midnight={midnight} />;
+                        period='day' midnight={midnight} />;
                 }, this);
 
                 return arr;

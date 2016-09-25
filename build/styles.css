@@ -155,7 +155,7 @@ body {
   color: white;
   border: none;
   padding: 0.5rem 1.5rem 0.5rem 1rem;
-  margin: 3rem;
+  margin: 1.5rem 3rem;
   border-radius: 5px;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -170,12 +170,12 @@ body {
 .create-event:active {
   background-color: #ba2c5c;
   padding: 0.45rem 1.45rem 0.45rem 0.95rem;
-  margin: 3.05rem;
+  margin: 1.55rem 3.05rem;
 }
 
 .nav-date {
   position: fixed;
-  top: 11rem;
+  top: 8rem;
   -webkit-user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -264,7 +264,7 @@ body {
 }
 
 .events-block {
-  width: calc(100vw - 17rem);
+  width: calc(100vw - 16.5rem);
   position: relative;
   left: 15.2rem;
   flex-grow: 1;
@@ -275,21 +275,26 @@ body {
   position: fixed;
   z-index: 20;
   background-color: #ba2c5c;
-  border: 1px solid #ba2c5c;
   color: white;
   vertical-align: middle;
   text-align: center;
   table-layout: fixed;
-  width: calc(100vw - 17rem);
+  border-spacing: 0;
+  width: calc(100vw - 16.5rem);
   height: 2rem;
-  padding-bottom: 1px;
+}
+
+.events-block .title-date td {
+  border-right: 1px solid #ba2c5c;
+  border-bottom: 1px solid #ba2c5c;
 }
 
 .events-block .title-date .time {
-  width: 55px;
+  width: 52px;
 }
 
 .events-block .event {
+  box-sizing: border-box;
   font-size: 0.8rem;
   text-align: left;
   color: #252425;
@@ -316,34 +321,33 @@ body {
   border-spacing: 0;
 }
 
-.events-block .events-list tbody tr td {
-  vertical-align: top;
-  height: 48px;
-}
-
-.events-block .events-list tbody tr td.curr-day {
-  border-left: 2px solid #ba2c5c;
-  border-right: 2px solid #ba2c5c;
-}
-
-.events-block .events-list tbody tr:first-child td.curr-day {
-  border-top: 1.5px solid #ba2c5c;
-}
-
-.events-block .events-list tbody tr:last-child td.curr-day {
-  border-bottom: 1.5px solid #ba2c5c;
+.events-block .events-list td {
+  box-sizing: border-box;
 }
 
 .events-block .events-list thead tr {
   height: 2rem;
 }
 
+.events-block .events-list tbody tr td {
+  vertical-align: top;
+  height: 48px;
+}
+
+.events-block .events-list tbody tr td.curr-day {
+  border-left: 1px solid #ba2c5c;
+  border-right: 1px solid #ba2c5c;
+  background-color: #e6d0d9;
+}
+
 .events-block .events-list td {
+  border: 1px solid rgba(255, 255, 255, 0);
   border-right: 1px solid #b5b1b1;
   border-bottom: 1px solid #b5b1b1;
 }
 
 .events-block .events-list td .half {
+  box-sizing: border-box;
   width: 100%;
   height: 24px;
 }
@@ -355,6 +359,7 @@ body {
 .events-block .events-list .time {
   width: 55px;
   text-align: center;
+  vertical-align: middle;
 }
 
 .events-block .events-list .events-group {
@@ -386,11 +391,12 @@ body {
 }
 
 .events-block .events-list .month-table tr td.today {
-  border: 2px solid #ba2c5c;
+  border: 1px solid #ba2c5c;
+  background-color: rgba(230, 208, 217, 0.6);
 }
 
 .events-block .events-list .month-table tr td.today .date {
-  margin-top: -2px;
+  font-weight: bold;
 }
 
 .events-block .events-list .month-table tr td.other-month {
@@ -419,7 +425,6 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  box-sizing: border-box;
 }
 
 .events-block .week td,
@@ -448,7 +453,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
-  width: 100%;
+  width: calc(100% - 2px);
 }
 
 .events-block .week .home,
@@ -467,35 +472,16 @@ body {
 }
 
 .full-event {
-  position: absolute;
-  width: 20rem;
-  z-index: 30;
+  position: fixed;
+  top: 23.5rem;
+  width: 14rem;
+  height: calc(100vh - 24.3rem);
+  margin: 0 0.5rem;
   color: #494646;
   background-color: white;
   border: 2px solid #ba2c5c;
-  box-shadow: 0px 0px 10px #494646;
   display: flex;
   flex-wrap: wrap;
-}
-
-.full-event .fa-times {
-  color: #494646;
-  margin: 0.5rem 0.5rem 0 18.5rem;
-}
-
-.full-event .fa-times:hover {
-  color: #a2083b;
-}
-
-.full-event p:first-child,
-.full-event p:nth-child(3) {
-  font-weight: bold;
-  font-size: 0.8rem;
-}
-
-.full-event p:first-child {
-  font-size: 1rem;
-  margin-top: -1rem;
 }
 
 .full-event p {
@@ -507,7 +493,43 @@ body {
   color: #999696;
 }
 
+.full-event > p {
+  width: 12.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0.2rem;
+  color: #ba2c5c;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+
+.full-event > div {
+  height: calc(100% - 1.4rem);
+}
+
+.full-event .event-body {
+  height: calc(100% - 3rem);
+  overflow-y: auto;
+}
+
+.full-event .event-body p:first-child {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.full-event .event-body p:nth-child(3) {
+  text-transform: lowercase;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
 .full-event .button-block {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
   width: 100%;
   display: inline-flex;
   justify-content: space-between;
@@ -551,10 +573,6 @@ body {
 
 .full-event .button-block .edit:focus {
   background-color: #a2083b;
-}
-
-.none {
-  display: none;
 }
 
 .event-form {
@@ -812,6 +830,10 @@ body {
   margin-left: 1rem;
 }
 
+.event-form form .repeat .none {
+  display: none;
+}
+
 .event-form form .select_repeat_rate,
 .event-form form .select_repeat_duration {
   position: absolute;
@@ -846,10 +868,6 @@ body {
 
 .event-form form .select_repeat_end {
   left: calc((100vw - 40rem)/2 + 26.7rem);
-}
-
-.event-form form div .none {
-  display: none;
 }
 
 .event-form form .place input {
@@ -914,10 +932,6 @@ body {
 
 .event-form form .error div i {
   margin-right: 0.5rem;
-}
-
-.none {
-  display: none;
 }
 
 .authorization {

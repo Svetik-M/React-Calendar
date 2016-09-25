@@ -18,6 +18,7 @@
     height: 100vh;
     z-index: 100;
     background-color: rgba(64, 38, 47, 0.5);
+
     form {
         width: 42rem;
         height: 34.5rem;
@@ -43,6 +44,7 @@
             font-size: 1.2rem;
             color: $main-color;
             margin: 0 1.5rem 1rem 1.5rem;
+
             input, textarea {
                 height: 1.5rem;
                 padding: 0 1rem;
@@ -51,6 +53,7 @@
                 color: $color-grey;
                 border: 2px solid $color-pale-grey;
             }
+
             input:focus,  textarea:focus {
                 border: 2px solid $main-color;
                 outline: 0;
@@ -69,14 +72,17 @@
             display: inline-flex;
             align-items: baseline;
             margin: 0 1.5rem 1rem;
+
             span {
                 font-size: 1.2rem;
                 color: $main-color;
                 margin-right: 1rem;
             }
+
             label {
                 font-size: 0.9rem;
                 margin-right: 1.5rem;
+
                 input {
                     margin-right: 0.3rem;
                 }
@@ -88,47 +94,59 @@
             display: inline-flex;
             flex-wrap: nowrap;
             margin-right: 1rem;
+
             .start, .end {
                 display: inline-flex;
                 flex-wrap: nowrap;
+
                 label {
                     margin-right: 0;
+
                     i {
                         margin-left: -2rem;
                         font-size: 1rem;
                         color: $color-pale-grey;
                     }
+
                     i:hover {
                         color: $main-color;
                         cursor: pointer;
                     }
+
                     input {
                         width: 5rem;
                         padding: 0 1.7rem 0 0.5rem;
                     }
                 }
+
                 label:last-child {
                     margin-left: 0;
+
                     input {
                         width: 4rem;
                     }
                 }
             }
         }
+
         .select_start_date, .select_end_date, .select_repeat_end {
             @include display-select;
+
             .nav-date {
                 position: relative;
                 top: 0;
                 padding: 0 0.5rem 0.5rem;
             }
         }
+
         .select_start_date{
             left: calc((100vw - 40rem)/2 + 4.3rem);
         }
+
         .select_end_date {
             left: calc((100vw - 40rem)/2 + 24.5rem);
         }
+
         .select_start_time, .select_end_time {
             @include display-select;
             text-align: right;
@@ -136,14 +154,17 @@
             padding-right: 1rem;
             height: 10rem;
             overflow-y: scroll;
+
             .time:hover {
                 background-color: $background-color;
                 cursor: pointer;
             }
         }
+
         .select_start_time {
             left: calc((100vw - 40rem)/2 + 12.85rem);
         }
+
         .select_end_time {
             left: calc((100vw - 40rem)/2 + 32.95rem);
         }
@@ -152,66 +173,83 @@
         .repeat {
             align-items: center;
             height: 1.8rem;
+
             span {
                 margin-right: 0.5rem;
             }
+
             > input {
                 margin-right: 0.5rem;
             }
+
             div {
                 margin: 0;
+
                 i {
                     margin-left: -2rem;
                     font-size: 1rem;
                     color: $color-pale-grey;
                 }
+
                 i:hover {
                     color: $main-color;
                     cursor: pointer;
                 }
+
                 input {
                     width: 5rem;
                     padding: 0 1.7rem 0 0.5rem;
                 }
             }
+
             .rep-rate input,  .rep-duration input {
                 font-size: 1rem;
                 text-align: center;
             }
+
             .rep-rate input {
                 width: 6.5rem;
             }
+
             .rep-duration input {
                 width: 5.5rem;
             }
+
             div:last-child {
                 margin-left: 1rem;
             }
+
+            .none {
+                display: none;
+            }
         }
+
         .select_repeat_rate, .select_repeat_duration {
             @include display-select;
             width: 8.75rem;
+
             div {
                 width: 100%;
                 text-align: center;
             }
+
             div:hover {
                 background-color: $background-color;
                 cursor: pointer;
             }
         }
+
         .select_repeat_rate {
             left: calc((100vw - 40rem)/2 + 6.8rem);
         }
+
         .select_repeat_duration {
             width: 7.7rem;
             left: calc((100vw - 40rem)/2 + 16.8rem);
         }
+
         .select_repeat_end {
             left: calc((100vw - 40rem)/2 + 26.7rem);
-        }
-        div .none {
-            display: none;
         }
 
 
@@ -232,6 +270,7 @@
             width: 100%;
             display: inline-flex;
             justify-content: center;
+
             .button {
                 background-color: $button-color;
                 color: white;
@@ -244,10 +283,12 @@
                 border-radius: 5px;
                 @include user-select;
             }
+
             .button:hover {
                 background-color: $shadow-color;
                 border: 2px solid $shadow-color;
             }
+
             .button:focus {
                 outline: 0;
                 background-color: $button-color;
@@ -262,6 +303,7 @@
             margin: 1rem 0;
             display: flex;
             justify-content: center;
+
             div {
                 padding: 0.5rem 1rem;
                 font-size: 1rem;
@@ -269,14 +311,11 @@
                 text-align: center;
                 background-color: rgba(249, 239, 6, 0.49);
                 border-radius: 0.3rem;
+
                 i {
                     margin-right: 0.5rem;
                 }
             }
         }
     }
-}
-
-.none {
-    display: none;
 }

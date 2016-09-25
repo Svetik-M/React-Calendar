@@ -4,6 +4,7 @@
     background-color: $background-color;
     height: 100%;
     width: 100%;
+
     .logo {
         margin: 1rem auto;
         margin-top: calc(50vh - 18rem);
@@ -19,6 +20,7 @@
     height: 28rem;
     margin: 0 auto;
     box-shadow: 7px 7px 5px $color-grey;
+
     ul.form-group {
         display: inline-flex;
         justify-content: center;
@@ -26,6 +28,7 @@
         padding: 0;
         margin: 1rem 0;
         @include user-select;
+
         li {
             list-style-type: none;
             display: inline-flex;
@@ -36,9 +39,11 @@
             font-size: 1.2rem;
             cursor: pointer;
         }
+
         li.form {
             background-color: $color-grey;
             border-bottom: 2px solid $main-color;
+
             a {
                 display: inline-flex;
                 justify-content: center;
@@ -51,17 +56,21 @@
 
             }
         }
+
         li.active {
             background-color: $main-color;
         }
+
         li:hover {
             background-color: $button-color;
         }
     }
 }
 
+
 #signup, #login {
     height: 19.5rem;
+
     h2 {
         margin: 1rem 0;
         text-align: center;
@@ -73,15 +82,18 @@
         height: 2rem;
         border: 2px solid $color-pale-grey;
     }
+
     input {
         padding: 0 1rem;
         color: $color-grey;
         font-size: 1.1rem;
     }
+
     input:focus {
         border: 2px solid $main-color;
         outline: 0;
     }
+
     .message, .err {
         display: inline-flex;
         align-items: center;
@@ -91,13 +103,16 @@
         margin: 0 1rem;
         color: $error-color;
     }
+
     .message {
         color: $color-pale-grey;
     }
+
     .error {
         border: 2px solid $error-color;
         box-shadow: inset 0 0 10px $error-color;
     }
+
     .button, .button-block {
         width: 28rem;
         height: 2.5rem;
@@ -105,45 +120,55 @@
         color: $background-color;
         @include user-select;
     }
+
     .button {
         background-color: $main-color;
         border: 2px solid $main-color;
         cursor: pointer;
     }
+
     .button:focus {
         outline: 0;
         width: 27.8rem;
         height: 2.3rem;
 
     }
+
     .button:hover {
         background-color: $button-color;
         border: 2px solid $button-color;
     }
+
     .button-block {
         background-color: $color-grey;
         border: 2px solid $color-grey;
     }
 }
 
+
 #login {
     form {
         margin-top: 3rem;
     }
+
     .field-wrap:nth-child(2) {
         height: 4.9rem;
+
         .err {
             height: 1rem;
         }
     }
+
     .field-wrap {
         display: inline-flex;
         flex-wrap: wrap;
         justify-content: center;
         margin: 0.5rem auto;
+
         label {
             display: inline-flex;
             align-items: center;
+
             .fa {
                 display: inline-flex;
                 justify-content: center;
@@ -153,58 +178,72 @@
                 color: $main-color;
                 background-color: $color-pale-grey;
             }
+
             input {
                 width: calc(22rem - 2px);
             }
         }
 
     }
+
     .button, .button-block {
         margin: 3.5rem 1rem 1rem;
     }
+
     .button:focus {
         margin: 3.6rem 1.1rem 1.1rem;
     }
 }
 
+
 #signup {
     input {
         margin: 0 1rem;
     }
+
     .top-row {
         display: inline-flex;
         flex-wrap: wrap;
         margin-top: 0.5rem;
+
         input, {
             width: calc(11.5rem - 4px);
         }
+
         input:nth-child(2n), .err:nth-child(2n) {
             margin-left: 0;
         }
+
         .err {
             width: 13.5rem;
         }
     }
+
     .main {
         display: inline-flex;
         flex-wrap: wrap;
+
         input {
             margin-top: 0.5rem;
             width: calc(26rem - 4px);
         }
     }
+
     .main:nth-child(3) {
         height: 5.4rem;
         .err {
             height: 1rem;
         }
     }
+
     .error-message {
         margin: 0.6rem;
     }
+
     .button, .button-block {
         margin: 1.6rem 1rem 1rem;
     }
+
     .button:focus {
         margin: 1.7rem 1.1rem 1.1rem;
     }
@@ -221,6 +260,7 @@
     align-items: center;
     justify-content: center;
     z-index: 10;
+
     > div {
         width: 35rem;
         height: 5rem;
@@ -231,24 +271,24 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+
         .fa-times {
             color: $color-grey;
             margin: 0.5rem 0.5rem 0 33rem;
         }
+
         .fa-times:hover {
             color: $button-color;
         }
+
         div {
             display: inline-flex;
             align-items: baseline;
             margin-top: -2.1rem;
+
             .fa-exclamation-triangle {
                 margin-right: 1rem;
             }
         }
     }
-}
-
-.none {
-    display: none;
 }

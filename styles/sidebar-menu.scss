@@ -16,7 +16,7 @@
     color: white;
     border: none;
     padding: 0.5rem 1.5rem 0.5rem 1rem;
-    margin: 3rem;
+    margin: 1.5rem 3rem;
     border-radius: 5px;
     @include user-select;
 }
@@ -29,5 +29,5 @@
 .create-event:active {
     background-color: $main-color;
     padding: 0.45rem 1.45rem 0.45rem 0.95rem;
-    margin: 3.05rem;
+    margin: 1.55rem 3.05rem;
 }

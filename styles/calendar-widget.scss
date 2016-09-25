@@ -1,6 +1,6 @@
 .nav-date {
     position: fixed;
-    top: 11rem;
+    top: 8rem;
     @include user-select;
     width: 13rem;
     padding: 0rem 1rem;
@@ -13,23 +13,28 @@
     text-align: center;
     font-size: 1rem;
     color: $color-grey;
+
     .fa {
         width: 1.9rem;
         color: $main-color;
         font-size: 1.1rem;
         margin: 0 auto;
     }
+
     .fa:hover {
         cursor: pointer;
         color: $button-color;
     }
+
     .fa:active {
         font-size: 1rem;
     }
+
     #curr-month {
         width: 9.2rem;
     }
 }
+
 
 .calendar {
     border-spacing: 0;
@@ -38,38 +43,46 @@
     line-height: 1.2rem;
     font-size: 0.8rem;
     text-align: center;
+
     td {
         width: 1.8rem;
     }
-    thead {
-        tr {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: $main-color;
-        }
+
+    thead tr {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: $main-color;
     }
+
     .monthTable {
+
         td {
             border: 0.15rem solid white;
         }
+
         td.curr-month {
             color: $color-grey;
         }
+
         td:first-child, td:last-child {
             color: $button-color;
         }
+
         td.other-month {
             color: $color-pale-grey;
         }
+
         tr td.today {
             border: 0.15rem solid $main-color;
         }
+
         td:hover {
             background-color: $background-color;
             border: 0.15rem solid $background-color;
             cursor: pointer;
         }
     }
+
     td.selectedPeriod {
         background-color: $background-color;
         border: 0.15rem solid $background-color;

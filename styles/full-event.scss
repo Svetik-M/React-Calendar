@@ -1,0 +1,97 @@
+.full-event {
+    position: fixed;
+    top: 23.5rem;
+    width: 14rem;
+    height: calc(100vh - 24.3rem);
+    margin: 0 0.5rem;
+    color: $color-grey;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid $main-color;
+    display: flex;
+    flex-wrap: wrap;
+
+    p {
+        margin: 0.5rem;
+        text-align: left;
+
+        span {
+            color: rgb(153, 150, 150);
+        }
+    }
+
+    > p {
+        width: 12.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 0.2rem;
+        color: $main-color;
+        @include user-select;
+    }
+
+    > div {
+    height: calc(100% - 1.4rem);
+    }
+
+    .event-body {
+        height: calc(100% - 3rem);
+        overflow-y: auto;
+
+        p:first-child {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        p:nth-child(3) {
+            text-transform: lowercase;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+    }
+
+    .button-block {
+        @include user-select;
+        width: 100%;
+        display: inline-flex;
+        justify-content: space-between;
+
+        .button {
+            background-color: $color-pale-grey;
+            color: $color-grey;
+            text-transform: uppercase;
+            border: none;
+            margin: 0.5rem;
+            width: 6rem;
+            height: 1.5rem;
+            font-size: 0.8rem;
+            border-radius: 3px;
+            @include user-select;
+        }
+
+        .button:hover {
+            background-color: $color-grey;
+            color: white;
+        }
+
+        .button:focus {
+            outline: 0;
+            background-color: $color-pale-grey;
+            color: $color-grey;
+        }
+
+        .edit {
+            background-color: $button-color;
+            color: white;
+        }
+
+        .edit:hover {
+            background-color: $shadow-color;
+            color: white;
+        }
+
+        .edit:focus {
+            background-color: $button-color;
+        }
+    }
+}

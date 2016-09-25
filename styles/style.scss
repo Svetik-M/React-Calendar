@@ -23,4 +23,8 @@ body {
     margin-top: 3.1rem;
 }
 
-@import 'title-menu', 'sidebar-menu', 'calendar-widget', 'main-block', 'create-event', 'login-signup';
+@import 'title-menu', 'sidebar-menu', 'calendar-widget', 'main-block', 'full-event', 'create-event', 'login-signup';
+
+.none {
+    display: none;
+}

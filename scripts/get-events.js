@@ -149,7 +149,9 @@ let getEvents = {
                 return value.start_date >= midnight
                     && value.start_date <= currTime
                     && value.end_date > currTime
-                    && value.end_date < midnight + MS_IN_DAY;
+                    && value.end_date < midnight + MS_IN_DAY
+                    || value.start_date === currTime
+                    &&  value.end_date === currTime;
             });
 
             arrOfEvents[i] = arr;
@@ -192,9 +194,10 @@ let getEvents = {
                 let start = value.start_date,
                     end = value.end_date,
                     day = date + i * MS_IN_DAY;
-                return start >= day && start < day + MS_IN_DAY ||
-                       start < day + MS_IN_DAY && end > day && end <= day + MS_IN_DAY ||
-                       start <= day && end >= day;
+                return start >= day && start < day + MS_IN_DAY
+                       || start < day + MS_IN_DAY && end > day && end <= day + MS_IN_DAY
+                       || start <= day && end > day
+                       || start === day && end === day;
             });
 
             arrOfEvents[i] = arr;
