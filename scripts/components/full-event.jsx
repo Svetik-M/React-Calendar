@@ -3,6 +3,8 @@
 
 import React from 'react';
 
+import {getEventDate} from '../get-events.js';
+
 
 const FullEvent = React.createClass({
 
@@ -10,18 +12,7 @@ const FullEvent = React.createClass({
         let ev = this.props.currEvent;
 
         if (ev) {
-            let optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'},
-                optionsTime = {hour: '2-digit', minute: '2-digit'},
-                optionsDateTime = Object.assign({}, optionsDate, optionsTime),
-                date;
-
-            if (new Date(ev.start_date).toLocaleDateString() === new Date(ev.end_date).toLocaleDateString()) {
-                date = new Date(ev.start_date).toLocaleString('en-US', optionsDateTime).replace('0 ', '0')
-                    + ' - ' + new Date(ev.end_date).toLocaleString('en-US', optionsTime).replace('0 ', '0');
-            } else {
-                date = new Date(ev.start_date).toLocaleString('en-US', optionsDateTime).replace('0 ', '0')
-                    + ' - ' + new Date(ev.end_date).toLocaleString('en-US', optionsDateTime).replace('0 ', '0');
-            }
+            let date = getEventDate(ev);
 
             return (
                 <div className='full-event'>

@@ -9,11 +9,15 @@ import IventsOfMonth from './month.jsx';
 import CreateEvent from './create-event.jsx';
 import FullEvent from './full-event.jsx';
 
-import getEvents from '../get-events.js';
+import {getThisEvents, sortEvents, getEventDate} from '../get-events.js';
 import requests from '../requests.js';
 
 
-const MS_IN_DAY = 86400000;
+const MS_IN_DAY = 86400000,
+      MS_IN_HOUR = 3600000,
+      MS_IN_MIN = 60000;
+
+let dayEvents = [];
 
 
 const EventsTable = React.createClass({
@@ -29,15 +33,19 @@ const EventsTable = React.createClass({
     componentWillReceiveProps: function(nextProps) {
         let state = this.state;
         state.visEventForm = nextProps.visEventForm;
-        getEvents.getThisEvents.call(this, state, nextProps);
+        getThisEvents.call(this, state, nextProps);
     },
 
     componentWillMount: function() {
-        getEvents.getThisEvents.call(this);
+        getThisEvents.call(this);
+
+        let start = new Date().getTime(),
+            end = start + MS_IN_DAY + MS_IN_HOUR,
+            timerId = setInterval(requests.getDayEvents.call(this, start, end), MS_IN_DAY);
     },
 
     getArrOfEvents: function(res, start, end) {
-        let arrSort = getEvents.sortEvents(res, start, end),
+        let arrSort = sortEvents(res, start, end),
             state = this.state;
 
         state.events = arrSort;
@@ -45,7 +53,15 @@ const EventsTable = React.createClass({
     },
 
     updateEvents: function() {
-        getEvents.getThisEvents.call(this);
+        let start = new Date().getTime(),
+            end = start + MS_IN_DAY + MS_IN_HOUR;
+        getThisEvents.call(this);
+        requests.getDayEvents.call(this, start, end);
+    },
+
+    getArrOfDayEvents: function(res, start, end) {
+        let arrSort = sortEvents(res, start, end);
+        dayEvents = arrSort;
     },
 
     clearForm: function(e) {
@@ -110,6 +126,11 @@ const EventsTable = React.createClass({
         this.setState(state);
     },
 
+    componentDidMount: function() {
+        getNotification();
+        let timerId = setInterval(getNotification, 1000);
+    },
+
     render: function() {
         let body;
         if (this.props.period === 'day') {
@@ -146,6 +167,61 @@ const EventsTable = React.createClass({
         );
     }
 });
+
+
+function getNotification(title, date) {
+    if (!("Notification" in window)) {
+        alert("This browser does not support desktop notification");
+
+    } else if (Notification.permission === "granted") {
+        let eventsForNotif = filterEvents();
+
+        if (eventsForNotif !== []) {
+
+            createNotification(eventsForNotif);
+        }
+
+    } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(function(permission) {
+            if (permission === "granted") {
+                let eventsForNotif = filterEvents();
+
+                if (eventsForNotif !== []) {
+                    createNotification(eventsForNotif);
+                }
+            }
+        });
+    }
+}
+
+
+function filterEvents() {
+    let date = new Date().getTime();
+
+    let eventsForNotif = dayEvents.filter((value) => {
+        let startNotif = value.start_date - 5 * MS_IN_MIN;
+        return startNotif > date && startNotif < date + 2000;
+    });
+
+    return eventsForNotif;
+}
+
+
+function createNotification(arrEvents) {
+    for (let i = 0; i < arrEvents.length; i++) {
+        dayEvents = dayEvents.filter((value) => value.id !== arrEvents[i].id);
+
+        let audio = new Audio();
+        audio.src = 'reminder.wav';
+        audio.autoplay = true;
+
+        let date = getEventDate(arrEvents[i]),
+            options = {body: date + '\n' + arrEvents[i].title,
+                       icon: 'reminder.png'};
+
+        let notification = new Notification('Reminder', options);
+    }
+}
 
 
 export default EventsTable;

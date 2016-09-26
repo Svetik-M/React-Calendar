@@ -6,7 +6,7 @@ import React from 'react';
 import Event from './event.jsx';
 import CreateEvent from './create-event.jsx';
 
-import getEvents from '../get-events.js';
+import {sortWeekEventsByDays, sortWeekEventsByDuration} from '../get-events.js';
 import {getBlockTopShift} from '../viewing-options.js';
 
 
@@ -30,8 +30,8 @@ const Week = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        let arrOfEvents = getEvents.sortWeekEventsByDays(nextProps.events, nextProps.currDay);
-        arrOfEvents =  getEvents.sortWeekEventsByDuration(arrOfEvents, nextProps.currDay);
+        let arrOfEvents = sortWeekEventsByDays(nextProps.events, nextProps.currDay);
+        arrOfEvents =  sortWeekEventsByDuration(arrOfEvents, nextProps.currDay);
 
         let arrTopEl = getBlockTopShift(arrOfEvents, nextProps.currDay);
 
@@ -42,8 +42,8 @@ const Week = React.createClass({
     },
 
     componentWillMount: function() {
-        let arrOfEvents = getEvents.sortWeekEventsByDays(this.props.events, this.props.currDay);
-        arrOfEvents =  getEvents.sortWeekEventsByDuration(arrOfEvents, this.props.currDay);
+        let arrOfEvents = sortWeekEventsByDays(this.props.events, this.props.currDay);
+        arrOfEvents = sortWeekEventsByDuration(arrOfEvents, this.props.currDay);
 
         let arrTopEl = getBlockTopShift(arrOfEvents, this.props.currDay);
 

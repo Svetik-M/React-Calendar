@@ -4,7 +4,7 @@
 import React from 'react';
 
 import Event from './event.jsx';
-import getEvents from '../get-events.js';
+import {sortWeekEventsByDays, sortDayEventsByHour, sortEvForCountMaxLength} from '../get-events.js';
 
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -187,15 +187,15 @@ const IventsOfWeek = React.createClass({
 
 function getNewState(props) {
     let firstDay = props.day.getTime() - props.day.getDay() * MS_IN_DAY,
-        arr = getEvents.sortWeekEventsByDays(props.events, firstDay),
+        arr = sortWeekEventsByDays(props.events, firstDay),
         arrOfEvents = arr.map(function(val, ind) {
             let midnight = firstDay + ind * MS_IN_DAY;
-            return getEvents.sortDayEventsByHour(val, midnight);
+            return sortDayEventsByHour(val, midnight);
         }),
 
         arrOfEv = arr.map(function(val, ind) {
             let midnight = firstDay + ind * MS_IN_DAY;
-            return getEvents.sortEvForCountMaxLength(val, midnight);
+            return sortEvForCountMaxLength(val, midnight);
         }),
 
         arrLength = arrOfEv.map(val => {

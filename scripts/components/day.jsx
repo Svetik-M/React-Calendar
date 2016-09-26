@@ -5,7 +5,7 @@ import React from 'react';
 
 import Event from './event.jsx';
 
-import getEvents from '../get-events.js';
+import {sortDayEventsByHour, sortEvForCountMaxLength} from '../get-events.js';
 
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -131,8 +131,8 @@ const IventsOfDay = React.createClass({
 
 
 function getNewState(props) {
-    let arrOfEvents = getEvents.sortDayEventsByHour(props.events, props.day.getTime()),
-        arrOfEv = getEvents.sortEvForCountMaxLength(props.events, props.day.getTime()),
+    let arrOfEvents = sortDayEventsByHour(props.events, props.day.getTime()),
+        arrOfEv = sortEvForCountMaxLength(props.events, props.day.getTime()),
         arrLen = arrOfEv.map(val => val.length),
         maxLen =  Math.max.apply(null, arrLen);
         return {events: arrOfEvents, maxLen: maxLen};

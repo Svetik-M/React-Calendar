@@ -93,7 +93,7 @@ var isLogin = require('connect-ensure-login');
 
 app.get('/', isLogin.ensureLoggedIn('/login'),
     function(req, res) {
-        res.redirect('/user/' + req.user.id);
+        res.redirect('/user');
 });
 
 app.get('/login', function(req, res) {

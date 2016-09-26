@@ -100,16 +100,6 @@ let requests = {
     },
 
 
-    redirectToUserPage: function() {
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('GET', '/user/');
-        xhr.setRequestHeader('Content-Type', 'text/html');
-
-        xhr.send();
-    },
-
-
     getEvents: function(start, end) {
         let body = JSON.stringify({
             start: new Date(start),
@@ -127,6 +117,31 @@ let requests = {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     call.getArrOfEvents(JSON.parse(xhr.responseText), start, end);
+                }
+            }
+        }
+
+        xhr.send(body);
+    },
+
+
+    getDayEvents: function(start, end) {
+        let body = JSON.stringify({
+            start: new Date(start),
+            end: new Date(end)
+        });
+
+        let call = this;
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('POST', '/get_events');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    call.getArrOfDayEvents(JSON.parse(xhr.responseText), start, end);
                 }
             }
         }
