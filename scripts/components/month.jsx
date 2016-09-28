@@ -7,19 +7,11 @@ import Event from './event.jsx';
 import CreateEvent from './create-event.jsx';
 
 import {sortWeekEventsByDays, sortWeekEventsByDuration} from '../get-events.js';
-import {getBlockTopShift} from '../viewing-options.js';
+import {getBlockTopShift, getStartDateStrAndCoefWidth} from '../viewing-options.js';
 
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       MS_IN_DAY = 86400000;
-
-
-let titleTable = Array.from({length:7});
-titleTable = titleTable.map(function(v,i) {
-    return (<td key={i} className='events-group'>
-               {DAYS_OF_WEEK[i]}
-           </td>);
-});
 
 
 const Week = React.createClass({
@@ -30,10 +22,10 @@ const Week = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        let arrOfEvents = sortWeekEventsByDays(nextProps.events, nextProps.currDay);
-        arrOfEvents =  sortWeekEventsByDuration(arrOfEvents, nextProps.currDay);
+        let arrOfEvents = sortWeekEventsByDays(nextProps.events, nextProps.firstDateOfWeekMS);
+        arrOfEvents =  sortWeekEventsByDuration(arrOfEvents, nextProps.firstDateOfWeekMS);
 
-        let arrTopEl = getBlockTopShift(arrOfEvents, nextProps.currDay);
+        let arrTopEl = getBlockTopShift(arrOfEvents, nextProps.firstDateOfWeekMS);
 
         this.setState({
             events: arrOfEvents,
@@ -42,10 +34,10 @@ const Week = React.createClass({
     },
 
     componentWillMount: function() {
-        let arrOfEvents = sortWeekEventsByDays(this.props.events, this.props.currDay);
-        arrOfEvents = sortWeekEventsByDuration(arrOfEvents, this.props.currDay);
+        let arrOfEvents = sortWeekEventsByDays(this.props.events, this.props.firstDateOfWeekMS);
+        arrOfEvents = sortWeekEventsByDuration(arrOfEvents, this.props.firstDateOfWeekMS);
 
-        let arrTopEl = getBlockTopShift(arrOfEvents, this.props.currDay);
+        let arrTopEl = getBlockTopShift(arrOfEvents, this.props.firstDateOfWeekMS);
 
         this.setState({
             events: arrOfEvents,
@@ -54,70 +46,53 @@ const Week = React.createClass({
     },
 
     render: function() {
-        let firstDay = this.props.currDay,
-            month = this.props.day.getMonth(),
-            dateFirst = new Date(this.props.day.getFullYear(), month, 1),
-            events = this.state.events,
-            allDays = Array.from({length: 7}),
+        let firstDayOfWeekMS = this.props.firstDateOfWeekMS,
+            month = this.props.selDate.getMonth(),
+            firstDateOfMonth = new Date(this.props.selDate.getFullYear(), month, 1),
+            lastDateOfMonth = new Date(this.props.selDate.getFullYear(), month + 1, 0),
             today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            lastDay = new Date(firstDay + 6 * MS_IN_DAY).getDate();
+            quantityWeeks = Math.ceil((lastDateOfMonth.getDate() - 7 + firstDateOfMonth.getDay()) / 7) + 1,
+            events = this.state.events,
+            tableRow = Array.from({length: 7});
 
         events = events.map(function(value, index) {
-            let midnight = firstDay + index * MS_IN_DAY;
+            let dateMidnightMS = firstDayOfWeekMS + index * MS_IN_DAY;
 
-            let arrDay = value.map(function(val, ind) {
+            let arrDayEvents = value.map(function(val) {
                 if (val === undefined) {
                     return val;
                 } else {
-                    let arr = val.map(function(item) {
-                        let startDate = item.start_date,
-                            endDate = item.end_date,
-                            start, coefWidth;
+                    let arrEvents = val.map(function(item) {
+                        let params = getStartDateStrAndCoefWidth(item, index, dateMidnightMS);
 
-                        if (startDate < midnight && index !== 0) {
-                            return undefined;
+                        if (params === undefined) return undefined;
 
-                        } else if (startDate < midnight && index === 0) {
-                            start = '';
-                            coefWidth = Math.ceil((endDate - midnight) / MS_IN_DAY);
-                            if (coefWidth >  7) coefWidth = 7;
-
-                        } else if (startDate >= midnight && startDate < midnight + MS_IN_DAY) {
-                            start = new Date(startDate).toLocaleString('en-US',
-                                    {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
-                            coefWidth = Math.ceil((endDate - startDate) / MS_IN_DAY);
-
-                            if (coefWidth >  6 - index + 1) coefWidth = 6 - index + 1;
-
-                        } else {
-                            start = new Date(startDate).toLocaleString('en-US',
-                                    {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
-                        }
-
-                        if (coefWidth === 0) coefWidth = 1;
-
-                        let id  = Math.ceil(lastDay / 7) + '.' + item.id;
-
-                        return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
-                            period='month' midnight={midnight} coefWidth={coefWidth} />;
+                        return <Event key={item.id} events={this.props.events} currEvent={item}
+                            startDateStr={params.startDateStr} period='month' dateMidnightMS={dateMidnightMS}
+                            coefWidth={params.coefWidth} />;
                     }, this);
 
-                    return arr;
+                    return arrEvents;
                 }
             }, this);
 
-            return arrDay;
+            return arrDayEvents;
 
         }, this);
 
-        allDays = allDays.map(function(v, i) {
-            let date = new Date(firstDay + i * MS_IN_DAY),
-                thisDay = date.getDate(),
-                thisDayMs = date.getTime(),
+        tableRow = tableRow.map(function(v, i) {
+            let date = new Date(firstDayOfWeekMS + i * MS_IN_DAY),
+                dateOfMonth = date.getDate(),
+                dateMS = date.getTime(),
+                coefDivHeight = this.state.topEl[i] + events[i][0].filter(v => v !== undefined).length,
+
+                tdStyle = {height: 'calc((100vh - ' + 5.5 + 'rem) / ' + quantityWeeks + ')'},
+
                 evOneDayStyle = {
-                    height: 'calc(100% - (' + (events[i][0].length * 1.2 + 1.1) + 'rem + '
-                            + (events[i][0].length + 2)  + 'px))'
+                    height: 'calc(100% - (' + (coefDivHeight * 1.2 + 1.1) + 'rem + '
+                            + (coefDivHeight + 2)  + 'px))'
                 },
+
                 evSomeDaysStyle;
 
             if (events[i][0].length > 0 && events[i][0][0] === undefined) {
@@ -126,20 +101,20 @@ const Week = React.createClass({
             }
 
             if (date.getMonth() !== month) {
-                return (<td key={i} className='other-month' id={'m.' + thisDayMs}>
-                            <div className='date'>{thisDay}</div>
+                return (<td key={i} className='other-month' data-date={dateMS} style={tdStyle}>
+                            <div className='date'>{dateOfMonth}</div>
                             <div style={evSomeDaysStyle}>{events[i][0]}</div>
                             <div style={evOneDayStyle}>{events[i][1]}</div>
                         </td>);
-            } else  if (thisDayMs === today.getTime()) {
-                return (<td key={i} className='curr-month today' id={'m.' + thisDayMs}>
-                            <div className='date'>{thisDay}</div>
+            } else  if (dateMS === today.getTime()) {
+                return (<td key={i} className='curr-month today' data-date={dateMS} style={tdStyle}>
+                            <div className='date'>{dateOfMonth}</div>
                             <div style={evSomeDaysStyle}>{events[i][0]}</div>
                             <div style={evOneDayStyle}>{events[i][1]}</div>
                         </td>);
             } else {
-                return (<td key={i} className='curr-month' id={'m.' + thisDayMs}>
-                            <div className='date'>{thisDay}</div>
+                return (<td key={i} className='curr-month' data-date={dateMS} style={tdStyle}>
+                            <div className='date'>{dateOfMonth}</div>
                             <div style={evSomeDaysStyle}>{events[i][0]}</div>
                             <div style={evOneDayStyle}>{events[i][1]}</div>
                         </td>);
@@ -147,7 +122,7 @@ const Week = React.createClass({
         }, this);
         return  (
             <tr>
-                {allDays}
+                {tableRow}
             </tr>
         );
     }
@@ -156,22 +131,24 @@ const Week = React.createClass({
 
 const Month = React.createClass({
     render: function() {
-        let currDay = this.props.currDay,
+        let firstDateOfWeekMS = this.props.startDateMS,
             events = this.props.events,
             weeks = [];
 
-        for (let n = 1; currDay <= this.props.dateLast; currDay = currDay + 7 * MS_IN_DAY, n++) {
+        for (let n = 1; firstDateOfWeekMS <= this.props.lastDateOfMonthMS;
+            firstDateOfWeekMS = firstDateOfWeekMS + 7 * MS_IN_DAY, n++) {
+
             let eventsWeek = events.filter(function(value) {
-                return new Date(value.start_date).getTime() >= currDay
-                       && new Date(value.start_date).getTime() < currDay + 7 * MS_IN_DAY
-                       || new Date(value.end_date).getTime() >= currDay
-                       && new Date(value.end_date).getTime() < currDay + 7 * MS_IN_DAY
-                       || new Date(value.start_date).getTime() < currDay
-                       && new Date(value.end_date).getTime() >= currDay + 7 * MS_IN_DAY;
+                return new Date(value.start_date).getTime() >= firstDateOfWeekMS
+                       && new Date(value.start_date).getTime() < firstDateOfWeekMS + 7 * MS_IN_DAY
+                       || new Date(value.end_date).getTime() >= firstDateOfWeekMS
+                       && new Date(value.end_date).getTime() < firstDateOfWeekMS + 7 * MS_IN_DAY
+                       || new Date(value.start_date).getTime() < firstDateOfWeekMS
+                       && new Date(value.end_date).getTime() >= firstDateOfWeekMS + 7 * MS_IN_DAY;
             });
             weeks.push(
-                <Week key = {n} currDay={currDay} day={this.props.day} events={eventsWeek}
-                    scope={this.props.scope} />
+                <Week key = {n} firstDateOfWeekMS={firstDateOfWeekMS} selDate={this.props.selDate}
+                    events={eventsWeek} scope={this.props.scope} />
             );
         }
 
@@ -186,23 +163,26 @@ const Month = React.createClass({
 
 const IventsOfMonth = React.createClass({
     render: function() {
+        let tableTitle = Array.from({length:7});
+        tableTitle = tableTitle.map(function(v,i) {
+            return (<td key={i} className='events-group'>
+                       {DAYS_OF_WEEK[i]}
+                   </td>);
+        });
+
         return (
             <div className='events-block'>
                 <table className='title-date'>
                     <tbody>
                         <tr>
-                            {titleTable}
+                            {tableTitle}
                         </tr>
                     </tbody>
                 </table>
                 <table className='events-list month'>
-                    <thead>
-                        <tr>
-                            {titleTable}
-                        </tr>
-                    </thead>
-                    <Month day={this.props.day} currDay={this.props.currDay} dateLast={this.props.dateLast}
-                           events={this.props.events} scope={this.props.scope} />
+                    <Month selDate={this.props.selDate} startDateMS={this.props.startDateMS}
+                        lastDateOfMonthMS={this.props.lastDateOfMonthMS} events={this.props.events}
+                        scope={this.props.scope} />
                 </table>
             </div>
         )

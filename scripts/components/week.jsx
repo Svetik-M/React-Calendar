@@ -5,6 +5,7 @@ import React from 'react';
 
 import Event from './event.jsx';
 import {sortWeekEventsByDays, sortDayEventsByHour, sortEvForCountMaxLength} from '../get-events.js';
+import {getStartDateStrAndCoefWidth} from '../viewing-options.js';
 
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -30,73 +31,53 @@ const IventsOfWeek = React.createClass({
     },
 
     render: function() {
-        let date = this.props.day,
-            DOW_date = date.getDay(),
-            firstDay = date.getTime() - DOW_date*MS_IN_DAY,
-            titleTable = Array.from({length:7}),
+        let selDate = this.props.selDate,
+            DOW_selDate = selDate.getDay(),
+            firstDateOfWeekMS = selDate.getTime() - DOW_selDate * MS_IN_DAY,
             events = this.state.events,
-            timeRows = Array.from({length:25}),
+            tableTitle = Array.from({length:7}),
+            tableRows = Array.from({length:25}),
             timeStr;
 
-        titleTable = titleTable.map(function(v,i) {
-            let day = new Date(firstDay + i * MS_IN_DAY).getDate(),
-                month = parseInt(new Date(firstDay + i * MS_IN_DAY).getMonth()) + 1,
-                year = new Date(firstDay + i * MS_IN_DAY).getFullYear();
+        tableTitle = tableTitle.map(function(v,i) {
+            let day = new Date(firstDateOfWeekMS + i * MS_IN_DAY).getDate(),
+                month = +(new Date(firstDateOfWeekMS + i * MS_IN_DAY).getMonth()) + 1;
 
             return (<td key={i} className='events-group'>
-                        {DAYS_OF_WEEK[i] +' '+ day +'/'+ month}
+                        {DAYS_OF_WEEK[i] + ' ' + day + '/' + month}
                     </td>);
         });
 
         events = events.map(function(value, index){
-            let midnight = firstDay + index * MS_IN_DAY;
+            let dateMidnightMS = firstDateOfWeekMS + index * MS_IN_DAY;
 
-            let arrDay = value.map(function(val) {
+            let arrDayEvents = value.map(function(val) {
                 if (val === undefined) {
                     return val;
 
                 } else {
-                    let arrTime = val.map(function(item) {
-                        let startDate = item.start_date,
-                            endDate = item.end_date,
-                            start, coefWidth;
+                    let arrTimeEvents = val.map(function(item) {
+                        let params = getStartDateStrAndCoefWidth(item, index, dateMidnightMS);
 
-                        if (startDate < midnight && index !== 0) {
-                            return undefined;
+                        if (params === undefined) return undefined;
 
-                        } else if (startDate < midnight && index === 0) {
-                            start = '';
-                            coefWidth = Math.ceil((endDate - midnight) / MS_IN_DAY);
-                            if (coefWidth >  7) coefWidth = 7;
-
-                        } else if (startDate >= midnight && startDate < midnight + MS_IN_DAY) {
-                            start = new Date(startDate).toLocaleString('en-US',
-                                    {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
-                            coefWidth = Math.ceil((endDate - startDate) / MS_IN_DAY);
-
-                            if (coefWidth >  6 - index + 1) coefWidth = 6 - index + 1;
-
-                        } else {
-                            start = new Date(startDate).toLocaleString('en-US',
-                                    {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
-                        }
-
-                        return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
-                            period='week' midnight={midnight} coefWidth={coefWidth} />;
+                        return <Event key={item.id} events={this.props.events} currEvent={item}
+                            startDateStr={params.startDateStr} period='week' dateMidnightMS={dateMidnightMS}
+                            coefWidth={params.coefWidth} />;
                     }, this);
 
-                    return arrTime;
+                    return arrTimeEvents;
                 }
             }, this);
 
-            return arrDay;
+            return arrDayEvents;
 
         }, this);
 
-        timeRows = timeRows.map(function(value, index) {
-            let eventsDOW  = Array.from({length:7}),
+        tableRows = tableRows.map(function(value, index) {
+            let eventsByDOW = Array.from({length:7}),
                 d = new Date(),
-                today = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+                todayMS = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 
             if (index === 1) timeStr = '12am';
             else if (index < 13) timeStr = (index - 1) + 'am';
@@ -104,16 +85,17 @@ const IventsOfWeek = React.createClass({
             else if (index > 13) timeStr = (index - 13) + 'pm';
 
 
-            eventsDOW = eventsDOW.map(function(v, i) {
-                let bool = (firstDay + i * MS_IN_DAY === today),
-                    date = firstDay + i * MS_IN_DAY;
+            eventsByDOW = eventsByDOW.map(function(v, i) {
+                let bool = firstDateOfWeekMS + i * MS_IN_DAY === todayMS;
 
                 if (index === 0) {
                     let tdStyle = {
-                        height: 'calc(' + (events[i][0].length * 1.2) + 'rem + ' + (events[i][0].length + 6)  + 'px)'
+                        height: 'calc(' + (events[i][0].length * 20) + 'px + '
+                                        + (events[i][0].length * 2 + 6)  + 'px)'
                     };
+
                     return (
-                        <td key={i} className={bool ? 'events-group curr-day all-day' : 'events-group all-day'}
+                        <td key={i} className={bool ? 'events-group today all-day' : 'events-group all-day'}
                             style={tdStyle}>
                             {events[i][0]}
                         </td>
@@ -123,15 +105,15 @@ const IventsOfWeek = React.createClass({
                 let divStyle = {width: 'calc(100% - ' + 7 * (this.state.maxLen[i] - 1) + 'px)'};
 
                 return (
-                    <td key={i} className={bool ? 'events-group curr-day' : 'events-group'}>
-                        <div key={i+.0} className='half'
-                            id={firstDay + i * MS_IN_DAY + index * MS_IN_HOUR}>
+                    <td key={i} className={bool ? 'events-group today' : 'events-group'}>
+                        <div key={i + .0} className='half'
+                            data-date={firstDateOfWeekMS + i * MS_IN_DAY + index * MS_IN_HOUR}>
                             <div style={divStyle}>
                                 {events[i][2 * index - 1]}
                             </div>
                         </div>
-                        <div key={i+.1} className='half'
-                            id={firstDay + i * MS_IN_DAY + i * MS_IN_HOUR + MS_IN_HOUR/2}>
+                        <div key={i + .1} className='half'
+                            data-date={firstDateOfWeekMS + i * MS_IN_DAY + i * MS_IN_HOUR + MS_IN_HOUR/2}>
                             <div style={divStyle}>
                                 {events[i][2 * index]}
                             </div>
@@ -144,7 +126,7 @@ const IventsOfWeek = React.createClass({
                 return (
                     <tr key={index}>
                         <td className='time all-day'>All Day</td>
-                        {eventsDOW}
+                        {eventsByDOW}
                     </tr>
                 );
             }
@@ -153,7 +135,7 @@ const IventsOfWeek = React.createClass({
             return (
                 <tr key={index}>
                     <td className='time'>{timeStr}</td>
-                    {eventsDOW}
+                    {eventsByDOW}
                 </tr>
             );
         }, this);
@@ -164,7 +146,7 @@ const IventsOfWeek = React.createClass({
                     <tbody>
                         <tr>
                             <td className='time'></td>
-                            {titleTable}
+                            {tableTitle}
                         </tr>
                     </tbody>
                 </table>
@@ -172,11 +154,11 @@ const IventsOfWeek = React.createClass({
                     <thead>
                         <tr>
                             <td className='time'></td>
-                            {titleTable}
+                            {tableTitle}
                         </tr>
                     </thead>
                     <tbody>
-                        {timeRows}
+                        {tableRows}
                     </tbody>
                 </table>
             </div>
@@ -186,24 +168,28 @@ const IventsOfWeek = React.createClass({
 
 
 function getNewState(props) {
-    let firstDay = props.day.getTime() - props.day.getDay() * MS_IN_DAY,
-        arr = sortWeekEventsByDays(props.events, firstDay),
-        arrOfEvents = arr.map(function(val, ind) {
-            let midnight = firstDay + ind * MS_IN_DAY;
-            return sortDayEventsByHour(val, midnight);
+    let firstDateOfWeekMS = props.selDate.getTime() - props.selDate.getDay() * MS_IN_DAY,
+        eventsByDays = sortWeekEventsByDays(props.events, firstDateOfWeekMS),
+
+        eventsByHours = eventsByDays.map(function(val, ind) {
+            let dateMidnightMS = firstDateOfWeekMS + ind * MS_IN_DAY;
+            return sortDayEventsByHour(val, dateMidnightMS);
         }),
 
-        arrOfEv = arr.map(function(val, ind) {
-            let midnight = firstDay + ind * MS_IN_DAY;
-            return sortEvForCountMaxLength(val, midnight);
+        arrOfEvents = eventsByDays.map(function(val, ind) {
+            let dateMidnightMS = firstDateOfWeekMS + ind * MS_IN_DAY;
+            return sortEvForCountMaxLength(val, dateMidnightMS);
         }),
 
-        arrLength = arrOfEv.map(val => {
+        arrMaxLen = arrOfEvents.map(val => {
             let arrLen = val.map(v => v.length);
             return Math.max.apply(null, arrLen);
         });
 
-    return {events: arrOfEvents, maxLen: arrLength};
+        console.log(arrOfEvents);
+        console.log(arrMaxLen);
+
+    return {events: eventsByHours, maxLen: arrMaxLen};
 }
 
 

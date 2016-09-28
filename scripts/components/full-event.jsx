@@ -9,10 +9,10 @@ import {getEventDate} from '../get-events.js';
 const FullEvent = React.createClass({
 
     render: function() {
-        let ev = this.props.currEvent;
+        let ev = this.props.selEvent;
 
         if (ev) {
-            let date = getEventDate(ev);
+            let evDateStr = getEventDate(ev);
 
             return (
                 <div className='full-event'>
@@ -21,7 +21,7 @@ const FullEvent = React.createClass({
                         <div className='event-body'>
                             <p>{ev.title}</p>
                             <p><span>Category: </span>{ev.category}</p>
-                            <p>{date}</p>
+                            <p>{evDateStr}</p>
                             <p><span>{ev.place !== '' ? 'Place: ' : ''}</span>{ev.place}</p>
                             <p><span>{ev.discription !== '' ? 'Discription: ' : ''}</span>{ev.discription}</p>
                         </div>

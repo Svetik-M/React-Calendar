@@ -5,7 +5,7 @@ let requests = {
 
     sendLoginForm: function(form) {
         let body = JSON.stringify(form),
-            call = this;
+            scope = this;
 
         let xhr = new XMLHttpRequest();
 
@@ -16,7 +16,7 @@ let requests = {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     if (xhr.responseText === 'Unauthorized') {
-                        call.getLogin();
+                        scope.getLogin();
                     } else if (xhr.responseText === 'Success') {
                         window.location = xhr.responseURL.replace('login', 'user');
                     }
@@ -30,7 +30,7 @@ let requests = {
 
     sendSignupForm: function(form) {
         let body = JSON.stringify(form),
-            call = this;
+            scope = this;
 
         let xhr = new XMLHttpRequest();
 
@@ -41,7 +41,7 @@ let requests = {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     if (xhr.responseText === 'Used') {
-                        call.getSignup();
+                        scope.getSignup();
                     } else if (xhr.responseText === 'Success') {
                         window.location = xhr.responseURL.replace('signup', 'user');
                     }
@@ -57,7 +57,7 @@ let requests = {
 
             if (id === undefined) {
             let body = JSON.stringify(form),
-                call = this;
+                scope = this;
 
             let xhr = new XMLHttpRequest();
 
@@ -68,7 +68,7 @@ let requests = {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         document.getElementById('event-form').reset();
-                        call.updateEvents();
+                        scope.updateEvents();
                     }
                 }
             };
@@ -78,7 +78,7 @@ let requests = {
         } else {
             form.id = id;
             let body = JSON.stringify(form),
-                call = this;
+                scope = this;
 
             let xhr = new XMLHttpRequest();
 
@@ -89,7 +89,7 @@ let requests = {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         document.getElementById('event-form').reset();
-                        call.updateEvents()
+                        scope.updateEvents()
                     }
                 }
             };
@@ -100,13 +100,13 @@ let requests = {
     },
 
 
-    getEvents: function(start, end) {
+    getEvents: function(startMS, endMS) {
         let body = JSON.stringify({
-            start: new Date(start),
-            end: new Date(end)
+            start: new Date(startMS),
+            end: new Date(endMS)
         });
 
-        let call = this;
+        let scope = this;
 
         let xhr = new XMLHttpRequest();
 
@@ -116,7 +116,7 @@ let requests = {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    call.getArrOfEvents(JSON.parse(xhr.responseText), start, end);
+                    scope.getArrOfEvents(JSON.parse(xhr.responseText), startMS, endMS);
                 }
             }
         }
@@ -131,7 +131,7 @@ let requests = {
             end: new Date(end)
         });
 
-        let call = this;
+        let scope = this;
 
         let xhr = new XMLHttpRequest();
 
@@ -141,7 +141,7 @@ let requests = {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    call.getArrOfDayEvents(JSON.parse(xhr.responseText), start, end);
+                    scope.getArrOfDayEvents(JSON.parse(xhr.responseText), start, end);
                 }
             }
         }
@@ -153,7 +153,7 @@ let requests = {
     deletEvent: function(id) {
         console.log(id);
         let body = JSON.stringify({id: id}),
-            call = this;
+            scope = this;
 
         let xhr = new XMLHttpRequest();
 
@@ -163,8 +163,7 @@ let requests = {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    call.updateEvents();
-
+                    scope.updateEvents();
                 }
             }
         }

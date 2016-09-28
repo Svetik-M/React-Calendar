@@ -18,7 +18,7 @@ const TitleMenu  = React.createClass({
                             <div>
                                 <i className='fa fa-arrow-circle-left' aria-hidden='true' id='prev-period' />
                             </div>
-                            <SelectedPeriod day={this.props.day} period={this.props.period}/>
+                            <SelectedPeriod selDate={this.props.selDate} period={this.props.period}/>
                             <div>
                                 <i className='fa fa-arrow-circle-right' aria-hidden='true' id='next-period' />
                             </div>

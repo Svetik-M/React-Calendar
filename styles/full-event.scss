@@ -20,7 +20,7 @@
     }
 
     > p {
-        width: 12.5rem;
+        width: 100%;
         font-size: 1rem;
         font-weight: bold;
         text-align: center;
@@ -30,7 +30,7 @@
     }
 
     > div {
-    height: calc(100% - 1.4rem);
+        height: calc(100% - 1.2rem);
     }
 
     .event-body {

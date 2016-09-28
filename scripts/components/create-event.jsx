@@ -252,7 +252,7 @@ const CreateEvent = React.createClass({
 
                     <div className={'select_start_date' + (this.state.vis.startDate ? '' : ' none')}
                         onClick={this.selectStartDate}>
-                        <CalendarWidget day={new Date(eventData.start_date)} period='day' />
+                        <CalendarWidget selDate={new Date(eventData.start_date)} period='day' />
                     </div>
                     <div className={'select_start_time' + (this.state.vis.startTime ? '' : ' none')}
                         onClick={this.selectTime}>
@@ -261,7 +261,7 @@ const CreateEvent = React.createClass({
 
                     <div className={'select_end_date' + (this.state.vis.endDate ? '' : ' none')}
                         onClick={this.selectEndDate}>
-                        <CalendarWidget day={new Date(eventData.end_date)} period='day' />
+                        <CalendarWidget selDate={new Date(eventData.end_date)} period='day' />
                     </div>
                     <div className={'select_end_time' + (this.state.vis.endTime ? '' : ' none')}
                         onClick={this.selectTime}>
@@ -310,7 +310,7 @@ const CreateEvent = React.createClass({
 
                     <div className={'select_repeat_end' + (this.state.vis.repEnd ? '' : ' none')}
                         onClick={this.selectRepeatEnd}>
-                        <CalendarWidget day={new Date(eventData.repeat_end)} period='day' />
+                        <CalendarWidget selDate={new Date(eventData.repeat_end)} period='day' />
                     </div>
 
                     <label className='place'>
@@ -335,8 +335,8 @@ const CreateEvent = React.createClass({
                     </div>
 
                     <div className='button-block'>
-                        <button type='submit' className='create button'>Save</button>
-                        <button type='reset' className='create button'>Cancel</button>
+                        <button type='submit' className='button create'>Save</button>
+                        <button type='reset' className='button create'>Cancel</button>
                     </div>
                 </form>
             </div>

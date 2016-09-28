@@ -11,48 +11,50 @@ const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
 
 const Week = React.createClass({
     render: function() {
-        let firstDay = this.props.date,
-            dateFirst = new Date(this.props.year, this.props.month, 1),
-            month = this.props.month,
-            selDay = this.props.sel_day,
+        let firstDateOfWeekMS = this.props.firstDateOfWeekMS,
+            selDate = this.props.selDate,
             period = this.props.period,
-            allDays = Array.from({length: 7}),
+            daysArr = Array.from({length: 7}),
             today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             selPeriod = '';
 
-        if (period === 'month' && selDay.getMonth() === month
-            || period === 'week' && firstDay <= selDay.getTime() && selDay.getTime() <= firstDay + 6*MS_IN_DAY) {
+        if (period === 'month'
+            && selDate.getMonth() === this.props.viewMonth
+            || period === 'week'
+            && firstDateOfWeekMS <= selDate.getTime()
+            && selDate.getTime() <= firstDateOfWeekMS + 6*MS_IN_DAY) {
+
             selPeriod = ' selectedPeriod';
         }
 
-        allDays = allDays.map(function(v,i) {
-            let date = new Date(firstDay + i*MS_IN_DAY),
-                thisDay = date.getDate(),
-                thisDayMs = date.getTime(),
+        daysArr = daysArr.map(function(v,i) {
+            let date = new Date(firstDateOfWeekMS + i*MS_IN_DAY),
+                dayOfMonth = date.getDate(),
+                dayOfMonthMs = date.getTime(),
                 select = selPeriod;
 
-            if (period === 'day' &&  thisDayMs === selDay.getTime()) {
+            if (period === 'day' &&  dayOfMonthMs === selDate.getTime()) {
                 select = ' selectedPeriod';
             }
 
-            if (date.getMonth() !== dateFirst.getMonth()) {
-                return (<td key={i} className={'other-month' + select} id={thisDayMs}>
-                            {thisDay}
+            if (date.getMonth() !== this.props.viewMonth) {
+                return (<td key={i} className={'other-month' + select} id={dayOfMonthMs}>
+                            {dayOfMonth}
                         </td>);
-            } else  if (thisDayMs === today.getTime()) {
-                return (<td key={i} className={'curr-month today' + select} id={thisDayMs}>
-                            {thisDay}
+            } else  if (dayOfMonthMs === today.getTime()) {
+                return (<td key={i} className={'curr-month today' + select} id={dayOfMonthMs}>
+                            {dayOfMonth}
                         </td>);
             } else {
-                return (<td key={i} className={'curr-month' + select} id={thisDayMs}>
-                            {thisDay}
+                return (<td key={i} className={'curr-month' + select} id={dayOfMonthMs}>
+                            {dayOfMonth}
                         </td>);
             }
-        });
+        }, this);
 
         return  (
             <tr>
-                {allDays}
+                {daysArr}
             </tr>
         );
     }
@@ -61,21 +63,21 @@ const Week = React.createClass({
 
 const Month = React.createClass({
     render: function() {
-        let selDay = this.props.sel_day || '',
+        let selDate = this.props.selDate || '',
             period = this.props.period || '',
-            day = this.props.day,
-            month = day.getMonth(),
-            year = day.getFullYear(),
-            lastDayOfMonth = new Date(year ,month+1, 0).getDate(),
-            dateLast = new Date(year, month, lastDayOfMonth),
-            dateFirst = new Date(year, month, 1),
-            DOW_first = dateFirst.getDay(),
-            currDay = dateFirst.getTime() - DOW_first * MS_IN_DAY,
+            viewMonth = this.props.viewDate.getMonth(),
+            viewYear = this.props.viewDate.getFullYear(),
+            lastDateOfMonth = new Date(viewYear, viewMonth, new Date(viewYear, viewMonth + 1, 0).getDate()),
+            firstDateOfMonth = new Date(viewYear, viewMonth, 1),
+            firstDateOfWeekMS = firstDateOfMonth.getTime() - firstDateOfMonth.getDay() * MS_IN_DAY,
             weeks = [];
 
-        for (let n = 1; currDay <= dateLast.getTime(); currDay = currDay + 7*MS_IN_DAY, n++) {
+        for (let n = 1; firstDateOfWeekMS <= lastDateOfMonth.getTime();
+            firstDateOfWeekMS = firstDateOfWeekMS + 7 * MS_IN_DAY, n++) {
+
             weeks.push(
-                <Week key = {n} sel_day={selDay} date={currDay} month={month} year={year} period={period} />
+                <Week key = {n} selDate={selDate} firstDateOfWeekMS={firstDateOfWeekMS} viewMonth={viewMonth}
+                    viewYear={viewYear} period={period} />
             );
         }
 
@@ -91,50 +93,47 @@ const Month = React.createClass({
 const CalendarWidget = React.createClass({
     getInitialState: function() {
         return {
-            selDay: this.props.day,
-            date: this.props.day,
+            selDate: this.props.selDate,
+            viewDate: this.props.selDate,
             period: this.props.period
         }
     },
 
     componentWillReceiveProps: function(nextProps) {
-        if (this.props.day.getTime() !== nextProps.day.getTime()
+        if (this.props.selDate.getTime() !== nextProps.selDate.getTime()
             || this.props.period !== nextProps.period) {
                 this.setState({
-                    selDay: nextProps.day,
-                    date: nextProps.day,
+                    selDate: nextProps.selDate,
+                    viewDate: nextProps.selDate,
                     period: nextProps.period
                 })
             }
     },
 
     getPrevMonth: function() {
-        let year = this.state.date.getFullYear(),
-            month = this.state.date.getMonth(),
-            day = this.state.date.getDate();
-        this.setState({date: new Date(year, month-1, day)});
+        let year = this.state.viewDate.getFullYear(),
+            month = this.state.viewDate.getMonth(),
+            day = this.state.viewDate.getDate();
+        this.setState({viewDate: new Date(year, month - 1, day)});
     },
 
     getNextMonth: function() {
-        let year = this.state.date.getFullYear(),
-            month = this.state.date.getMonth(),
-            day = this.state.date.getDate();
-        this.setState({date: new Date(year, month+1, day)});
+        let year = this.state.viewDate.getFullYear(),
+            month = this.state.viewDate.getMonth(),
+            day = this.state.viewDate.getDate();
+        this.setState({viewDate: new Date(year, month + 1, day)});
     },
 
     render: function() {
-        let date = this.state.date,
-            month = date.getMonth(),
-            year = date.getFullYear();
-
         return (
             <div className='nav-date'>
                 <div className='nav-title'>
                     <div onClick={this.getPrevMonth}>
                         <i className='fa fa-chevron-circle-left' aria-hidden='true' />
                     </div>
-                    <div id='curr-month' data-month={month} data-year={year}>
-                        {MONTH_NAMES[month] + ' ' + year}
+                    <div id='curr-month' data-month={this.state.viewDate.getMonth()}
+                        data-year={this.state.viewDate.getFullYear()}>
+                        {MONTH_NAMES[this.state.viewDate.getMonth()] + ' ' + this.state.viewDate.getFullYear()}
                     </div>
                     <div onClick={this.getNextMonth}>
                         <i className='fa fa-chevron-circle-right' aria-hidden='true' />
@@ -152,7 +151,8 @@ const CalendarWidget = React.createClass({
                             <td>Sat</td>
                         </tr>
                     </thead>
-                    <Month sel_day={this.state.selDay} day={date} period={this.state.period}/>
+                    <Month selDate={this.state.selDate} viewDate={this.state.viewDate}
+                        period={this.state.period}/>
                 </table>
             </div>
         );

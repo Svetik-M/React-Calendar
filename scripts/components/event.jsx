@@ -29,14 +29,14 @@ const Event = React.createClass({
         let ev = this.props.currEvent,
             divStyle;
 
-        if (this.state.heightEl) {
+        if (this.state.heightEl > 0) {
             divStyle = {
-                height: this.state.heightEl,
+                height: this.state.heightEl + 'px',
                 left: this.state.leftEl + 'px'
             }
         } else {
             divStyle = {
-                height: 1.2 + 'rem',
+                height: 20 + 'px',
                 left: this.state.leftEl + 'px'
             }
         }
@@ -54,9 +54,9 @@ const Event = React.createClass({
 
         return (
             <div>
-                <div id={ev.id + '-' + this.props.midnight} className={'event ' + ev.category}
-                    data-start={ev.start_date} onClick={this.isVisible} style={divStyle}>
-                    {this.props.start + ' ' + ev.title}
+                <div id={ev.id + '-' + this.props.dateMidnightMS} className={'event ' + ev.category}
+                    data-start={ev.start_date} style={divStyle}>
+                    {this.props.startDateStr + ' ' + ev.title}
                 </div>
             </div>
 

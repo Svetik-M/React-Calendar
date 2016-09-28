@@ -31,41 +31,41 @@ const IventsOfDay = React.createClass({
     },
 
     render: function() {
-        let date = this.props.day,
-            midnight = date.getTime(),
-            DOW_date = DAYS_OF_WEEK[date.getDay()],
-            titleTable = (<td className='events-group'>
-                             {DOW_date +' '+ date.getDate() +'/'+ (+date.getMonth()+1)}
-                         </td>),
+        let selDate = this.props.selDate,
+            dateMidnightMS = selDate.getTime(),
+            DOW_selDate = DAYS_OF_WEEK[selDate.getDay()],
             events = this.state.events,
-            rows = Array.from({length:25}),
+            tableRows = Array.from({length:25}),
             timeStr;
+
+        let tableTitle = (<td className='events-group'>
+                         {DOW_selDate + ' ' + selDate.getDate() + '/' + (+selDate.getMonth() + 1)}
+                     </td>);
 
         events = events.map(function(value){
             if (value === undefined) {
                 return value;
             } else {
                 let arr = value.map(function(item) {
-                    let startDate = item.start_date,
-                        endDate = item.end_date,
-                        start;
+                    let startDateMS = item.start_date,
+                        startDateStr;
 
-                    if (startDate < midnight) {
-                        start = '';
+                    if (startDateMS < dateMidnightMS) {
+                        startDateStr = '';
                     } else {
-                        start = new Date(startDate).toLocaleString('en-US',
+                        startDateStr = new Date(startDateMS).toLocaleString('en-US',
                                 {hour: '2-digit', minute: '2-digit'}).toLowerCase().replace(' ', '');
                     }
 
-                    return <Event key={item.id} events={this.props.events} currEvent={item} start={start}
-                        period='day' midnight={midnight} />;
+                    return <Event key={item.id} events={this.props.events} currEvent={item}
+                        startDateStr={startDateStr} period='day' dateMidnightMS={dateMidnightMS} />;
                 }, this);
 
                 return arr;
             }
         }, this);
 
-        rows = rows.map(function(v, i) {
+        tableRows = tableRows.map(function(v, i) {
             if (i === 0) {
                 return (
                     <tr key={i}>
@@ -88,12 +88,12 @@ const IventsOfDay = React.createClass({
                 <tr key={i}>
                     <td className='time'>{timeStr}</td>
                     <td className='events-group'>
-                        <div className='half' id={midnight + i * MS_IN_HOUR}>
+                        <div className='half' data-date={dateMidnightMS + i * MS_IN_HOUR}>
                             <div style={divStyle}>
                                 {events[2 * i - 1]}
                             </div>
                         </div>
-                        <div className='half' id={midnight + i * MS_IN_HOUR + MS_IN_HOUR/2}>
+                        <div className='half' data-date={dateMidnightMS + i * MS_IN_HOUR + MS_IN_HOUR/2}>
                             <div style={divStyle}>
                                 {events[2 * i]}
                             </div>
@@ -109,7 +109,7 @@ const IventsOfDay = React.createClass({
                     <tbody>
                         <tr>
                             <td className='time'></td>
-                            {titleTable}
+                            {tableTitle}
                         </tr>
                     </tbody>
                 </table>
@@ -117,11 +117,11 @@ const IventsOfDay = React.createClass({
                 <thead>
                     <tr>
                         <td className='time'></td>
-                        {titleTable}
+                        {tableTitle}
                     </tr>
                 </thead>
                     <tbody>
-                        {rows}
+                        {tableRows}
                     </tbody>
                 </table>
             </div>
@@ -131,11 +131,12 @@ const IventsOfDay = React.createClass({
 
 
 function getNewState(props) {
-    let arrOfEvents = sortDayEventsByHour(props.events, props.day.getTime()),
-        arrOfEv = sortEvForCountMaxLength(props.events, props.day.getTime()),
-        arrLen = arrOfEv.map(val => val.length),
+    let eventsByHours = sortDayEventsByHour(props.events, props.selDate.getTime()),
+        arrOfEvents = sortEvForCountMaxLength(props.events, props.selDate.getTime()),
+        arrLen = arrOfEvents.map(val => val.length),
         maxLen =  Math.max.apply(null, arrLen);
-        return {events: arrOfEvents, maxLen: maxLen};
+
+        return {events: eventsByHours, maxLen: maxLen};
 }
 
 

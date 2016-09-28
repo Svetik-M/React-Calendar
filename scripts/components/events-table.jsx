@@ -17,7 +17,7 @@ const MS_IN_DAY = 86400000,
       MS_IN_HOUR = 3600000,
       MS_IN_MIN = 60000;
 
-let dayEvents = [];
+let todayEvents = [];
 
 
 const EventsTable = React.createClass({
@@ -44,8 +44,8 @@ const EventsTable = React.createClass({
             timerId = setInterval(requests.getDayEvents.call(this, start, end), MS_IN_DAY);
     },
 
-    getArrOfEvents: function(res, start, end) {
-        let arrSort = sortEvents(res, start, end),
+    getArrOfEvents: function(res, startMS, endMS) {
+        let arrSort = sortEvents(res, startMS, endMS),
             state = this.state;
 
         state.events = arrSort;
@@ -61,7 +61,7 @@ const EventsTable = React.createClass({
 
     getArrOfDayEvents: function(res, start, end) {
         let arrSort = sortEvents(res, start, end);
-        dayEvents = arrSort;
+        todayEvents = arrSort;
     },
 
     clearForm: function(e) {
@@ -85,13 +85,8 @@ const EventsTable = React.createClass({
             this.setState(state);
 
         } else if (target.className === 'button delete') {
-            requests.deletEvent.call(this, this.state.currEvent.id);
+            requests.deletEvent.call(this, this.state.selEvent.id);
 
-            let state = this.state;
-            state.visFullEvent = false;
-            this.setState(state);
-
-        } else if (target.className === 'fa fa-times') {
             let state = this.state;
             state.visFullEvent = false;
             this.setState(state);
@@ -104,20 +99,20 @@ const EventsTable = React.createClass({
 
         if (target.className.includes('event ')) {
             let id = target.id.replace(/-\d*/, ''),
-                startDate = +target.getAttribute('data-start'),
-                currEvent;
+                startDateMS = +target.getAttribute('data-start'),
+                selEvent;
 
-            currEvent = this.state.events.find(v => v.id === id && v.start_date === startDate);
+            selEvent = this.state.events.find(v => v.id === id && v.start_date === startDateMS);
 
-            if (this.state.currEvent
-            && this.state.currEvent.id === id
-            && this.state.currEvent.start_date === startDate) {
+            if (this.state.selEvent
+            && this.state.selEvent.id === id
+            && this.state.selEvent.start_date === startDateMS) {
                 state.visFullEvent = !this.state.visFullEvent;
             } else {
                 state.visFullEvent = true;
             }
 
-            state.currEvent = currEvent;
+            state.selEvent = selEvent;
 
         } else {
             state.visFullEvent = false;
@@ -134,12 +129,13 @@ const EventsTable = React.createClass({
     render: function() {
         let body;
         if (this.props.period === 'day') {
-            body = <IventsOfDay day={this.props.day} events={this.state.events} scope={this} />
+            body = <IventsOfDay selDate={this.props.selDate} events={this.state.events} scope={this} />
         } else if (this.props.period === 'week') {
-            body = (<IventsOfWeek day={this.props.day} events={this.state.events} scope={this} />);
+            body = (<IventsOfWeek selDate={this.props.selDate} events={this.state.events} scope={this} />);
         } else if (this.props.period === 'month') {
-            body = <IventsOfMonth day={this.props.day} currDay={this.state.currDay}
-                                  dateLast={this.state.dateLast} events={this.state.events} scope={this} />;
+            body = <IventsOfMonth selDate={this.props.selDate} startDateMS={this.state.startDateMS}
+                                  lastDateOfMonthMS={this.state.lastDateOfMonthMS} events={this.state.events}
+                                  scope={this} />;
         }
 
         let editableEvent,
@@ -152,7 +148,7 @@ const EventsTable = React.createClass({
 
         return (
             <div>
-                <div onClick={this.viewFullEvent}>
+                <div className='main-block' onClick={this.viewFullEvent}>
                     {body}
                 </div>
                 <div onClick={this.clearForm}>
@@ -161,7 +157,7 @@ const EventsTable = React.createClass({
                 </div>
                 <div onClick={this.changeFullEvent}>
                     <FullEvent visible={this.state.visFullEvent} scope={this}
-                        currEvent={this.state.currEvent} />
+                        selEvent={this.state.selEvent} />
                 </div>
             </div>
         );
@@ -169,7 +165,7 @@ const EventsTable = React.createClass({
 });
 
 
-function getNotification(title, date) {
+function getNotification() {
     if (!("Notification" in window)) {
         alert("This browser does not support desktop notification");
 
@@ -196,11 +192,11 @@ function getNotification(title, date) {
 
 
 function filterEvents() {
-    let date = new Date().getTime();
+    let dateMS = new Date().getTime();
 
-    let eventsForNotif = dayEvents.filter((value) => {
-        let startNotif = value.start_date - 5 * MS_IN_MIN;
-        return startNotif > date && startNotif < date + 2000;
+    let eventsForNotif = todayEvents.filter((value) => {
+        let startNotifMS = value.start_date - 5 * MS_IN_MIN;
+        return startNotifMS > dateMS && startNotifMS < dateMS + 2000;
     });
 
     return eventsForNotif;
@@ -209,14 +205,14 @@ function filterEvents() {
 
 function createNotification(arrEvents) {
     for (let i = 0; i < arrEvents.length; i++) {
-        dayEvents = dayEvents.filter((value) => value.id !== arrEvents[i].id);
+        todayEvents = todayEvents.filter((value) => value.id !== arrEvents[i].id);
 
         let audio = new Audio();
         audio.src = 'reminder.wav';
         audio.autoplay = true;
 
-        let date = getEventDate(arrEvents[i]),
-            options = {body: date + '\n' + arrEvents[i].title,
+        let evDateStr = getEventDate(arrEvents[i]),
+            options = {body: evDateStr + '\n' + arrEvents[i].title,
                        icon: 'reminder.png'};
 
         let notification = new Notification('Reminder', options);

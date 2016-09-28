@@ -1,13 +1,15 @@
 .events-block {
-    width: calc(100vw - 16.5rem);
-    position: relative;;
+    width: calc(100vw - 16.8rem);
+    position: relative;
     left: 15.2rem;
+    display: flex;
     flex-grow: 1;
-    box-shadow: 0 0 10px $color-grey;
+    box-shadow: 0 0 10px $color-pale-grey;
 
 
     .title-date {
         position: fixed;
+        top: 3.1rem;
         z-index: 20;
         background-color: $main-color;
         color: white;
@@ -15,16 +17,16 @@
         text-align: center;
         table-layout: fixed;
         border-spacing: 0;
-        width: calc(100vw - 16.5rem);
+        width: calc(100vw - 16.8rem);
         height: 2rem;
 
         td {
-            border-right: 1px solid $main-color;
-            border-bottom: 1px solid $main-color;
+            box-sizing: border-box;
+            border: 1px solid $main-color;
         }
 
         .time {
-            width: 52px;
+            width: 55px;
         }
     }
 
@@ -74,7 +76,7 @@
                     height: 48px;
                 }
 
-                td.curr-day {
+                td.today {
                     border-left: 1px solid $main-color;
                     border-right: 1px solid $main-color;
                     background-color: rgb(230, 208, 217);
@@ -97,6 +99,10 @@
             .half:first-child {
                 border-bottom: 1px dotted $color-pale-grey;
             }
+        }
+
+        td:first-child {
+            border-left: 1px solid $color-pale-grey;
         }
 
         .time {
@@ -137,7 +143,7 @@
 
                 td.today {
                     border: 1px solid $main-color;
-                    background-color: rgba(230, 208, 217, 0.6);
+                    background-color: rgba(230, 208, 217, 0.8);
 
                     .date {
                         font-weight: bold;
@@ -152,9 +158,9 @@
         }
     }
 
-
     .month {
-        height: calc(100vh - 3.5rem);
+        height: calc(100vh - 5.5rem);
+        margin-top: calc(2rem - 1px);
 
         td > div:last-child {
             overflow-y: auto;
@@ -167,10 +173,15 @@
             position: relative;
         }
 
+        td div:nth-child(3) {
+            height: 100%;
+        }
+
         .event {
             position: relative;
             margin-top: 2px;
             white-space: nowrap;
+            -moz-white-space: nowrap;
         }
     }
 
@@ -208,6 +219,10 @@
 
         .all-day div {
             box-sizing: border-box;
+
+            .event {
+                margin: 2px 1px;
+            }
         }
     }
 }

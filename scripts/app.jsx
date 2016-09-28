@@ -20,7 +20,7 @@ let date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().
 const AppView = React.createClass({
     getInitialState: function() {
         return {
-            day: date,
+            selDate: date,
             period: 'month',
             visEventForm: false
         };
@@ -36,37 +36,37 @@ const AppView = React.createClass({
 
         } else if (target.id === 'today') {
             let state = this.state;
-            state.day = date;
+            state.selDate = date;
             state.period = 'day';
             this.setState(state);
 
         } else if (target.id === 'prev-period' || target.id === 'next-period'){
-            let year = this.state.day.getFullYear(),
-                month = this.state.day.getMonth(),
-                day = this.state.day.getDate(),
+            let year = this.state.selDate.getFullYear(),
+                month = this.state.selDate.getMonth(),
+                prevDate = this.state.selDate.getDate(),
                 selectedDate;
 
             if (target.id === 'prev-period') {
                 if (this.state.period === 'day') {
-                    selectedDate = new Date(year, month, day - 1);
+                    selectedDate = new Date(year, month, prevDate - 1);
                 } else if (this.state.period === 'week') {
-                    selectedDate = new Date(year, month, day - 7);
+                    selectedDate = new Date(year, month, prevDate - 7);
                 } else if (this.state.period === 'month') {
-                    selectedDate = new Date(year, month - 1, day);
+                    selectedDate = new Date(year, month - 1, prevDate);
                 }
 
             } else if (target.id === 'next-period') {
                 if (this.state.period === 'day') {
-                    selectedDate = new Date(year, month, day + 1);
+                    selectedDate = new Date(year, month, prevDate + 1);
                 } else if (this.state.period === 'week') {
-                    selectedDate = new Date(year, month, day + 7);
+                    selectedDate = new Date(year, month, prevDate + 7);
                 } else if (this.state.period === 'month') {
-                    selectedDate = new Date(year, month + 1, day);
+                    selectedDate = new Date(year, month + 1, prevDate);
                 }
             }
 
             let state = this.state;
-            state.day = selectedDate;
+            state.selDate = selectedDate;
             this.setState(state);
         }
     },
@@ -77,7 +77,7 @@ const AppView = React.createClass({
         if (target.className.includes('curr-month')
             || target.className.includes('other-month')) {
             let state = this.state;
-            state.day = new Date(+target.id);
+            state.selDate = new Date(+target.id);
             this.setState(state);
 
         } else if (target.parentElement.className === 'create-event'
@@ -88,9 +88,9 @@ const AppView = React.createClass({
         }
     },
 
-    hidingForm: function(e) {
+    hidingEventForm: function(e) {
         let target = e.target;
-        if (target.className === 'create button') {
+        if (target.className === 'button create') {
             let state = this.state;
             state.visEventForm = false;
             this.setState(state);
@@ -101,14 +101,14 @@ const AppView = React.createClass({
         return (
             <div>
                 <div onClick={this.changePeriod}>
-                    <TitleMenu day={this.state.day} period={this.state.period} />
+                    <TitleMenu selDate={this.state.selDate} period={this.state.period} />
                 </div>
                 <div className='page-body'>
                     <div onClick={this.sidebarEventHandler}>
-                        <SidebarMenu day={this.state.day} period={this.state.period} />
+                        <SidebarMenu selDate={this.state.selDate} period={this.state.period} />
                     </div>
-                    <div onClick={this.hidingForm}>
-                        <EventsTable day={this.state.day} period={this.state.period}
+                    <div onClick={this.hidingEventForm}>
+                        <EventsTable selDate={this.state.selDate} period={this.state.period}
                             visEventForm={this.state.visEventForm} />
                     </div>
                 </div>
