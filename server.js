@@ -2,7 +2,6 @@
 
 
 var express = require('express');
-//var morgan = require('morgan')
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -75,13 +74,11 @@ passport.deserializeUser(function(id, done) {
 
 var app = express();
 
-//app.use('/', express.static(__dirname));
 app.use('/login', express.static('build'));
 app.use('/signup', express.static('build'));
 app.use('/user', express.static('build'));
 app.use('/*', express.static('build'));
 
-//app.use(morgan('combined'));
 app.use(cookieParser());
 
 app.use(bodyParser.json());
