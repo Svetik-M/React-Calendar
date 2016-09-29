@@ -1,9 +1,10 @@
 .full-event {
-    position: fixed;
+    position: absolute;
     top: 23.5rem;
     width: 14rem;
     height: calc(100vh - 24.3rem);
-    margin: 0 0.5rem;
+    min-height: 12rem;
+    margin: 0 0.5rem 0.5rem;
     color: $color-grey;
     background-color: rgb(255, 255, 255);
     border: 2px solid $main-color;

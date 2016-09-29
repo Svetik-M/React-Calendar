@@ -19,7 +19,12 @@ let requests = {
                         scope.getLogin();
                     } else if (xhr.responseText === 'Success') {
                         window.location = xhr.responseURL.replace('login', 'user');
+                    } else {
+                        scope.changeVisError();
                     }
+
+                } else {
+                    scope.changeVisError();
                 }
             }
         };
@@ -44,7 +49,11 @@ let requests = {
                         scope.getSignup();
                     } else if (xhr.responseText === 'Success') {
                         window.location = xhr.responseURL.replace('signup', 'user');
+                    } else {
+                        scope.changeVisError();
                     }
+                } else {
+                    scope.changeVisError();
                 }
             }
         };
@@ -69,6 +78,8 @@ let requests = {
                     if (xhr.status === 200) {
                         document.getElementById('event-form').reset();
                         scope.updateEvents();
+                    } else {
+                        scope.changeVisError();
                     }
                 }
             };
@@ -90,6 +101,8 @@ let requests = {
                     if (xhr.status === 200) {
                         document.getElementById('event-form').reset();
                         scope.updateEvents()
+                    } else {
+                        scope.changeVisError();
                     }
                 }
             };
@@ -117,6 +130,8 @@ let requests = {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     scope.getArrOfEvents(JSON.parse(xhr.responseText), startMS, endMS);
+                } else {
+                    scope.changeVisError();
                 }
             }
         }
@@ -142,6 +157,8 @@ let requests = {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     scope.getArrOfDayEvents(JSON.parse(xhr.responseText), start, end);
+                } else {
+                    scope.changeVisError();
                 }
             }
         }
@@ -164,6 +181,8 @@ let requests = {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     scope.updateEvents();
+                } else {
+                    scope.changeVisError();
                 }
             }
         }

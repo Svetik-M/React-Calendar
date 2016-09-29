@@ -84,19 +84,23 @@ const Week = React.createClass({
             let date = new Date(firstDayOfWeekMS + i * MS_IN_DAY),
                 dateOfMonth = date.getDate(),
                 dateMS = date.getTime(),
+                Firefox = navigator.userAgent.indexOf("Firefox") >= 0,
+                coef = Firefox ? 2.5 : 2,
                 coefDivHeight = this.state.topEl[i] + events[i][0].filter(v => v !== undefined).length,
 
-                tdStyle = {height: 'calc((100vh - ' + 5.5 + 'rem) / ' + quantityWeeks + ')'},
+                tdStyle = { height: 'calc((100vh - ' + 5.3 + 'rem) / ' + quantityWeeks + ')',
+                            minHeight: 5 + 'rem' },
 
                 evOneDayStyle = {
                     height: 'calc(100% - (' + (coefDivHeight * 1.2 + 1.1) + 'rem + '
-                            + (coefDivHeight + 2)  + 'px))'
+                            + (coefDivHeight + coef)  + 'px) - ' + 1 + 'px)'
                 },
 
                 evSomeDaysStyle;
 
             if (events[i][0].length > 0 && events[i][0][0] === undefined) {
-                evSomeDaysStyle = {top: 'calc(' + this.state.topEl[i] + ' * (' + 1.2 + 'rem + ' + 2 + 'px))'};
+                evSomeDaysStyle = {top: 'calc(' + this.state.topEl[i] + ' * ('
+                                    + 1.2 + 'rem + ' + coef + 'px) + ' + 1 + 'px)'};
                 evOneDayStyle.top = evSomeDaysStyle.top;
             }
 
@@ -171,7 +175,7 @@ const IventsOfMonth = React.createClass({
         });
 
         return (
-            <div className='events-block'>
+            <div className='events-block all-month'>
                 <table className='title-date'>
                     <tbody>
                         <tr>

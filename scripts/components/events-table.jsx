@@ -8,6 +8,7 @@ import IventsOfWeek from './week.jsx';
 import IventsOfMonth from './month.jsx';
 import CreateEvent from './create-event.jsx';
 import FullEvent from './full-event.jsx';
+import Error from './error.jsx';
 
 import {getThisEvents, sortEvents, getEventDate} from '../get-events.js';
 import requests from '../requests.js';
@@ -26,7 +27,8 @@ const EventsTable = React.createClass({
             events: [],
             eventId: '',
             visEventForm: this.props.visEventForm,
-            visFullEvent: false
+            visFullEvent: false,
+            visError: false
         }
     },
 
@@ -121,6 +123,18 @@ const EventsTable = React.createClass({
         this.setState(state);
     },
 
+    changeVisError: function(e) {
+        let state = this.state;
+
+        if (e && e.target.className === 'fa fa-times') {
+            state.visError = false;
+        } else {
+            state.visError = true;
+        }
+
+        this.setState(state);
+    },
+
     componentDidMount: function() {
         getNotification();
         let timerId = setInterval(getNotification, 1000);
@@ -158,6 +172,9 @@ const EventsTable = React.createClass({
                 <div onClick={this.changeFullEvent}>
                     <FullEvent visible={this.state.visFullEvent} scope={this}
                         selEvent={this.state.selEvent} />
+                </div>
+                <div onClick={this.changeVisError}>
+                    <Error visible={this.state.visError} />
                 </div>
             </div>
         );

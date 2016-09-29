@@ -75,9 +75,11 @@ passport.deserializeUser(function(id, done) {
 
 var app = express();
 
+//app.use('/', express.static(__dirname));
 app.use('/login', express.static('build'));
 app.use('/signup', express.static('build'));
 app.use('/user', express.static('build'));
+app.use('/*', express.static('build'));
 
 //app.use(morgan('combined'));
 app.use(cookieParser());
@@ -189,6 +191,11 @@ app.post('/get_events', isLogin.ensureLoggedIn('/login'), function(req, res) {
         res.send(error);
     });
 });
+
+app.get('/*', function(req, res) {
+    res.sendFile('error404.html', { root: __dirname + '/build/error' });
+});
+
 
 app.set('port', (process.env.PORT || 8080));
 var server = app.listen(app.get('port'), function() {

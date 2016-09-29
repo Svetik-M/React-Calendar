@@ -145,7 +145,7 @@ body {
 }
 
 .create-event {
-  position: fixed;
+  position: absolute;
   width: 7rem;
   height: 1.2rem;
   text-align: center;
@@ -174,8 +174,8 @@ body {
 }
 
 .nav-date {
-  position: fixed;
-  top: 8rem;
+  position: absolute;
+  top: 5rem;
   -webkit-user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -263,10 +263,23 @@ body {
   border: 0.15rem solid #e6e6e6;
 }
 
-.events-block {
-  width: calc(100vw - 16.8rem);
-  position: relative;
+.main-block {
+  width: calc(100vw - 16.4rem);
+  height: calc(100vh - 3.1rem);
+  position: fixed;
+  top: 3.1rem;
   left: 15.2rem;
+  overflow-y: auto;
+}
+
+.main-block .all-month {
+  margin-bottom: 0;
+}
+
+.events-block {
+  width: calc(100vw - 18rem);
+  position: relative;
+  margin-bottom: 0.5rem;
   display: flex;
   flex-grow: 1;
   box-shadow: 0 0 10px #b5b1b1;
@@ -282,7 +295,7 @@ body {
   text-align: center;
   table-layout: fixed;
   border-spacing: 0;
-  width: calc(100vw - 16.8rem);
+  width: calc(100vw - 18rem);
   height: 2rem;
 }
 
@@ -413,7 +426,6 @@ body {
 }
 
 .events-block .month {
-  height: calc(100vh - 5.5rem);
   margin-top: calc(2rem - 1px);
 }
 
@@ -426,10 +438,6 @@ body {
 
 .events-block .month td div {
   position: relative;
-}
-
-.events-block .month td div:nth-child(3) {
-  height: 100%;
 }
 
 .events-block .month .event {
@@ -486,12 +494,54 @@ body {
   margin: 2px 1px;
 }
 
-.full-event {
+.connection-error {
   position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(64, 38, 47, 0.5);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.connection-error > div {
+  height: 7rem;
+  width: 32rem;
+  background-color: white;
+  box-shadow: 0 0 10px #ba2c5c;
+  border: 2px solid #ba2c5c;
+  font-size: 1.2rem;
+}
+
+.connection-error > div .fa-times {
+  margin: 0.5rem 0.5rem 0 30.4rem;
+  cursor: pointer;
+}
+
+.connection-error > div .fa-times:hover {
+  color: #ba2c5c;
+}
+
+.connection-error > div div {
+  width: 100%;
+  text-align: center;
+}
+
+.connection-error > div div i {
+  color: #fb0109;
+  margin-right: 0.5rem;
+}
+
+.full-event {
+  position: absolute;
   top: 23.5rem;
   width: 14rem;
   height: calc(100vh - 24.3rem);
-  margin: 0 0.5rem;
+  min-height: 12rem;
+  margin: 0 0.5rem 0.5rem;
   color: #494646;
   background-color: white;
   border: 2px solid #ba2c5c;
@@ -591,15 +641,18 @@ body {
 }
 
 .event-form {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  left: 0;
   width: 100vw;
   height: 100vh;
+  min-height: 40rem;
   z-index: 100;
   background-color: rgba(64, 38, 47, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .event-form form {
@@ -607,8 +660,6 @@ body {
   height: 34.5rem;
   background: white;
   box-shadow: 0px 0px 10px #494646;
-  margin: 0 auto;
-  margin-top: calc(50vh - 17.3rem);
 }
 
 .event-form form .title-form {
@@ -1242,33 +1293,34 @@ body {
 }
 
 .incorrect > div {
-  width: 35rem;
+  width: 28rem;
   height: 5rem;
-  background-color: #e6e6e6;
-  box-shadow: 0 0 10px #a2083b;
-  color: #a2083b;
-  font-size: 1.5rem;
+  background-color: white;
+  box-shadow: 0 0 10px #ba2c5c;
+  border: 2px solid #ba2c5c;
+  color: #494646;
+  font-size: 1.2rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .incorrect > div .fa-times {
-  color: #494646;
-  margin: 0.5rem 0.5rem 0 33rem;
+  margin: 0.5rem 0.5rem 0 26.3rem;
 }
 
 .incorrect > div .fa-times:hover {
-  color: #a2083b;
+  color: #ba2c5c;
 }
 
 .incorrect > div div {
   display: inline-flex;
   align-items: baseline;
-  margin-top: -2.1rem;
+  margin-top: -1.7rem;
 }
 
-.incorrect > div div .fa-exclamation-triangle {
+.incorrect > div div i {
+  color: #fb0109;
   margin-right: 1rem;
 }
 

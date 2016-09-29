@@ -2,7 +2,7 @@
   "name": "my-calendar",
   "version": "0.1.0",
   "description": "My Calendar",
-  "main": "index.html",
+  "main": "/index.html",
   "scripts": {
     "start": "node server.js"
   },
