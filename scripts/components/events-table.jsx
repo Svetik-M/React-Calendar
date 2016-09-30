@@ -68,7 +68,7 @@ const EventsTable = React.createClass({
 
     clearForm: function(e) {
         let target = e.target;
-        if (target.className === 'create button') {
+        if (target.className === 'button create') {
             let state = this.state;
             state.eventId = '';
             this.setState(state);
@@ -136,8 +136,15 @@ const EventsTable = React.createClass({
     },
 
     componentDidMount: function() {
-        getNotification();
-        let timerId = setInterval(getNotification, 1000);
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else {
+            Notification.requestPermission().then(function(permission) {
+                if (permission === "granted") {
+                    let timerId = setInterval(getNotification, 1000);
+                }
+            });
+        }
     },
 
     render: function() {
@@ -183,28 +190,8 @@ const EventsTable = React.createClass({
 
 
 function getNotification() {
-    if (!("Notification" in window)) {
-        alert("This browser does not support desktop notification");
-
-    } else if (Notification.permission === "granted") {
-        let eventsForNotif = filterEvents();
-
-        if (eventsForNotif !== []) {
-
-            createNotification(eventsForNotif);
-        }
-
-    } else if (Notification.permission !== 'denied') {
-        Notification.requestPermission().then(function(permission) {
-            if (permission === "granted") {
-                let eventsForNotif = filterEvents();
-
-                if (eventsForNotif !== []) {
-                    createNotification(eventsForNotif);
-                }
-            }
-        });
-    }
+    let eventsForNotif = filterEvents();
+    if (eventsForNotif !== []) createNotification(eventsForNotif);
 }
 
 

@@ -949,7 +949,7 @@ body {
   width: 15rem;
 }
 
-.event-form form .discription textarea {
+.event-form form .description textarea {
   width: calc(37rem - 4px);
   height: 3rem;
   padding: 0.5rem 1rem;

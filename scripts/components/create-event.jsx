@@ -320,10 +320,10 @@ const CreateEvent = React.createClass({
                             onChange={this.handleChange} />
                     </label>
 
-                    <label className='discription'>
-                        Discription
-                        <textarea name='discription' ref='discription'
-                            value={eventData.discription}
+                    <label className='description'>
+                        Description
+                        <textarea name='description' ref='description'
+                            value={eventData.description}
                             onChange={this.handleChange}></textarea>
                     </label>
 
@@ -364,7 +364,7 @@ function setState(props) {
             end_date: endDate,
             place: ev ? ev.place : '',
             category: ev ? ev.category : '',
-            discription: ev ? ev.discription : '',
+            description: ev ? ev.description : '',
             repeat: ev ? ev.is_repeat : '',
             repeat_rate: ev && ev.repeat_rate ? ev.repeat_rate : 'every day',
             repeat_end: repeatEnd

@@ -23,7 +23,7 @@ const FullEvent = React.createClass({
                             <p><span>Category: </span>{ev.category}</p>
                             <p>{evDateStr}</p>
                             <p><span>{ev.place !== '' ? 'Place: ' : ''}</span>{ev.place}</p>
-                            <p><span>{ev.discription !== '' ? 'Discription: ' : ''}</span>{ev.discription}</p>
+                            <p><span>{ev.description !== '' ? 'Description: ' : ''}</span>{ev.description}</p>
                         </div>
                         <div className='button-block'>
                             <button type='button' className='button delete'>Delete</button>

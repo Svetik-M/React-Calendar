@@ -138,11 +138,11 @@ app.post('/signup',
 });
 
 app.post('/add_event', isLogin.ensureLoggedIn('/login'), function(req, res) {
-    db.one('INSERT INTO events(user_id, title, start_date, end_date, place, category, discription,'
+    db.one('INSERT INTO events(user_id, title, start_date, end_date, place, category, description,'
             + ' is_repeat, repeat_rate, repeat_duration, repeat_end)'
             + ' VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning id',
             [req.user.id, req.body.title, req.body.start_date, req.body.end_date, req.body.place, req.body.category,
-            req.body.discription, req.body.repeat, req.body.repeat_rate, req.body.repeat_duration, req.body.repeat_end])
+            req.body.description, req.body.repeat, req.body.repeat_rate, req.body.repeat_duration, req.body.repeat_end])
         .then(data => res.send('Perfect'))
         .catch(error => {
             console.log(error);
@@ -151,10 +151,10 @@ app.post('/add_event', isLogin.ensureLoggedIn('/login'), function(req, res) {
 });
 
 app.post('/edit_event', isLogin.ensureLoggedIn('/login'), function(req, res) {
-    db.none('UPDATE events SET  title=$3, start_date = $4, end_date = $5, place = $6, category = $7, discription = $8,'
+    db.none('UPDATE events SET  title=$3, start_date = $4, end_date = $5, place = $6, category = $7, description = $8,'
             + ' is_repeat = $9, repeat_rate = $10, repeat_duration = $11, repeat_end = $12'
             + ' WHERE id = $1 and user_id = $2', [req.body.id, req.user.id, req.body.title, req.body.start_date,
-            req.body.end_date, req.body.place, req.body.category, req.body.discription, req.body.repeat,
+            req.body.end_date, req.body.place, req.body.category, req.body.description, req.body.repeat,
             req.body.repeat_rate, req.body.repeat_duration, req.body.repeat_end])
         .then(function() {
             res.send('Perfect');

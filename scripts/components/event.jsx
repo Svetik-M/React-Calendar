@@ -50,7 +50,7 @@ const Event = React.createClass({
             divStyle.width = 'calc(' + this.props.coefWidth*100  + '%' + ' + ' + coef + 'px)';
 
             if (this.state.topEl) divStyle.top = this.state.topEl + 'px';
-        }
+        } 
 
         return (
             <div>

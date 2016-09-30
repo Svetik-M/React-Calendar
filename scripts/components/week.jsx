@@ -186,9 +186,6 @@ function getNewState(props) {
             return Math.max.apply(null, arrLen);
         });
 
-        console.log(arrOfEvents);
-        console.log(arrMaxLen);
-
     return {events: eventsByHours, maxLen: arrMaxLen};
 }
 

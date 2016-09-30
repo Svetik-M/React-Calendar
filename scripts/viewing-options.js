@@ -22,7 +22,7 @@ function getElementPosition(props) {
     }
 
     if (props.period === 'week'
-        && new Date(dateMidnightMS).getDay !== 0
+        && new Date(dateMidnightMS).getDay() !== 0
         && (ev.start_date === dateMidnightMS
         && ev.end_date === dateMidnightMS + MS_IN_DAY
         || ev.start_date < dateMidnightMS
@@ -88,8 +88,8 @@ function getElementTopShift(props) {
 
     let prevEvents = props.events.filter(function(val, ind) {
         return val.start_date < ev.start_date
-            && val.end_date > ev.start_date
-            && (val.start_date <= dateMidnightMS || val.end_date > dateMidnightMS + MS_IN_DAY);
+            && val.end_date > dateMidnightMS
+            && (val.start_date < dateMidnightMS || val.end_date > dateMidnightMS + MS_IN_DAY);
     });
 
     let elem = prevEvents[prevEvents.length - 1],

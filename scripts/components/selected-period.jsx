@@ -9,6 +9,31 @@ const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
 const MS_IN_DAY = 86400000;
 
 
+const SelectedPeriod = React.createClass({
+    getInitialState: function() {
+        let date = this.props.selDate;
+        return getWeekPeriod(date);
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        let date = nextProps.selDate;
+        if (nextProps.period === 'day') {
+            this.setState({
+                periodStr: MONTH_NAMES[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear()
+            });
+        } else if (nextProps.period === 'week') {
+            this.setState(getWeekPeriod(date));
+        } else if (nextProps.period === 'month') {
+            this.setState({periodStr: MONTH_NAMES[date.getMonth()] + ' ' + date.getFullYear()})
+        }
+    },
+
+    render: function(){
+        return <div className='selected-period'>{this.state.periodStr}</div>
+    }
+});
+
+
 function getWeekPeriod(date) {
     let currDOW = date.getDay(),
         firstDay = new Date(date.getTime() - currDOW * MS_IN_DAY),
@@ -31,31 +56,6 @@ function getWeekPeriod(date) {
         periodStr: periodStr
     }
 }
-
-
-const SelectedPeriod = React.createClass({
-    getInitialState: function() {
-        let date = this.props.selDate;
-        return {periodStr: MONTH_NAMES[date.getMonth()] + ' ' + date.getFullYear()};
-    },
-
-    componentWillReceiveProps: function(nextProps) {
-        let date = nextProps.selDate;
-        if (nextProps.period === 'day') {
-            this.setState({
-                periodStr: MONTH_NAMES[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear()
-            });
-        } else if (nextProps.period === 'week') {
-            this.setState(getWeekPeriod(date));
-        } else if (nextProps.period === 'month') {
-            this.setState({periodStr: MONTH_NAMES[date.getMonth()] + ' ' + date.getFullYear()})
-        }
-    },
-
-    render: function(){
-        return <div className='selected-period'>{this.state.periodStr}</div>
-    }
-});
 
 
 export default SelectedPeriod;
