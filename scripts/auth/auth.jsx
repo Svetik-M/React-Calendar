@@ -82,22 +82,24 @@ const AuthorizationForm = React.createClass({
 
         return (
             <div className='authorization'>
-                <div className='logo'>My Calendar</div>
-                <div className='reg-form'>
-                    {menu}
-                    {form}
-                </div>
-                <div className={'incorrect' + (this.state.visible ? '' : ' none')}>
-                    <div>
-                        <i className='fa fa-times' aria-hidden='true' onClick={this.changeVisible} />
+                <div>
+                    <div className='logo'>My Calendar</div>
+                    <div className='reg-form'>
+                        {menu}
+                        {form}
+                    </div>
+                    <div className={'incorrect' + (this.state.visible ? '' : ' none')}>
                         <div>
-                            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
-                            {errorMassage}
+                            <i className='fa fa-times' aria-hidden='true' onClick={this.changeVisible} />
+                            <div>
+                                <i className='fa fa-exclamation-triangle' aria-hidden='true' />
+                                {errorMassage}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div onClick={this.changeVisError}>
-                    <Error visible={this.state.visError} />
+                    <div onClick={this.changeVisError}>
+                        <Error visible={this.state.visError} />
+                    </div>
                 </div>
             </div>
         );

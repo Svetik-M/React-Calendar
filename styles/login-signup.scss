@@ -3,11 +3,15 @@
     top: 0;
     background-color: $background-color;
     height: 100%;
+    min-height: 35rem;
     width: 100%;
+    min-width: 32rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .logo {
-        margin: 1rem auto;
-        margin-top: calc(50vh - 18rem);
+        margin: 0 auto;
         font-size: 3rem;
         @include user-select;
     }
@@ -18,7 +22,7 @@
     color: $background-color;
     width: 30rem;
     height: 28rem;
-    margin: 0 auto;
+    margin-bottom: 2rem;
     box-shadow: 7px 7px 5px $color-grey;
 
     ul.form-group {
@@ -92,6 +96,15 @@
     input:focus {
         border: 2px solid $main-color;
         outline: 0;
+    }
+
+    input:-ms-input-placeholder {
+        color: $color-pale-grey;
+    }
+
+    input::-webkit-input-placeholder {
+        color: $color-pale-grey;
+        opacity: 1;
     }
 
     .message, .err {
