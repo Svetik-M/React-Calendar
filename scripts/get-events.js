@@ -2,6 +2,7 @@
 
 
 import requests from './requests.js';
+import {getDateStr, getTimeStr} from './viewing-options.js';
 
 
 const MS_IN_DAY = 86400000,
@@ -99,16 +100,17 @@ function sortEvents(eventsArr, startMS, endMS) {
 
             for (let j = repeatEvents.length - 1; j >= 0; j--) {
                 let startDateMS = repeatEvents[j].start_date,
-                    optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'},
+                    startMidnightMs = new Date(new Date(startDateMS).getFullYear(), new Date(startDateMS).getMonth(),
+                                                   new Date(startDateMS).getDate()).getTime(),
+                    dateMidnightMs = new Date(new Date(dateMS).getFullYear(), new Date(dateMS).getMonth(),
+                                              new Date(dateMS).getDate()).getTime(),
                     bool =  repeatEvents[j].repeat_end >= dateMS
                         && (repeatEvents[j].repeat_rate === 'every day'
                         && repeatEvents[j].start_date < dateMS + MS_IN_DAY
                         || repeatEvents[j].repeat_rate === 'every month'
                         && new Date(repeatEvents[j].start_date).getDate() === new Date(dateMS).getDate()
                         || repeatEvents[j].repeat_rate === 'every week'
-                        && (new Date(new Date(startDateMS).toLocaleString('en-US', optionsDate)).getTime()
-                            - new Date(new Date(dateMS).toLocaleString('en-US', optionsDate)).getTime())
-                            % (MS_IN_DAY * 7) === 0)
+                        && (startMidnightMs - dateMidnightMs) % (MS_IN_DAY * 7) === 0);
 
                 if (bool) {
                     let ev = JSON.parse(JSON.stringify(repeatEvents[j]));
@@ -191,8 +193,7 @@ function sortDayEventsByHour(eventsArr, dateMidnightMS) {
 
 
 function sortWeekEventsByDays(eventsArr, firstDateOfWeekMS) {
-    let eventsByDays =new Array(7),
-        optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
+    let eventsByDays =new Array(7);
 
     for (let i = 0; i < 7; i++) {
         let dayEvents = eventsArr.filter(value => {
@@ -231,19 +232,20 @@ function sortWeekEventsByDuration(eventsArr, firstDateOfWeekMS) {
 
 
 function getEventDate(ev) {
-    let optionsTime = {hour: '2-digit', minute: '2-digit'},
-        optionsDateTime = {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'},
+    let start = new Date(ev.start_date),
+        end = new Date(ev.end_date),
+        startDateStr = getDateStr(start),
+        startTimeStr = getTimeStr(start),
+        endTimeStr = getTimeStr(end),
         evDateStr;
 
     if (new Date(ev.start_date).toLocaleDateString() === new Date(ev.end_date).toLocaleDateString()) {
-        evDateStr = new Date(ev.start_date).toLocaleString('en-US', optionsDateTime).replace('0 ', '0')
-            + ' - ' + new Date(ev.end_date).toLocaleString('en-US', optionsTime).replace('0 ', '0');
+        evDateStr = `${startDateStr} ${startTimeStr} - ${endTimeStr}`;
     } else {
-        evDateStr = new Date(ev.start_date).toLocaleString('en-US', optionsDateTime).replace('0 ', '0')
-            + ' - ' + new Date(ev.end_date).toLocaleString('en-US', optionsDateTime).replace('0 ', '0');
+        evDateStr = `${startDateStr} ${startTimeStr} - ${getDateStr(end)} ${endTimeStr}`;
     }
 
-    return evDateStr
+    return evDateStr;
 }
 
 

@@ -8,6 +8,7 @@ import CalendarWidget from './calendar-widget.jsx';
 
 import requests from '../requests.js';
 import validation from '../validation.js';
+import {getDateStr, getTimeStr} from '../viewing-options.js';
 
 
 const MS_IN_HOUR = 3600000,
@@ -15,8 +16,7 @@ const MS_IN_HOUR = 3600000,
       MS_IN_DAY = 86400000;
 
 let date = new Date(),
-    timeZone = date.getTimezoneOffset()*MS_IN_MIN,
-    optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
+    timeZone = date.getTimezoneOffset()*MS_IN_MIN;
 
 
 const SelectTime = React.createClass({
@@ -347,12 +347,12 @@ const CreateEvent = React.createClass({
 
 function setState(props) {
     let ev = props.editableEvent,
-        startDate = ev ? new Date(ev.start_date).toLocaleString('en-US', optionsDate)
-                       : date.toLocaleString('en-US', optionsDate),
-        endDate = ev ? new Date(ev.end_date).toLocaleString('en-US', optionsDate)
-                       : date.toLocaleString('en-US', optionsDate),
-        repeatEnd = ev && ev.repeat_end ? new Date(ev.repeat_rate).toLocaleString('en-US', optionsDate)
-                       : new Date(date.getTime() + 6 * MS_IN_DAY).toLocaleString('en-US', optionsDate);
+    start = ev ? new Date(ev.start_date) : date,
+    end = ev ? new Date(ev.end_date) : date,
+    repeat = ev && ev.repeat_end ? new Date(ev.repeat_rate) : new Date(date.getTime() + 6 * MS_IN_DAY),
+    startDate = getDateStr(start),
+    endDate = getDateStr(end),
+    repeatEnd = getDateStr(repeat);
 
     return {
         visible: props.visible,
@@ -380,8 +380,11 @@ function setState(props) {
 function selectDate(target, changeState, visState) {
     if (target.className.indexOf('curr-month') >= 0
         || target.className.indexOf('other-month') >= 0) {
-        let state = this.state;
-        state.eventData[changeState] = new Date(+target.id).toLocaleString('en-US', optionsDate);
+
+        let state = this.state,
+            selDate = new Date(+target.id);
+
+        state.eventData[changeState] = getDateStr(selDate);
         state.vis[visState] = false;
         this.setState(state);
     };
@@ -389,8 +392,10 @@ function selectDate(target, changeState, visState) {
 
 
 function viewTime(time) {
-    let options = {hour: '2-digit', minute: '2-digit'};
-    return new Date(+time + timeZone).toLocaleTimeString('en-US', options).toLowerCase().replace(' ', '');
+    let selTime = new Date(+time + timeZone),
+        timeStr = getTimeStr(selTime);
+
+    return timeStr;
 }
 
 

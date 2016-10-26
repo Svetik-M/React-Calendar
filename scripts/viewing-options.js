@@ -96,8 +96,8 @@ function getElementTopShift(props) {
         id;
 
     if (elem && elem.start_date >= firstDateOfWeekMS) {
-        let optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
-        id = elem.id + '-' + new Date(new Date(elem.start_date).toLocaleString('en-US', optionsDate)).getTime();
+        let date = new Date(elem.start_date);
+        id = elem.id + '-' + new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 
     } else if (elem && elem.start_date < firstDateOfWeekMS) {
         id = elem.id + '-' + firstDateOfWeekMS;
@@ -147,25 +147,25 @@ function getBlockTopShift(arrOfEvents, firstDateOfWeekMS) {
 function getStartDateStrAndCoefWidth(currEvent, index, dateMidnightMS) {
     let startDateMS = currEvent.start_date,
         endDateMS = currEvent.end_date,
-        optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'},
-        optionsTime = {hour: '2-digit', minute: '2-digit'},
-        startDateMidnightMS = new Date(new Date(startDateMS).toLocaleString('en-US', optionsDate)).getTime(),
-        endDateMidnightMS = new Date(new Date(endDateMS).toLocaleString('en-US', optionsDate)).getTime(),
-        startDateStr, coefWidth;
+        startDate = new Date(currEvent.start_date),
+        endDate = new Date(currEvent.end_date),
+        startDateMidnightMS = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()).getTime(),
+        endDateMidnightMS = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()).getTime(),
+        startTimeStr, coefWidth;
 
     if (startDateMS < dateMidnightMS && index !== 0) {
         return undefined;
 
     } else if (startDateMS < dateMidnightMS && index === 0) {
-        startDateStr = '';
+        startTimeStr = '';
         coefWidth = (endDateMidnightMS - dateMidnightMS) / MS_IN_DAY + 1;
 
     } else if (startDateMS >= dateMidnightMS && startDateMS < dateMidnightMS + MS_IN_DAY) {
-        startDateStr = new Date(startDateMS).toLocaleString('en-US', optionsTime).toLowerCase().replace(' ', '');
+        startTimeStr = getTimeStr(startDate);
         coefWidth = (endDateMidnightMS - startDateMidnightMS) / MS_IN_DAY + 1;
 
     } else {
-        startDateStr = new Date(startDateMS).toLocaleString('en-US', optionsTime).toLowerCase().replace(' ', '');
+        startTimeStr = getTimeStr(startDate);
     }
 
     if (coefWidth === 0) coefWidth = 1;
@@ -174,9 +174,29 @@ function getStartDateStrAndCoefWidth(currEvent, index, dateMidnightMS) {
     if (coefWidth >  6 - index + 1) coefWidth = 6 - index + 1;
 
     return {
-        startDateStr: startDateStr,
+        startDateStr: startTimeStr,
         coefWidth: coefWidth
     };
+}
+
+
+function getDateStr(date) {
+    return `${(date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1)}`+
+            `/${(date.getDate() < 10 ? '0' : '') + date.getDate()}/${date.getFullYear()}`;
+}
+
+
+function getTimeStr(date) {
+    let hours = date.getHours(),
+        minutes = (date.getMinutes() === 0 ? '00' : '30'),
+        timeStr;
+
+    if (hours === 0) timeStr = `${12}:${minutes}am`;
+    else if (hours < 12) timeStr = `${hours}:${minutes}am`;
+    else if (hours === 12) timeStr = `${12}:${minutes}pm`;
+    else if (hours > 12) timeStr = `${hours-12}:${minutes}pm`;
+
+    return timeStr;
 }
 
 
@@ -191,4 +211,4 @@ function getCoords(elem) {
 }
 
 
-export {getElementPosition, getBlockTopShift, getStartDateStrAndCoefWidth}
+export {getElementPosition, getBlockTopShift, getStartDateStrAndCoefWidth, getDateStr, getTimeStr};
