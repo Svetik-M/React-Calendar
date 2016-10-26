@@ -17,7 +17,7 @@ const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'F
 const Week = React.createClass({
     getInitialState: function() {
         return {
-            events: Array.from({length:7})
+            events: new Array(7)
         }
     },
 
@@ -53,7 +53,7 @@ const Week = React.createClass({
             today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             quantityWeeks = Math.ceil((lastDateOfMonth.getDate() - 7 + firstDateOfMonth.getDay()) / 7) + 1,
             events = this.state.events,
-            tableRow = Array.from({length: 7});
+            tableRow = [];
 
         events = events.map(function(value, index) {
             let dateMidnightMS = firstDayOfWeekMS + index * MS_IN_DAY;
@@ -80,7 +80,7 @@ const Week = React.createClass({
 
         }, this);
 
-        tableRow = tableRow.map(function(v, i) {
+        for (let i = 0; i < 7; i++) {
             let date = new Date(firstDayOfWeekMS + i * MS_IN_DAY),
                 dateOfMonth = date.getDate(),
                 dateMS = date.getTime(),
@@ -105,25 +105,26 @@ const Week = React.createClass({
             }
 
             if (date.getMonth() !== month) {
-                return (<td key={i} className='other-month' data-date={dateMS} style={tdStyle}>
-                            <div className='date'>{dateOfMonth}</div>
-                            <div style={evSomeDaysStyle}>{events[i][0]}</div>
-                            <div style={evOneDayStyle}>{events[i][1]}</div>
-                        </td>);
+                tableRow.push(<td key={i} className='other-month' data-date={dateMS} style={tdStyle}>
+                                  <div className='date'>{dateOfMonth}</div>
+                                  <div style={evSomeDaysStyle}>{events[i][0]}</div>
+                                  <div style={evOneDayStyle}>{events[i][1]}</div>
+                              </td>);
             } else  if (dateMS === today.getTime()) {
-                return (<td key={i} className='curr-month today' data-date={dateMS} style={tdStyle}>
-                            <div className='date'>{dateOfMonth}</div>
-                            <div style={evSomeDaysStyle}>{events[i][0]}</div>
-                            <div style={evOneDayStyle}>{events[i][1]}</div>
-                        </td>);
+                tableRow.push(<td key={i} className='curr-month today' data-date={dateMS} style={tdStyle}>
+                                  <div className='date'>{dateOfMonth}</div>
+                                  <div style={evSomeDaysStyle}>{events[i][0]}</div>
+                                  <div style={evOneDayStyle}>{events[i][1]}</div>
+                              </td>);
             } else {
-                return (<td key={i} className='curr-month' data-date={dateMS} style={tdStyle}>
-                            <div className='date'>{dateOfMonth}</div>
-                            <div style={evSomeDaysStyle}>{events[i][0]}</div>
-                            <div style={evOneDayStyle}>{events[i][1]}</div>
-                        </td>);
+                tableRow.push(<td key={i} className='curr-month' data-date={dateMS} style={tdStyle}>
+                                  <div className='date'>{dateOfMonth}</div>
+                                  <div style={evSomeDaysStyle}>{events[i][0]}</div>
+                                  <div style={evOneDayStyle}>{events[i][1]}</div>
+                              </td>);
             }
-        }, this);
+        }
+
         return  (
             <tr>
                 {tableRow}
@@ -167,12 +168,13 @@ const Month = React.createClass({
 
 const IventsOfMonth = React.createClass({
     render: function() {
-        let tableTitle = Array.from({length:7});
-        tableTitle = tableTitle.map(function(v,i) {
-            return (<td key={i} className='events-group'>
+        let tableTitle = [];
+
+        for (let i = 0; i < 7; i++) {
+            tableTitle.push(<td key={i} className='events-group'>
                        {DAYS_OF_WEEK[i]}
                    </td>);
-        });
+        }
 
         return (
             <div className='events-block all-month'>

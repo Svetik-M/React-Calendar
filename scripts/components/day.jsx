@@ -16,7 +16,7 @@ const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'F
 const IventsOfDay = React.createClass({
     getInitialState: function() {
         return {
-            events: Array.from({length: 49})
+            events: new Array(49)
         }
     },
 
@@ -35,7 +35,7 @@ const IventsOfDay = React.createClass({
             dateMidnightMS = selDate.getTime(),
             DOW_selDate = DAYS_OF_WEEK[selDate.getDay()],
             events = this.state.events,
-            tableRows = Array.from({length:25}),
+            tableRows = [],
             timeStr;
 
         let tableTitle = (<td className='events-group'>
@@ -65,9 +65,9 @@ const IventsOfDay = React.createClass({
             }
         }, this);
 
-        tableRows = tableRows.map(function(v, i) {
+        for (let i = 0; i < 25; i++) {
             if (i === 0) {
-                return (
+                tableRows.push(
                     <tr key={i}>
                         <td className='time all-day'>All Day</td>
                         <td className='events-group all-day'>
@@ -75,33 +75,35 @@ const IventsOfDay = React.createClass({
                         </td>
                     </tr>
                 );
+
+            } else {
+
+                if (i === 1) timeStr = '12am';
+                else if (i < 13) timeStr = (i - 1) + 'am';
+                else if (i === 13) timeStr = '12pm';
+                else if (i > 13) timeStr = (i - 13) + 'pm';
+
+                let divStyle = {width: 'calc(95% - ' + 16 * this.state.maxLen + 'px)'}
+
+                tableRows.push(
+                    <tr key={i}>
+                        <td className='time'>{timeStr}</td>
+                        <td className='events-group'>
+                            <div className='half' data-date={dateMidnightMS + i * MS_IN_HOUR}>
+                                <div style={divStyle}>
+                                    {events[2 * i - 1]}
+                                </div>
+                            </div>
+                            <div className='half' data-date={dateMidnightMS + i * MS_IN_HOUR + MS_IN_HOUR/2}>
+                                <div style={divStyle}>
+                                    {events[2 * i]}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                );
             }
-
-            if (i === 1) timeStr = '12am';
-            else if (i < 13) timeStr = (i - 1) + 'am';
-            else if (i === 13) timeStr = '12pm';
-            else if (i > 13) timeStr = (i - 13) + 'pm';
-
-            let divStyle = {width: 'calc(95% - ' + 16 * this.state.maxLen + 'px)'}
-
-            return (
-                <tr key={i}>
-                    <td className='time'>{timeStr}</td>
-                    <td className='events-group'>
-                        <div className='half' data-date={dateMidnightMS + i * MS_IN_HOUR}>
-                            <div style={divStyle}>
-                                {events[2 * i - 1]}
-                            </div>
-                        </div>
-                        <div className='half' data-date={dateMidnightMS + i * MS_IN_HOUR + MS_IN_HOUR/2}>
-                            <div style={divStyle}>
-                                {events[2 * i]}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            );
-        }, this);
+        }
 
         return (
             <div className='events-block'>
@@ -114,12 +116,12 @@ const IventsOfDay = React.createClass({
                     </tbody>
                 </table>
                 <table className='events-list day'>
-                <thead>
+                {/*}<thead>
                     <tr>
                         <td className='time'></td>
                         {tableTitle}
                     </tr>
-                </thead>
+                </thead>*/}
                     <tbody>
                         {tableRows}
                     </tbody>

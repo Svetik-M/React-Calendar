@@ -18,7 +18,7 @@ let requests = {
                     if (xhr.responseText === 'Unauthorized') {
                         scope.getLogin();
                     } else if (xhr.responseText === 'Success') {
-                        window.location = xhr.responseURL.replace('login', 'user');
+                        window.location = 'https://my-calendar-react.herokuapp.com/user';
                     } else {
                         scope.changeVisError();
                     }
@@ -48,7 +48,7 @@ let requests = {
                     if (xhr.responseText === 'Used') {
                         scope.getSignup();
                     } else if (xhr.responseText === 'Success') {
-                        window.location = xhr.responseURL.replace('signup', 'user');
+                        window.location = 'https://my-calendar-react.herokuapp.com/user';
                     } else {
                         scope.changeVisError();
                     }

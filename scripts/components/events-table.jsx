@@ -99,12 +99,10 @@ const EventsTable = React.createClass({
         let target = e.target,
         state = this.state;
 
-        if (target.className.includes('event ')) {
+        if (target.className.indexOf('event ') >= 0) {
             let id = target.id.replace(/-\d*/, ''),
                 startDateMS = +target.getAttribute('data-start'),
-                selEvent;
-
-            selEvent = this.state.events.find(v => v.id === id && v.start_date === startDateMS);
+                selEvent = this.state.events.filter(v => v.id === id && v.start_date === startDateMS)[0];
 
             if (this.state.selEvent
             && this.state.selEvent.id === id

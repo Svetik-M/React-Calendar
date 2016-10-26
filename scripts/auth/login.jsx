@@ -17,10 +17,6 @@ const Login = React.createClass({
         }
     },
 
-    // componentDidMount: function() {
-    //     ReactDOM.findDOMNode(this.refs.login).focus();
-    // },
-
     handleSubmit: function(e) {
         e.preventDefault();
 

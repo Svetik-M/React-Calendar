@@ -120,7 +120,7 @@ function getBlockTopShift(arrOfEvents, firstDateOfWeekMS) {
         });
     });
 
-    let arrTopEl = Array.from({length: 7});
+    let arrTopEl = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
 
     return arrTopEl = arrTopEl.map((val, ind) => {
         let elem = arr[ind][arr[ind].length - 1],
@@ -132,7 +132,9 @@ function getBlockTopShift(arrOfEvents, firstDateOfWeekMS) {
                 dayOfWeek = (dateMS - firstDateOfWeekMS) / MS_IN_DAY,
                 indDay = dayOfWeek > 0 ? dayOfWeek : 0;
 
-            index= arrOfEvents[indDay][0].findIndex(v => v.id === elem.id) + 1;
+            let el = arrOfEvents[indDay][0].filter(v => v.id === elem.id)
+
+            index = arrOfEvents[indDay][0].indexOf(el[0]) + 1;
         } else {
             index = 0;
         }

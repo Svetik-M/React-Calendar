@@ -16,7 +16,7 @@ const MS_IN_HOUR = 3600000;
 const IventsOfWeek = React.createClass({
     getInitialState: function() {
         return {
-            events: Array.from({length: 7})
+            events: new Array(7)
         }
     },
 
@@ -35,18 +35,18 @@ const IventsOfWeek = React.createClass({
             DOW_selDate = selDate.getDay(),
             firstDateOfWeekMS = selDate.getTime() - DOW_selDate * MS_IN_DAY,
             events = this.state.events,
-            tableTitle = Array.from({length:7}),
-            tableRows = Array.from({length:25}),
+            tableTitle = [],
+            tableRows = [],
             timeStr;
 
-        tableTitle = tableTitle.map(function(v,i) {
+        for(let i = 0; i < 7; i++) {
             let day = new Date(firstDateOfWeekMS + i * MS_IN_DAY).getDate(),
                 month = +(new Date(firstDateOfWeekMS + i * MS_IN_DAY).getMonth()) + 1;
 
-            return (<td key={i} className='events-group'>
-                        {DAYS_OF_WEEK[i] + ' ' + day + '/' + month}
-                    </td>);
-        });
+            tableTitle.push(<td key={i} className='events-group'>
+                            {DAYS_OF_WEEK[i] + ' ' + day + '/' + month}
+                        </td>);
+        }
 
         events = events.map(function(value, index){
             let dateMidnightMS = firstDateOfWeekMS + index * MS_IN_DAY;
@@ -74,8 +74,8 @@ const IventsOfWeek = React.createClass({
 
         }, this);
 
-        tableRows = tableRows.map(function(value, index) {
-            let eventsByDOW = Array.from({length:7}),
+        for (let index = 0; index < 25; index++) {
+            let eventsByDOW = [],
                 d = new Date(),
                 todayMS = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 
@@ -84,8 +84,7 @@ const IventsOfWeek = React.createClass({
             else if (index === 13) timeStr = '12pm';
             else if (index > 13) timeStr = (index - 13) + 'pm';
 
-
-            eventsByDOW = eventsByDOW.map(function(v, i) {
+            for (let i = 0; i < 7; i++) {
                 let bool = firstDateOfWeekMS + i * MS_IN_DAY === todayMS;
 
                 if (index === 0) {
@@ -94,51 +93,50 @@ const IventsOfWeek = React.createClass({
                                         + (events[i][0].length * 2 + 6)  + 'px)'
                     };
 
-                    return (
+                    eventsByDOW.push(
                         <td key={i} className={bool ? 'events-group today all-day' : 'events-group all-day'}
                             style={tdStyle}>
                             {events[i][0]}
                         </td>
                     );
+                } else {
+                    let divStyle = {width: 'calc(100% - ' + 7 * (this.state.maxLen[i] - 1) + 'px)'};
+
+                    eventsByDOW.push (
+                        <td key={i} className={bool ? 'events-group today' : 'events-group'}>
+                            <div key={i + .0} className='half'
+                                data-date={firstDateOfWeekMS + i * MS_IN_DAY + index * MS_IN_HOUR}>
+                                <div style={divStyle}>
+                                    {events[i][2 * index - 1]}
+                                </div>
+                            </div>
+                            <div key={i + .1} className='half'
+                                data-date={firstDateOfWeekMS + i * MS_IN_DAY + i * MS_IN_HOUR + MS_IN_HOUR/2}>
+                                <div style={divStyle}>
+                                    {events[i][2 * index]}
+                                </div>
+                            </div>
+                        </td>
+                    );
                 }
-
-                let divStyle = {width: 'calc(100% - ' + 7 * (this.state.maxLen[i] - 1) + 'px)'};
-
-                return (
-                    <td key={i} className={bool ? 'events-group today' : 'events-group'}>
-                        <div key={i + .0} className='half'
-                            data-date={firstDateOfWeekMS + i * MS_IN_DAY + index * MS_IN_HOUR}>
-                            <div style={divStyle}>
-                                {events[i][2 * index - 1]}
-                            </div>
-                        </div>
-                        <div key={i + .1} className='half'
-                            data-date={firstDateOfWeekMS + i * MS_IN_DAY + i * MS_IN_HOUR + MS_IN_HOUR/2}>
-                            <div style={divStyle}>
-                                {events[i][2 * index]}
-                            </div>
-                        </div>
-                    </td>
-                );
-            }, this);
+            }
 
             if (index === 0) {
-                return (
+                tableRows.push(
                     <tr key={index}>
                         <td className='time all-day'>All Day</td>
                         {eventsByDOW}
                     </tr>
                 );
+            } else {
+                tableRows.push(
+                    <tr key={index}>
+                        <td className='time'>{timeStr}</td>
+                        {eventsByDOW}
+                    </tr>
+                );
             }
-
-
-            return (
-                <tr key={index}>
-                    <td className='time'>{timeStr}</td>
-                    {eventsByDOW}
-                </tr>
-            );
-        }, this);
+        }
 
         return (
             <div className='events-block'>
@@ -151,12 +149,12 @@ const IventsOfWeek = React.createClass({
                     </tbody>
                 </table>
                 <table className='events-list week'>
-                    <thead>
+                    {/*}<thead>
                         <tr>
                             <td className='time'></td>
                             {tableTitle}
                         </tr>
-                    </thead>
+                    </thead>*/}
                     <tbody>
                         {tableRows}
                     </tbody>

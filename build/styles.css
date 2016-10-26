@@ -145,9 +145,17 @@ body {
 }
 
 .create-event {
+  position: fixed;
+  width: 15rem;
+  height: 5rem;
+  background-color: white;
+  z-index: 10;
+}
+
+.create-event button {
   position: absolute;
-  width: 7rem;
-  height: 1.2rem;
+  width: 9.5rem;
+  height: 2.3rem;
   text-align: center;
   white-space: nowrap;
   background-color: #ba2c5c;
@@ -162,15 +170,18 @@ body {
   -moz-user-select: none;
 }
 
-.create-event:hover {
+.create-event button:hover {
   background-color: #a2083b;
   cursor: pointer;
 }
 
-.create-event:active {
+.create-event button:focus {
+  outline: 0;
+  height: 2.1rem;
+  width: 9.3rem;
   background-color: #ba2c5c;
-  padding: 0.45rem 1.45rem 0.45rem 0.95rem;
-  margin: 1.55rem 3.05rem;
+  padding: 0.4rem 1.4rem 0.4rem 0.9rem;
+  margin: 1.6rem 3.1rem;
 }
 
 .nav-date {
@@ -302,6 +313,8 @@ body {
 .events-block .title-date td {
   box-sizing: border-box;
   border: 1px solid #ba2c5c;
+  white-space: nowrap;
+  -moz-white-space: nowrap;
 }
 
 .events-block .title-date .time {
@@ -447,6 +460,11 @@ body {
   -moz-white-space: nowrap;
 }
 
+.events-block .week,
+.events-block .day {
+  margin-top: calc(2rem - 1px);
+}
+
 .events-block .week td,
 .events-block .day td {
   box-sizing: border-box;
@@ -554,7 +572,7 @@ body {
   text-align: left;
 }
 
-.full-event p span {
+.full-event p span:first-child {
   color: #999696;
 }
 
@@ -644,11 +662,10 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
   width: 100vw;
   min-width: 44rem;
   height: 100vh;
-  min-height: 40rem;
+  min-height: 37rem;
   z-index: 100;
   background-color: rgba(64, 38, 47, 0.5);
   display: flex;
@@ -955,6 +972,8 @@ body {
   height: 3rem;
   padding: 0.5rem 1rem;
   margin: 0;
+  resize: none;
+  overflow-y: auto;
 }
 
 .event-form form .button-block {

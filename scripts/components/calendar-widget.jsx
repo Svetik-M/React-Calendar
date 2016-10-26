@@ -14,7 +14,7 @@ const Week = React.createClass({
         let firstDateOfWeekMS = this.props.firstDateOfWeekMS,
             selDate = this.props.selDate,
             period = this.props.period,
-            daysArr = Array.from({length: 7}),
+            daysArr = [],
             today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             selPeriod = '';
 
@@ -27,7 +27,7 @@ const Week = React.createClass({
             selPeriod = ' selectedPeriod';
         }
 
-        daysArr = daysArr.map(function(v,i) {
+        for (let i = 0; i < 7; i++) {
             let date = new Date(firstDateOfWeekMS + i*MS_IN_DAY),
                 dayOfMonth = date.getDate(),
                 dayOfMonthMs = date.getTime(),
@@ -38,19 +38,19 @@ const Week = React.createClass({
             }
 
             if (date.getMonth() !== this.props.viewMonth) {
-                return (<td key={i} className={'other-month' + select} id={dayOfMonthMs}>
-                            {dayOfMonth}
-                        </td>);
+                daysArr.push(<td key={i} className={'other-month' + select} id={dayOfMonthMs}>
+                                 {dayOfMonth}
+                              </td>);
             } else  if (dayOfMonthMs === today.getTime()) {
-                return (<td key={i} className={'curr-month today' + select} id={dayOfMonthMs}>
-                            {dayOfMonth}
-                        </td>);
+                daysArr.push(<td key={i} className={'curr-month today' + select} id={dayOfMonthMs}>
+                                 {dayOfMonth}
+                             </td>);
             } else {
-                return (<td key={i} className={'curr-month' + select} id={dayOfMonthMs}>
-                            {dayOfMonth}
-                        </td>);
+                daysArr.push(<td key={i} className={'curr-month' + select} id={dayOfMonthMs}>
+                                 {dayOfMonth}
+                             </td>);
             }
-        }, this);
+        }
 
         return  (
             <tr>

@@ -17,10 +17,6 @@ const Signup = React.createClass({
         }
     },
 
-    // componentDidMount: function() {
-    //     ReactDOM.findDOMNode(this.refs.first_name).focus();
-    // },
-
     handleSubmit: function(e) {
         e.preventDefault();
 

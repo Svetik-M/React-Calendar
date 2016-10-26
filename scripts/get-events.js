@@ -111,7 +111,7 @@ function sortEvents(eventsArr, startMS, endMS) {
                             % (MS_IN_DAY * 7) === 0)
 
                 if (bool) {
-                    let ev = Object.assign({}, repeatEvents[j]);
+                    let ev = JSON.parse(JSON.stringify(repeatEvents[j]));
 
                     ev.start_date = new Date(new Date(dateMS).getFullYear(), new Date(dateMS).getMonth(),
                                     new Date(dateMS).getDate(), new Date(ev.start_date).getHours(),
@@ -137,7 +137,8 @@ function sortEvents(eventsArr, startMS, endMS) {
 
 
 function sortEvForCountMaxLength(eventsArr, dateMidnightMS) {
-    let arrOfEvents = Array.from({length: 48});
+    let arrOfEvents = new Array(48);
+
     for (let i = 0; i < 48; i ++) {
         let arr = eventsArr.filter(value => {
             let currTimeMS = dateMidnightMS + i * MS_IN_HOUR / 2;
@@ -160,7 +161,7 @@ function sortEvForCountMaxLength(eventsArr, dateMidnightMS) {
 
 
 function sortDayEventsByHour(eventsArr, dateMidnightMS) {
-    let eventsByHours = Array.from({length: 49});
+    let eventsByHours = new Array(49);
 
     for (let i = 0; i < 49; i ++) {
         let timeEvents
@@ -190,7 +191,7 @@ function sortDayEventsByHour(eventsArr, dateMidnightMS) {
 
 
 function sortWeekEventsByDays(eventsArr, firstDateOfWeekMS) {
-    let eventsByDays = Array.from({length: 7}),
+    let eventsByDays =new Array(7),
         optionsDate = {year: 'numeric', month: '2-digit', day: '2-digit'};
 
     for (let i = 0; i < 7; i++) {
@@ -231,7 +232,7 @@ function sortWeekEventsByDuration(eventsArr, firstDateOfWeekMS) {
 
 function getEventDate(ev) {
     let optionsTime = {hour: '2-digit', minute: '2-digit'},
-        optionsDateTime = Object.assign({year: 'numeric', month: '2-digit', day: '2-digit'}, optionsTime),
+        optionsDateTime = {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'},
         evDateStr;
 
     if (new Date(ev.start_date).toLocaleDateString() === new Date(ev.end_date).toLocaleDateString()) {

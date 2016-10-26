@@ -6,28 +6,39 @@
 }
 
 .create-event {
-    position: absolute;
-    width: 7rem;
-    height: 1.2rem;
-    text-align: center;
-    white-space: nowrap;
-    background-color: $main-color;
-    text-transform: uppercase;
-    color: white;
-    border: none;
-    padding: 0.5rem 1.5rem 0.5rem 1rem;
-    margin: 1.5rem 3rem;
-    border-radius: 5px;
-    @include user-select;
-}
+    position: fixed;
+    width: 15rem;
+    height: 5rem;
+    background-color: white;
+    z-index: 10;
 
-.create-event:hover {
-    background-color: $button-color;
-    cursor: pointer;
-}
+    button {
+        position: absolute;
+        width: 9.5rem;
+        height: 2.3rem;
+        text-align: center;
+        white-space: nowrap;
+        background-color: $main-color;
+        text-transform: uppercase;
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem 0.5rem 1rem;
+        margin: 1.5rem 3rem;
+        border-radius: 5px;
+        @include user-select;
+    }
 
-.create-event:active {
-    background-color: $main-color;
-    padding: 0.45rem 1.45rem 0.45rem 0.95rem;
-    margin: 1.55rem 3.05rem;
+    button:hover {
+        background-color: $button-color;
+        cursor: pointer;
+    }
+
+    button:focus {
+        outline: 0;
+        height: 2.1rem;
+        width: 9.3rem;
+        background-color: $main-color;
+        padding: 0.4rem 1.4rem 0.4rem 0.9rem;
+        margin: 1.6rem 3.1rem;
+    }
 }

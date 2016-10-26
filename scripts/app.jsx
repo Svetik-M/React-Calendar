@@ -74,8 +74,8 @@ const AppView = React.createClass({
     sidebarEventHandler: function(event) {
         let target = event.target;
 
-        if (target.className.includes('curr-month')
-            || target.className.includes('other-month')) {
+        if (target.className.indexOf('curr-month') >= 0
+            || target.className.indexOf('other-month') >= 0) {
             let state = this.state;
             state.selDate = new Date(+target.id);
             this.setState(state);

@@ -12,11 +12,10 @@
     position: absolute;
     top: 0;
     right: 0;
-    bottom: 0;
     width: 100vw;
     min-width: 44rem;
     height: 100vh;
-    min-height: 40rem;
+    min-height: 37rem;
     z-index: 100;
     background-color: $modal-background;
     display: flex;
@@ -274,6 +273,8 @@
             height: 3rem;
             padding: 0.5rem 1rem;
             margin: 0;
+            resize: none;
+            overflow-y: auto;
         }
 
 

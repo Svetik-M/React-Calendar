@@ -12,7 +12,9 @@ const FullEvent = React.createClass({
         let ev = this.props.selEvent;
 
         if (ev) {
-            let evDateStr = getEventDate(ev);
+            let evDateStr = getEventDate(ev),
+                strArr = ev.description.split('\n'),
+                description = strArr.map((val, i) => <span key={i}>{val}<br/></span>);
 
             return (
                 <div className='full-event'>
@@ -23,7 +25,9 @@ const FullEvent = React.createClass({
                             <p><span>Category: </span>{ev.category}</p>
                             <p>{evDateStr}</p>
                             <p><span>{ev.place !== '' ? 'Place: ' : ''}</span>{ev.place}</p>
-                            <p><span>{ev.description !== '' ? 'Description: ' : ''}</span>{ev.description}</p>
+                            <p><span>{ev.description !== '' ? 'Description: ' : ''}<br/></span>
+                                {description}
+                            </p>
                         </div>
                         <div className='button-block'>
                             <button type='button' className='button delete'>Delete</button>

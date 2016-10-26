@@ -4,7 +4,9 @@ var db = config.connectDB();
 exports.findById = function(id, cb) {
     process.nextTick(function() {
         var user;
-        db.query('SELECT * FROM users WHERE id = $1', id)
+        db.query('SELECT * '
+                    + 'FROM users WHERE id = $1',
+                id)
         .then(data => {
             user = data[0];
             if (user !== undefined) {
@@ -19,7 +21,9 @@ exports.findById = function(id, cb) {
 exports.findByUsername = function(username, cb) {
     process.nextTick(function() {
         var user;
-        db.query('SELECT * FROM users WHERE username = $1', username)
+        db.query('SELECT * '
+                    + 'FROM users WHERE username = $1',
+                username)
         .then(data => {
             user = data[0];
             if (user !== undefined) {

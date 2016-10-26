@@ -134,7 +134,7 @@ app.post('/signup',
             if (err) { return res.send(err); }
             return res.send('Success');
         });
-      })(req, res);
+    })(req, res);
 });
 
 app.post('/add_event', isLogin.ensureLoggedIn('/login'), function(req, res) {

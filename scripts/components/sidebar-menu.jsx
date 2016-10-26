@@ -11,9 +11,8 @@ const SidebarMenu = React.createClass({
         return (
             <div className='sidebar-menu'>
                 <div className='create-event'>
-                    <i className='fa fa-plus-circle' aria-hidden='true'></i>
-                    <span> Create event</span>
-                 </div>
+                    <button><i className='fa fa-plus-circle' aria-hidden='true' /> Create event</button>
+                </div>
                 <CalendarWidget selDate={this.props.selDate} period={this.props.period} />
             </div>
         );

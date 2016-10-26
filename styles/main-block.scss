@@ -37,6 +37,8 @@
         td {
             box-sizing: border-box;
             border: 1px solid $main-color;
+            white-space: nowrap;
+            -moz-white-space: nowrap;
         }
 
         .time {
@@ -198,6 +200,8 @@
 
 
     .week, .day {
+        margin-top: calc(2rem - 1px);
+        
         td {
             box-sizing: border-box;
         }

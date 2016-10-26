@@ -21,18 +21,22 @@ let date = new Date(),
 
 const SelectTime = React.createClass({
     render: function() {
-        let options = Array.from({length: 48}),
+        let options = [],
             time = 0,
             timeStr;
-        options = options.map(function(v, i) {
-            let minutes = (i%2 === 0 ? '00' : '30'),
+
+        for (let i = 0; i < 48; i++) {
+            let minutes = (i % 2 === 0 ? '00' : '30'),
                 a = Math.floor(i/2);
+
             if (a === 0) timeStr = '12:' + minutes + 'am';
             else if (a < 12) timeStr = a + ':' + minutes + 'am';
             else if (a === 12) timeStr = '12:' + minutes + 'pm';
             else if (a > 12) timeStr = a-12 + ':' + minutes + 'pm';
-            return <div key={i} className='time' data-time={i * MS_IN_HOUR/2}>{timeStr}</div>
-        });
+
+            options.push(<div key={i} className='time' data-time={i * MS_IN_HOUR/2}>{timeStr}</div>);
+        }
+
         return (
             <div>
                 {options}
@@ -83,7 +87,7 @@ const CreateEvent = React.createClass({
             return;
         } else {
             let eventData = this.state.eventData,
-                form = Object.assign({}, eventData);
+                form = JSON.parse(JSON.stringify(eventData));
 
             form.start_date = new Date(new Date(eventData.start_date).getTime() + (+this.state.start_time));
             form.end_date = new Date(new Date(eventData.end_date).getTime() + (+this.state.end_time));
@@ -120,7 +124,7 @@ const CreateEvent = React.createClass({
         e.stopPropagation();
         let target = e.target,
             elem = target.previousElementSibling,
-            state = Object.assign({}, this.state);
+            state = JSON.parse(JSON.stringify(this.state));
 
         elem.focus();
 
@@ -181,10 +185,6 @@ const CreateEvent = React.createClass({
         let state = this.state;
         state.vis = {};
         this.setState(state);
-    },
-
-    componentDidMount: function() {
-        ReactDOM.findDOMNode(this.refs.title).focus();
     },
 
     render: function() {
@@ -378,8 +378,8 @@ function setState(props) {
 
 
 function selectDate(target, changeState, visState) {
-    if (target.className.includes('curr-month')
-        || target.className.includes('other-month')) {
+    if (target.className.indexOf('curr-month') >= 0
+        || target.className.indexOf('other-month') >= 0) {
         let state = this.state;
         state.eventData[changeState] = new Date(+target.id).toLocaleString('en-US', optionsDate);
         state.vis[visState] = false;
