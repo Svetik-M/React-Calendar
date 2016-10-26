@@ -201,7 +201,7 @@
 
     .week, .day {
         margin-top: calc(2rem - 1px);
-        
+
         td {
             box-sizing: border-box;
         }
@@ -256,15 +256,15 @@
     align-items: center;
 
     > div {
-        height: 7rem;
-        width: 32rem;
+        height: 5rem;
+        width: 25rem;
         background-color: white;
         box-shadow: 0 0 10px $main-color;
         border: 2px solid $main-color;
         font-size: 1.2rem;
 
         .fa-times {
-            margin: 0.5rem 0.5rem 0 30.4rem;
+            margin: 0.5rem 0.5rem 0 23.4rem;
             cursor: pointer;
         }
 
@@ -274,6 +274,7 @@
 
         div {
             width: 100%;
+            margin-top: -1rem;
             text-align: center;
 
             i {

@@ -88,7 +88,10 @@ body {
 }
 
 .header .nav {
+  height: 100%;
   display: inline-flex;
+  justify-content: space-between;
+  align-items: baseline;
   color: #494646;
 }
 
@@ -526,8 +529,8 @@ body {
 }
 
 .connection-error > div {
-  height: 7rem;
-  width: 32rem;
+  height: 5rem;
+  width: 25rem;
   background-color: white;
   box-shadow: 0 0 10px #ba2c5c;
   border: 2px solid #ba2c5c;
@@ -535,7 +538,7 @@ body {
 }
 
 .connection-error > div .fa-times {
-  margin: 0.5rem 0.5rem 0 30.4rem;
+  margin: 0.5rem 0.5rem 0 23.4rem;
   cursor: pointer;
 }
 
@@ -545,6 +548,7 @@ body {
 
 .connection-error > div div {
   width: 100%;
+  margin-top: -1rem;
   text-align: center;
 }
 
@@ -1318,6 +1322,7 @@ body {
 .incorrect {
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(64, 38, 47, 0.5);
