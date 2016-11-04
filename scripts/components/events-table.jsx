@@ -210,12 +210,12 @@ function createNotification(arrEvents) {
         todayEvents = todayEvents.filter((value) => value.id !== arrEvents[i].id);
 
         let audio = new Audio();
-        audio.src = 'reminder.wav';
+        audio.src = 'sounds/reminder.wav';
         audio.autoplay = true;
 
         let evDateStr = getEventDate(arrEvents[i]),
             options = {body: evDateStr + '\n' + arrEvents[i].title,
-                       icon: 'reminder.png'};
+                       icon: 'images/reminder.png'};
 
         let notification = new Notification('Reminder', options);
     }

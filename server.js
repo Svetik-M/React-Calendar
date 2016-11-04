@@ -78,6 +78,7 @@ app.use('/login', express.static('build'));
 app.use('/signup', express.static('build'));
 app.use('/user', express.static('build'));
 app.use('/*', express.static('build'));
+app.use('/images/preview.png', express.static('build'));
 
 app.use(cookieParser());
 
@@ -108,9 +109,13 @@ app.get('/user', isLogin.ensureLoggedIn('/login'),
         res.sendFile('index.html', { root: __dirname });
 });
 
-app.get('/logout', function(req, res){
+app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/login');
+});
+
+app.get('/images/preview.png', function(req, res) {
+  res.sendFile('preview.png', { root: __dirname + '/build/images' });
 });
 
 app.post('/login',
