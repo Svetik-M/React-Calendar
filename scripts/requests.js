@@ -18,7 +18,7 @@ let requests = {
                     if (xhr.responseText === 'Unauthorized') {
                         scope.getLogin();
                     } else if (xhr.responseText === 'Success') {
-                        window.location = 'https://my-calendar-react.herokuapp.com/user';
+                        window.location = 'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
                     } else {
                         scope.changeVisError();
                     }
@@ -48,7 +48,7 @@ let requests = {
                     if (xhr.responseText === 'Used') {
                         scope.getSignup();
                     } else if (xhr.responseText === 'Success') {
-                        window.location = 'https://my-calendar-react.herokuapp.com/user';
+                        window.location = 'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
                     } else {
                         scope.changeVisError();
                     }
@@ -168,7 +168,6 @@ let requests = {
 
 
     deletEvent: function(id) {
-        console.log(id);
         let body = JSON.stringify({id: id}),
             scope = this;
 
