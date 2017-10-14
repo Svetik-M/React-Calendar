@@ -4,7 +4,71 @@
     background-color: white;
     border: 1px solid $main-color;
     box-shadow: 0px 0px 5px $color-grey;
-    margin-top: -1.1rem;
+    margin-top: -1.05rem;
+}
+
+@mixin elem-for-gradient {
+    content: '';
+    display: block;
+    position: relative;
+    width: 5.1rem;
+    height: .8rem;
+    z-index: 2;
+}
+
+@keyframes show-date {
+    0% {
+        height: 0;
+        overflow: hidden;
+    }
+    99% {
+        height: var(--nav-date-height);
+        overflow: hidden;
+    }
+    100% {
+        height: auto;
+    }
+}
+
+@keyframes hidden-date {
+    0% {
+        height: var(--nav-date-height);
+        overflow: hidden;
+    }
+    99% {
+        border: 1px solid $main-color;
+    }
+    100% {
+        height: 0;
+        overflow: hidden;
+        border: none;
+    }
+}
+
+@keyframes show {
+    0% {
+        height: 0;
+        overflow: hidden;
+    }
+    100% {
+        height: 11.2rem;
+        overflow: hidden;
+    }
+}
+
+@keyframes hidden {
+    0% {
+        height: 11.2rem;
+        overflow: hidden;
+    }
+    99% {
+        border: 1px solid $main-color;
+    }
+    100% {
+        height: 0;
+        overflow: hidden;
+        border: none;
+    }
 }
 
 
@@ -148,33 +212,76 @@
         }
 
         .select_start_date{
-            left: calc((100vw - 40rem)/2 + 4.4rem);
+            left: calc((100vw - 40rem)/2 + 4.3rem);
         }
 
         .select_end_date {
-            left: calc((100vw - 40rem)/2 + 24.7rem);
+            left: calc((100vw - 40rem)/2 + 24.5rem);
+        }
+
+        .select_start_date[data-vis='show-date'], .select_end_date[data-vis='show-date'] {
+            animation: show-date .2s linear forwards;
+        }
+
+        .select_start_date[data-vis='hidden-date'], .select_end_date[data-vis='hidden-date'] {
+            animation: hidden-date .2s linear forwards;
         }
 
         .select_start_time, .select_end_time {
             @include display-select;
             text-align: right;
-            padding: 0.5rem;
-            padding-right: 1rem;
-            height: 10rem;
-            overflow-y: scroll;
 
-            .time:hover {
-                background-color: $background-color;
-                cursor: pointer;
+            > div {
+                padding: 0.6rem .1rem;
+                width: 6rem;
+                height: 10rem;
+                overflow-y: scroll;
+
+                .time {
+                    padding-left: .5rem;
+                    padding-right: .9rem;
+                }
+
+                .time:hover {
+                    background-color: $background-color;
+                    cursor: pointer;
+                }
             }
         }
 
         .select_start_time {
-            left: calc((100vw - 40rem)/2 + 12.65rem);
+            left: calc((100vw - 40rem)/2 + 12.53rem);
         }
 
         .select_end_time {
-            left: calc((100vw - 40rem)/2 + 32.95rem);
+            left: calc((100vw - 40rem)/2 + 32.75rem);
+        }
+
+        .select_start_time::before, .select_end_time::before {
+            @include elem-for-gradient;
+            margin-bottom: -.8rem;
+            background-image: linear-gradient(rgba(255,255,255,1), rgba(255,255,255,.9) 40%, rgba(255,255,255,.3));
+        }
+
+        .select_start_time::after, .select_end_time::after {
+            @include elem-for-gradient;
+            margin-top: -.8rem;
+            background-image: linear-gradient(rgba(255,255,255,.3), rgba(255,255,255,.9) 60%, rgba(255,255,255,1));
+
+        }
+
+        .select_start_time[data-vis='show-time'], .select_end_time[data-vis='show-time'] {
+            animation: show .2s linear forwards;
+        }
+
+        .select_start_time[data-vis='hidden-time'], .select_end_time[data-vis='hidden-time'] {
+            animation: hidden .2s linear forwards;
+        }
+
+        .hidden {
+            height: 0;
+            overflow: hidden;
+            border: none;
         }
 
 

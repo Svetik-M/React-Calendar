@@ -49,17 +49,21 @@ const SelectTime = React.createClass({
 const CreateEvent = React.createClass({
     getInitialState: function() {
         let state = setState(this.props);
+        state.classNone = {};
         return state;
     },
 
     componentWillReceiveProps: function(nextProps) {
         let state;
+
         if (nextProps.visible === true) {
             state = setState(nextProps);
         } else {
             state = this.state;
             state.visible = false;
         }
+
+        state.classNone = {};
         this.setState(state);
     },
 
@@ -129,8 +133,16 @@ const CreateEvent = React.createClass({
         elem.focus();
 
         state.vis = {};
-        state.vis[elem.name] = (!this.state.vis[elem.name])
+        state.vis[elem.name] = (!this.state.vis[elem.name]);
+        state.classNone[elem.name] = true;
         this.setState(state);
+
+        if (elem.name === 'startDate' || elem.name === 'endDate') {
+            let className = '.select_' + elem.name.replace('Date', '_date'),
+                height = document.querySelector(className + ' .nav-date').offsetHeight;
+            document.querySelector(className).style.setProperty('--nav-date-height', height + 'px');
+            console.log(height);
+        }
     },
 
     selectStartDate: function(e) {
@@ -250,20 +262,28 @@ const CreateEvent = React.createClass({
                         </div>
                     </div>
 
-                    <div className={'select_start_date' + (this.state.vis.startDate ? '' : ' none')}
+                    <div className={'select_start_date' + (this.state.classNone.startDate ? '' : ' hidden')}
+                        data-vis={(!this.state.classNone.startDate) ? 'none'
+                            : (this.state.vis.startDate) ? 'show-date' : 'hidden-date'}
                         onClick={this.selectStartDate}>
                         <CalendarWidget selDate={new Date(eventData.start_date)} period='day' />
                     </div>
-                    <div className={'select_start_time' + (this.state.vis.startTime ? '' : ' none')}
+                    <div className={'select_start_time' + (this.state.classNone.startTime ? '' : ' hidden')}
+                        data-vis={(!this.state.classNone.startTime) ? 'none'
+                            : (this.state.vis.startTime) ? 'show-time' : 'hidden-time'}
                         onClick={this.selectTime}>
                         <SelectTime />
                     </div>
 
-                    <div className={'select_end_date' + (this.state.vis.endDate ? '' : ' none')}
+                    <div className={'select_end_date' + (this.state.classNone.endDate ? '' : ' hidden')}
+                        data-vis={(!this.state.classNone.endDate) ? 'none'
+                            : (this.state.vis.endDate) ? 'show-date' : 'hidden-date'}
                         onClick={this.selectEndDate}>
                         <CalendarWidget selDate={new Date(eventData.end_date)} period='day' />
                     </div>
-                    <div className={'select_end_time' + (this.state.vis.endTime ? '' : ' none')}
+                    <div className={'select_end_time' + (this.state.classNone.endTime ? '' : ' hidden')}
+                        data-vis={(!this.state.classNone.endTime) ? 'none'
+                            : (this.state.vis.endTime) ? 'show-time' : 'hidden-time'}
                         onClick={this.selectTime}>
                         <SelectTime />
                     </div>

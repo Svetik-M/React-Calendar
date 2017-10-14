@@ -662,6 +662,68 @@ body {
   background-color: #a2083b;
 }
 
+@keyframes show-date {
+  0% {
+    height: 0;
+    overflow: hidden;
+  }
+
+  99% {
+    height: var(--nav-date-height);
+    overflow: hidden;
+  }
+
+  100% {
+    height: auto;
+  }
+}
+
+@keyframes hidden-date {
+  0% {
+    height: var(--nav-date-height);
+    overflow: hidden;
+  }
+
+  99% {
+    border: 1px solid #ba2c5c;
+  }
+
+  100% {
+    height: 0;
+    overflow: hidden;
+    border: none;
+  }
+}
+
+@keyframes show {
+  0% {
+    height: 0;
+    overflow: hidden;
+  }
+
+  100% {
+    height: 11.2rem;
+    overflow: hidden;
+  }
+}
+
+@keyframes hidden {
+  0% {
+    height: 11.2rem;
+    overflow: hidden;
+  }
+
+  99% {
+    border: 1px solid #ba2c5c;
+  }
+
+  100% {
+    height: 0;
+    overflow: hidden;
+    border: none;
+  }
+}
+
 .event-form {
   position: absolute;
   top: 0;
@@ -826,7 +888,7 @@ body {
   background-color: white;
   border: 1px solid #ba2c5c;
   box-shadow: 0px 0px 5px #494646;
-  margin-top: -1.1rem;
+  margin-top: -1.05rem;
 }
 
 .event-form form .select_start_date .nav-date,
@@ -838,11 +900,21 @@ body {
 }
 
 .event-form form .select_start_date {
-  left: calc((100vw - 40rem)/2 + 4.4rem);
+  left: calc((100vw - 40rem)/2 + 4.3rem);
 }
 
 .event-form form .select_end_date {
-  left: calc((100vw - 40rem)/2 + 24.7rem);
+  left: calc((100vw - 40rem)/2 + 24.5rem);
+}
+
+.event-form form .select_start_date[data-vis='show-date'],
+.event-form form .select_end_date[data-vis='show-date'] {
+  animation: show-date .2s linear forwards;
+}
+
+.event-form form .select_start_date[data-vis='hidden-date'],
+.event-form form .select_end_date[data-vis='hidden-date'] {
+  animation: hidden-date .2s linear forwards;
 }
 
 .event-form form .select_start_time,
@@ -852,26 +924,76 @@ body {
   background-color: white;
   border: 1px solid #ba2c5c;
   box-shadow: 0px 0px 5px #494646;
-  margin-top: -1.1rem;
+  margin-top: -1.05rem;
   text-align: right;
-  padding: 0.5rem;
-  padding-right: 1rem;
+}
+
+.event-form form .select_start_time > div,
+.event-form form .select_end_time > div {
+  padding: 0.6rem .1rem;
+  width: 6rem;
   height: 10rem;
   overflow-y: scroll;
 }
 
-.event-form form .select_start_time .time:hover,
-.event-form form .select_end_time .time:hover {
+.event-form form .select_start_time > div .time,
+.event-form form .select_end_time > div .time {
+  padding-left: .5rem;
+  padding-right: .9rem;
+}
+
+.event-form form .select_start_time > div .time:hover,
+.event-form form .select_end_time > div .time:hover {
   background-color: #e6e6e6;
   cursor: pointer;
 }
 
 .event-form form .select_start_time {
-  left: calc((100vw - 40rem)/2 + 12.65rem);
+  left: calc((100vw - 40rem)/2 + 12.53rem);
 }
 
 .event-form form .select_end_time {
-  left: calc((100vw - 40rem)/2 + 32.95rem);
+  left: calc((100vw - 40rem)/2 + 32.75rem);
+}
+
+.event-form form .select_start_time::before,
+.event-form form .select_end_time::before {
+  content: '';
+  display: block;
+  position: relative;
+  width: 5.1rem;
+  height: .8rem;
+  z-index: 2;
+  margin-bottom: -.8rem;
+  background-image: linear-gradient(white, rgba(255, 255, 255, 0.9) 40%, rgba(255, 255, 255, 0.3));
+}
+
+.event-form form .select_start_time::after,
+.event-form form .select_end_time::after {
+  content: '';
+  display: block;
+  position: relative;
+  width: 5.1rem;
+  height: .8rem;
+  z-index: 2;
+  margin-top: -.8rem;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.9) 60%, white);
+}
+
+.event-form form .select_start_time[data-vis='show-time'],
+.event-form form .select_end_time[data-vis='show-time'] {
+  animation: show .2s linear forwards;
+}
+
+.event-form form .select_start_time[data-vis='hidden-time'],
+.event-form form .select_end_time[data-vis='hidden-time'] {
+  animation: hidden .2s linear forwards;
+}
+
+.event-form form .hidden {
+  height: 0;
+  overflow: hidden;
+  border: none;
 }
 
 .event-form form .repeat {
@@ -938,7 +1060,7 @@ body {
   background-color: white;
   border: 1px solid #ba2c5c;
   box-shadow: 0px 0px 5px #494646;
-  margin-top: -1.1rem;
+  margin-top: -1.05rem;
   width: 8.75rem;
 }
 
