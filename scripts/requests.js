@@ -1,194 +1,179 @@
-'use strict'
+const requests = {
+  sendLoginForm(form) {
+    const body = JSON.stringify(form);
+    const scope = this;
 
+    const xhr = new XMLHttpRequest();
 
-let requests = {
+    xhr.open('POST', '/login');
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-    sendLoginForm: function(form) {
-        let body = JSON.stringify(form),
-            scope = this;
-
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/login');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    if (xhr.responseText === 'Unauthorized') {
-                        scope.getLogin();
-                    } else if (xhr.responseText === 'Success') {
-                        window.location = 'http://localhost:8080/user/'; //'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
-                    } else {
-                        scope.changeVisError();
-                    }
-
-                } else {
-                    scope.changeVisError();
-                }
-            }
-        };
-
-        xhr.send(body);
-    },
-
-
-    sendSignupForm: function(form) {
-        let body = JSON.stringify(form),
-            scope = this;
-
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/signup');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    if (xhr.responseText === 'Used') {
-                        scope.getSignup();
-                    } else if (xhr.responseText === 'Success') {
-                        window.location = 'http://localhost:8080/user/'; //'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
-                    } else {
-                        scope.changeVisError();
-                    }
-                } else {
-                    scope.changeVisError();
-                }
-            }
-        };
-
-        xhr.send(body);
-    },
-
-
-    sendEventForm: function(form, id) {
-
-            if (id === undefined) {
-            let body = JSON.stringify(form),
-                scope = this;
-
-            let xhr = new XMLHttpRequest();
-
-            xhr.open('POST', '/add_event');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        document.getElementById('event-form').reset();
-                        scope.updateEvents();
-                    } else {
-                        scope.changeVisError();
-                    }
-                }
-            };
-
-            xhr.send(body);
-
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          if (xhr.responseText === 'Unauthorized') {
+            scope.getLogin();
+          } else if (xhr.responseText === 'Success') {
+            window.location = 'http://localhost:8080/user/'; // 'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
+          } else {
+            scope.changeVisError();
+          }
         } else {
-            form.id = id;
-            let body = JSON.stringify(form),
-                scope = this;
-
-            let xhr = new XMLHttpRequest();
-
-            xhr.open('POST', '/edit_event');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        document.getElementById('event-form').reset();
-                        scope.updateEvents()
-                    } else {
-                        scope.changeVisError();
-                    }
-                }
-            };
-
-            xhr.send(body);
+          scope.changeVisError();
         }
+      }
+    };
 
-    },
+    xhr.send(body);
+  },
 
+  sendSignupForm(form) {
+    const body = JSON.stringify(form);
+    const scope = this;
 
-    getEvents: function(startMS, endMS) {
-        let body = JSON.stringify({
-            start: new Date(startMS),
-            end: new Date(endMS)
-        });
+    const xhr = new XMLHttpRequest();
 
-        let scope = this;
+    xhr.open('POST', '/signup');
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/get_events');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    scope.getArrOfEvents(JSON.parse(xhr.responseText), startMS, endMS);
-                } else {
-                    scope.changeVisError();
-                }
-            }
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          if (xhr.responseText === 'Used') {
+            scope.getSignup();
+          } else if (xhr.responseText === 'Success') {
+            window.location = 'http://localhost:8080/user/'; // 'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
+          } else {
+            scope.changeVisError();
+          }
+        } else {
+          scope.changeVisError();
         }
+      }
+    };
 
-        xhr.send(body);
-    },
+    xhr.send(body);
+  },
 
+  sendEventForm(form, id) {
+    if (id === undefined) {
+      const body = JSON.stringify(form);
+      const scope = this;
 
-    getDayEvents: function(start, end) {
-        let body = JSON.stringify({
-            start: new Date(start),
-            end: new Date(end)
-        });
+      const xhr = new XMLHttpRequest();
 
-        let scope = this;
+      xhr.open('POST', '/add_event');
+      xhr.setRequestHeader('Content-Type', 'application/json');
 
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/get_events');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    scope.getArrOfDayEvents(JSON.parse(xhr.responseText), start, end);
-                } else {
-                    scope.changeVisError();
-                }
-            }
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            document.getElementById('event-form').reset();
+            scope.updateEvents();
+          } else {
+            scope.changeVisError();
+          }
         }
+      };
 
-        xhr.send(body);
-    },
+      xhr.send(body);
+    } else {
+      const body = JSON.stringify({ ...form, id });
+      const scope = this;
 
+      const xhr = new XMLHttpRequest();
 
-    deletEvent: function(id) {
-        let body = JSON.stringify({id: id}),
-            scope = this;
+      xhr.open('POST', '/edit_event');
+      xhr.setRequestHeader('Content-Type', 'application/json');
 
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/delete_event');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    scope.updateEvents();
-                } else {
-                    scope.changeVisError();
-                }
-            }
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            document.getElementById('event-form').reset();
+            scope.updateEvents();
+          } else {
+            scope.changeVisError();
+          }
         }
+      };
 
-        xhr.send(body);
+      xhr.send(body);
     }
-}
+  },
 
+  getEvents(startMS, endMS) {
+    const body = JSON.stringify({
+      start: new Date(startMS),
+      end: new Date(endMS),
+    });
+
+    const scope = this;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', '/get_events');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          scope.getArrOfEvents(JSON.parse(xhr.responseText), startMS, endMS);
+        } else {
+          scope.changeVisError();
+        }
+      }
+    };
+
+    xhr.send(body);
+  },
+
+  getDayEvents(start, end) {
+    const body = JSON.stringify({
+      start: new Date(start),
+      end: new Date(end),
+    });
+
+    const scope = this;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', '/get_events');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          scope.getArrOfDayEvents(JSON.parse(xhr.responseText), start, end);
+        } else {
+          scope.changeVisError();
+        }
+      }
+    };
+
+    xhr.send(body);
+  },
+
+  deletEvent(id) {
+    const body = JSON.stringify({ id });
+    const scope = this;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', '/delete_event');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          scope.updateEvents();
+        } else {
+          scope.changeVisError();
+        }
+      }
+    };
+
+    xhr.send(body);
+  },
+};
 
 export default requests;
