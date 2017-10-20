@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "classnames": "^2.2.5",
     "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
@@ -29,7 +30,9 @@
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-router": "^2.7.0"
+    "react-redux": "^5.0.6",
+    "react-router": "^2.7.0",
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "babel-core": "^6.13.2",
@@ -47,6 +50,7 @@
     "eslint-plugin-react": "^7.4.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "node-sass": "^3.9.3",
+    "redux-devtools": "^3.4.0",
     "resolve-url-loader": "^1.6.0",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",

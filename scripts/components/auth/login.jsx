@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-import validation from '../validation';
-import request from '../requests';
+import * as validation from '../../utils/validation';
+import { requestLogin } from '../../actions/authorizationActions';
 
 class Login extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      valid: false,
-      mesEmail: '',
-      mesPassword: '',
+      login: '',
+      password: '',
+      isValidLogin: false,
+      isValidPassword: false,
+      loginError: '',
+      passwordError: '',
     };
-
-    validation.validLogin = validation.validLogin.bind(this);
-    validation.validPass = validation.validPass.bind(this);
-    validation.validAuthForm = validation.validAuthForm.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -25,11 +25,11 @@ class Login extends Component {
     e.preventDefault();
 
     const form = {
-      username: this.login.value,
-      password: this.password.value,
+      username: this.state.login,
+      password: this.state.password,
     };
 
-    request.sendLoginForm.call(this.props.scope, form);
+    requestLogin(form);
   }
 
   render() {
@@ -43,7 +43,7 @@ class Login extends Component {
               <input
                 type="email"
                 ref={(el) => { this.login = el; }}
-                className={`login${this.state.mesEmail ? ' error' : ''}`}
+                className={classNames('login', { error: this.state.loginError })}
                 onBlur={validation.validLogin}
                 onChange={validation.validAuthForm}
                 defaultValue=""
@@ -51,7 +51,7 @@ class Login extends Component {
               />
             </label>
             <div className="err">
-              {this.state.mesEmail}
+              {this.state.loginError}
             </div>
           </div>
 

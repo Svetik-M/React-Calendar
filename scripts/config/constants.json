@@ -1,0 +1,10 @@
+{
+  "errorMessages": {
+    "emptyLogin": "Enter your E-mail Address",
+    "emptyPassword": "Enter your Password",
+    "emptyFirstName": "Enter your First Name",
+    "emptyLastName": "Enter your Last Name",
+    "invalidLogin": "Invalid E-mail Address!",
+    "invalidPassword": "Invalid Password!",
+  }
+}

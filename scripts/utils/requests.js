@@ -1,5 +1,5 @@
 const requests = {
-  sendLoginForm(form) {
+  sendLoginForm(form, collback) {
     const body = JSON.stringify(form);
     const scope = this;
 
@@ -12,7 +12,7 @@ const requests = {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           if (xhr.responseText === 'Unauthorized') {
-            scope.getLogin();
+            collback();
           } else if (xhr.responseText === 'Success') {
             window.location = 'http://localhost:8080/user/'; // 'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
           } else {
