@@ -1,17 +1,16 @@
 const pgp = require('pg-promise')();
 
 // const config = {
-//   connectDB: function() {
-//     const pgp = require("pg-promise")();
+//   connectDB() {
 //     const connection = {
 //       host: 'ec2-184-73-202-229.compute-1.amazonaws.com',
 //       port: 5432,
 //       database: 'd8uaa32fcj80a7',
 //       user: 'tprnprooysdlcg',
-//       password: 'pdTR6NAXEE36wuQ6ds3-xC_EZo'
+//       password: 'pdTR6NAXEE36wuQ6ds3-xC_EZo',
 //     };
-//    return pgp(connection);
-//   }
+//     return pgp(connection);
+//   },
 // };
 
 const config = {

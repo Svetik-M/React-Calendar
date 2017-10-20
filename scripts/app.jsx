@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 
 import TitleMenu from './components/title-menu';
 import SidebarMenu from './components/sidebar-menu';
 import EventsTable from './components/events-table';
-import AuthorizationForm from './auth/auth';
+import AuthorizationForm from './components/auth/auth';
 
 import '../styles/style.scss';
 
 const date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
-const AppView = React.createClass({
-  getInitialState() {
-    return {
+class AppView extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       selDate: date,
       period: 'week',
       visEventForm: false,
     };
-  },
+
+    this.changePeriod = this.changePeriod.bind(this);
+    this.sidebarEventHandler = this.sidebarEventHandler.bind(this);
+    this.hidingEventForm = this.hidingEventForm.bind(this);
+  }
 
   changePeriod(event) {
     const { target } = event;
@@ -60,7 +66,7 @@ const AppView = React.createClass({
       state.selDate = selectedDate;
       this.setState(state);
     }
-  },
+  }
 
   sidebarEventHandler(event) {
     const { target } = event;
@@ -76,7 +82,7 @@ const AppView = React.createClass({
       state.visEventForm = true;
       this.setState(state);
     }
-  },
+  }
 
   hidingEventForm(e) {
     const { target } = e;
@@ -85,7 +91,7 @@ const AppView = React.createClass({
       state.visEventForm = false;
       this.setState(state);
     }
-  },
+  }
 
   render() {
     return (
@@ -107,8 +113,8 @@ const AppView = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 
 const routs = (
   <Router history={browserHistory}>

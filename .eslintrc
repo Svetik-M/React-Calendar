@@ -28,6 +28,18 @@
         "some": [ "nesting", "id" ]
       },
     }],
-    "comma-dangle": ["error","always-multiline", {"functions": "ignore"}]
+    "comma-dangle": [
+      "error",
+      "always-multiline",
+      {
+        "functions": "ignore"
+      }
+    ],
+    "react/forbid-prop-types": [
+      "error",
+      {
+        "forbid": [ "any" ]
+      }
+    ]
   }
 }

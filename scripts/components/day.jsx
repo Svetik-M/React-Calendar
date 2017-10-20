@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Event from './event';
 
@@ -16,22 +17,24 @@ function getNewState(props) {
   return { events: eventsByHours, maxLen };
 }
 
-const IventsOfDay = React.createClass({
-  getInitialState() {
-    return {
+class IventsOfDay extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       events: new Array(49),
     };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    const state = getNewState(nextProps);
-    this.setState(state);
-  },
+  }
 
   componentWillMount() {
     const state = getNewState(this.props);
     this.setState(state);
-  },
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const state = getNewState(nextProps);
+    this.setState(state);
+  }
 
   render() {
     const { selDate } = this.props;
@@ -132,7 +135,12 @@ const IventsOfDay = React.createClass({
         </table>
       </div>
     );
-  },
-});
+  }
+}
+
+IventsOfDay.propTypes = {
+  selDate: PropTypes.object.isRequired,
+  events: PropTypes.array.isRequired,
+};
 
 export default IventsOfDay;

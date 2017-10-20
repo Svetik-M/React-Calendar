@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Event from './event';
 import { sortWeekEventsByDays, sortDayEventsByHour, sortEvForCountMaxLength } from '../get-events';
@@ -30,22 +31,24 @@ function getNewState(props) {
   return { events: eventsByHours, maxLen: arrMaxLen };
 }
 
-const IventsOfWeek = React.createClass({
-  getInitialState() {
-    return {
+class IventsOfWeek extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       events: new Array(7),
     };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    const state = getNewState(nextProps);
-    this.setState(state);
-  },
+  }
 
   componentWillMount() {
     const state = getNewState(this.props);
     this.setState(state);
-  },
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const state = getNewState(nextProps);
+    this.setState(state);
+  }
 
   render() {
     const { selDate } = this.props;
@@ -180,19 +183,18 @@ const IventsOfWeek = React.createClass({
           </tbody>
         </table>
         <table className="events-list week">
-          {/* }<thead>
-                        <tr>
-                            <td className='time'></td>
-                            {tableTitle}
-                        </tr>
-                    </thead> */}
           <tbody>
             {tableRows}
           </tbody>
         </table>
       </div>
     );
-  },
-});
+  }
+}
+
+IventsOfWeek.propTypes = {
+  events: PropTypes.array.isRequired,
+  selDate: PropTypes.object.isRequired,
+};
 
 export default IventsOfWeek;

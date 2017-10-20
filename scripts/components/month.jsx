@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Event from './event';
 
@@ -10,24 +11,14 @@ const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'F
 const MS_IN_DAY = 86400000;
 
 
-const Week = React.createClass({
-  getInitialState() {
-    return {
+class Week extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       events: new Array(7),
     };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    let arrOfEvents = sortWeekEventsByDays(nextProps.events, nextProps.firstDateOfWeekMS);
-    arrOfEvents = sortWeekEventsByDuration(arrOfEvents, nextProps.firstDateOfWeekMS);
-
-    const arrTopEl = getBlockTopShift(arrOfEvents, nextProps.firstDateOfWeekMS);
-
-    this.setState({
-      events: arrOfEvents,
-      topEl: arrTopEl,
-    });
-  },
+  }
 
   componentWillMount() {
     let arrOfEvents = sortWeekEventsByDays(this.props.events, this.props.firstDateOfWeekMS);
@@ -39,7 +30,19 @@ const Week = React.createClass({
       events: arrOfEvents,
       topEl: arrTopEl,
     });
-  },
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let arrOfEvents = sortWeekEventsByDays(nextProps.events, nextProps.firstDateOfWeekMS);
+    arrOfEvents = sortWeekEventsByDuration(arrOfEvents, nextProps.firstDateOfWeekMS);
+
+    const arrTopEl = getBlockTopShift(arrOfEvents, nextProps.firstDateOfWeekMS);
+
+    this.setState({
+      events: arrOfEvents,
+      topEl: arrTopEl,
+    });
+  }
 
   render() {
     const firstDayOfWeekMS = this.props.firstDateOfWeekMS;
@@ -137,82 +140,96 @@ const Week = React.createClass({
         {tableRow}
       </tr>
     );
-  },
-});
+  }
+}
 
+Week.propTypes = {
+  events: PropTypes.array.isRequired,
+  firstDateOfWeekMS: PropTypes.number.isRequired,
+  selDate: PropTypes.object.isRequired,
+};
 
-const Month = React.createClass({
-  render() {
-    let firstDateOfWeekMS = this.props.startDateMS;
-    const { events } = this.props;
-    const weeks = [];
+function Month(props) {
+  let firstDateOfWeekMS = props.startDateMS;
+  const { events } = props;
+  const weeks = [];
 
-    for (let n = 1; firstDateOfWeekMS <= this.props.lastDateOfMonthMS;
-      firstDateOfWeekMS += 7 * MS_IN_DAY, n += 1) {
-      // eslint-disable-next-line
-      const eventsWeek = events.filter((value) => {
-        const startDate = new Date(value.startDate).getTime();
-        const endDate = new Date(value.endDate).getTime();
+  for (let n = 1; firstDateOfWeekMS <= props.lastDateOfMonthMS;
+    firstDateOfWeekMS += 7 * MS_IN_DAY, n += 1) {
+    // eslint-disable-next-line
+    const eventsWeek = events.filter((value) => {
+      const startDate = new Date(value.startDate).getTime();
+      const endDate = new Date(value.endDate).getTime();
 
-        return startDate >= firstDateOfWeekMS
-            && startDate < firstDateOfWeekMS + 7 * MS_IN_DAY
-            || endDate >= firstDateOfWeekMS
-            && endDate < firstDateOfWeekMS + 7 * MS_IN_DAY
-            || startDate < firstDateOfWeekMS
-            && endDate >= firstDateOfWeekMS + 7 * MS_IN_DAY;
-      });
+      return startDate >= firstDateOfWeekMS
+          && startDate < firstDateOfWeekMS + 7 * MS_IN_DAY
+          || endDate >= firstDateOfWeekMS
+          && endDate < firstDateOfWeekMS + 7 * MS_IN_DAY
+          || startDate < firstDateOfWeekMS
+          && endDate >= firstDateOfWeekMS + 7 * MS_IN_DAY;
+    });
 
-      weeks.push(<Week
-        key={n}
-        firstDateOfWeekMS={firstDateOfWeekMS}
-        selDate={this.props.selDate}
-        events={eventsWeek}
-        scope={this.props.scope}
-      />);
-    }
+    weeks.push(<Week
+      key={n}
+      firstDateOfWeekMS={firstDateOfWeekMS}
+      selDate={this.props.selDate}
+      events={eventsWeek}
+      scope={this.props.scope}
+    />);
+  }
 
-    return (
-      <tbody className="month-table">
-        {weeks}
-      </tbody>
-    );
-  },
-});
+  return (
+    <tbody className="month-table">
+      {weeks}
+    </tbody>
+  );
+}
 
-const IventsOfMonth = React.createClass({
-  render() {
-    const tableTitle = [];
+Month.propTypes = {
+  startDateMS: PropTypes.number.isRequired,
+  events: PropTypes.array.isRequired,
+  lastDateOfMonthMS: PropTypes.number.isRequired,
+};
 
-    for (let i = 0; i < 7; i += 1) {
-      tableTitle.push((
-        <td key={i} className="events-group">
-          {DAYS_OF_WEEK[i]}
-        </td>
-      ));
-    }
+function IventsOfMonth(props) {
+  const tableTitle = [];
 
-    return (
-      <div className="events-block all-month">
-        <table className="title-date">
-          <tbody>
-            <tr>
-              {tableTitle}
-            </tr>
-          </tbody>
-        </table>
-        <table className="events-list month">
-          <Month
-            selDate={this.props.selDate}
-            startDateMS={this.props.startDateMS}
-            lastDateOfMonthMS={this.props.lastDateOfMonthMS}
-            events={this.props.events}
-            scope={this.props.scope}
-          />
-        </table>
-      </div>
-    );
-  },
-});
+  for (let i = 0; i < 7; i += 1) {
+    tableTitle.push((
+      <td key={i} className="events-group">
+        {DAYS_OF_WEEK[i]}
+      </td>
+    ));
+  }
 
+  return (
+    <div className="events-block all-month">
+      <table className="title-date">
+        <tbody>
+          <tr>
+            {tableTitle}
+          </tr>
+        </tbody>
+      </table>
+      <table className="events-list month">
+        <Month
+          selDate={props.selDate}
+          startDateMS={props.startDateMS}
+          lastDateOfMonthMS={props.lastDateOfMonthMS}
+          events={props.events}
+          scope={props.scope}
+        />
+      </table>
+    </div>
+  );
+}
+
+IventsOfMonth.propTypes = {
+  startDateMS: PropTypes.number.isRequired,
+  events: PropTypes.array.isRequired,
+  lastDateOfMonthMS: PropTypes.number.isRequired,
+  selDate: PropTypes.object.isRequired,
+  scope: PropTypes.object.isRequired,
+};
 
 export default IventsOfMonth;

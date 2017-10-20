@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Components } from 'react';
+import PropTypes from 'prop-types';
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
@@ -27,11 +28,13 @@ function getWeekPeriod(date) {
   };
 }
 
-const SelectedPeriod = React.createClass({
-  getInitialState() {
-    const date = this.props.selDate;
-    return getWeekPeriod(date);
-  },
+class SelectedPeriod extends Components {
+  constructor(props) {
+    super(props);
+
+    const date = props.selDate;
+    this.state = getWeekPeriod(date);
+  }
 
   componentWillReceiveProps(nextProps) {
     const date = nextProps.selDate;
@@ -44,11 +47,15 @@ const SelectedPeriod = React.createClass({
     } else if (nextProps.period === 'month') {
       this.setState({ periodStr: `${MONTH_NAMES[date.getMonth()]} ${date.getFullYear()}` });
     }
-  },
+  }
 
   render() {
     return <div className="selected-period">{this.state.periodStr}</div>;
-  },
-});
+  }
+}
+
+SelectedPeriod.propTypes = {
+  selDate: PropTypes.object.isRequired,
+};
 
 export default SelectedPeriod;

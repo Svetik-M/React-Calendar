@@ -1,25 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { getElementPosition } from '../viewing-options';
 
-const Event = React.createClass({
-  getInitialState() {
-    return {
+class Event extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       heightEl: 0,
       leftEl: 0,
       topEl: 0,
     };
-  },
+  }
 
   componentWillMount() {
     const state = getElementPosition(this.props);
     this.setState(state);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     const state = getElementPosition(nextProps);
     this.setState(state);
-  },
+  }
 
   render() {
     const ev = this.props.currEvent;
@@ -60,7 +63,14 @@ const Event = React.createClass({
       </div>
 
     );
-  },
-});
+  }
+}
+
+Event.propTypes = {
+  currEvent: PropTypes.object.isRequired,
+  coefWidth: PropTypes.number.isRequired,
+  dateMidnightMS: PropTypes.number.isRequired,
+  startDateStr: PropTypes.string.isRequired,
+};
 
 export default Event;

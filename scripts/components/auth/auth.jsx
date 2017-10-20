@@ -1,45 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 
 import Login from './login';
 import Signup from './signup';
 import Error from '../components/error';
 
-const AuthorizationForm = React.createClass({
-  getInitialState() {
-    return {
+class AuthorizationForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       formType: this.props.params.form,
       visible: false,
     };
-  },
+
+    this.changeVisible = this.changeVisible.bind(this);
+    this.changeVisError = this.changeVisError.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       formType: nextProps.params.form,
       visible: false,
     });
-  },
+  }
 
   getSignup() {
     this.setState({
       formType: 'signup',
       visible: true,
     });
-  },
+  }
 
   getLogin() {
     this.setState({
       formType: 'login',
       visible: true,
     });
-  },
+  }
 
   changeVisible() {
     this.setState(previousState => ({
       formType: previousState.formType,
       visible: false,
     }));
-  },
+  }
 
   changeVisError(e) {
     const { state } = this;
@@ -51,7 +57,7 @@ const AuthorizationForm = React.createClass({
     }
 
     this.setState(state);
-  },
+  }
 
   render() {
     let menu;
@@ -107,7 +113,11 @@ const AuthorizationForm = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+AuthorizationForm.propTypes = {
+  params: PropTypes.object.isRequired,
+};
 
 export default AuthorizationForm;

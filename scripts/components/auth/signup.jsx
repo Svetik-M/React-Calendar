@@ -1,24 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import validation from '../validation';
 import request from '../requests';
 
+class Signup extends Component {
+  constructor(props) {
+    super(props);
 
-const Signup = React.createClass({
-  getInitialState() {
+    this.state = {
+      mesFirstN: '',
+      mesLastN: '',
+      mesEmail: '',
+      mesPassword: '',
+    };
+
     validation.validFirstName = validation.validFirstName.bind(this);
     validation.validLastName = validation.validLastName.bind(this);
     validation.validLogin = validation.validLogin.bind(this);
     validation.validPass = validation.validPass.bind(this);
     validation.validAuthForm = validation.validAuthForm.bind(this);
 
-    return {
-      mesFirstN: '',
-      mesLastN: '',
-      mesEmail: '',
-      mesPassword: '',
-    };
-  },
+    this.handleSubmit = this.v.bind(this);
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -31,7 +35,7 @@ const Signup = React.createClass({
     };
 
     request.sendSignupForm.call(this.props.scope, form);
-  },
+  }
 
   render() {
     return (
@@ -110,7 +114,11 @@ const Signup = React.createClass({
         </form>
       </div>
     );
-  },
-});
+  }
+}
+
+Signup.propTypes = {
+  scope: PropTypes.object.isRequired,
+};
 
 export default Signup;

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import CalendarWidget from './calendar-widget';
 
@@ -65,38 +66,49 @@ function viewTime(time) {
   return timeStr;
 }
 
-const SelectTime = React.createClass({
-  render() {
-    const options = [];
-    let timeStr;
+function SelectTime() {
+  const options = [];
+  let timeStr;
 
-    for (let i = 0; i < 48; i += 1) {
-      const minutes = (i % 2 === 0 ? '00' : '30');
-      const a = Math.floor(i / 2);
+  for (let i = 0; i < 48; i += 1) {
+    const minutes = (i % 2 === 0 ? '00' : '30');
+    const a = Math.floor(i / 2);
 
-      if (a === 0) timeStr = `12:${minutes}am`;
-      else if (a < 12) timeStr = `${a}:${minutes}am`;
-      else if (a === 12) timeStr = `12:${minutes}pm`;
-      else if (a > 12) timeStr = `${a - 12}:${minutes}pm`;
+    if (a === 0) timeStr = `12:${minutes}am`;
+    else if (a < 12) timeStr = `${a}:${minutes}am`;
+    else if (a === 12) timeStr = `12:${minutes}pm`;
+    else if (a > 12) timeStr = `${a - 12}:${minutes}pm`;
 
-      options.push(<div key={i} className="time" data-time={i * MS_IN_HOUR / 2}>{timeStr}</div>);
-    }
+    options.push(<div key={i} className="time" data-time={i * MS_IN_HOUR / 2}>{timeStr}</div>);
+  }
 
-    return (
-      <div>
-        {options}
-      </div>
-    );
-  },
-});
+  return (
+    <div>
+      {options}
+    </div>
+  );
+}
 
+class CreateEvent extends Component {
+  constructor(props) {
+    super(props);
 
-const CreateEvent = React.createClass({
-  getInitialState() {
-    const state = setState(this.props);
-    state.classNone = {};
-    return state;
-  },
+    this.state = {
+      ...props,
+      classNone: {},
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.changeIsRepeatable = this.changeIsRepeatable.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.changeVisible = this.changeVisible.bind(this);
+    this.selectStartDate = this.selectStartDate.bind(this);
+    this.selectEndDate = this.selectEndDate.bind(this);
+    this.selectTime = this.selectTime.bind(this);
+    this.selectRepeatOptions = this.selectRepeatOptions.bind(this);
+    this.selectRepeatEnd = this.selectRepeatEnd.bind(this);
+    this.hidden = this.hidden.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     let newState;
@@ -110,20 +122,20 @@ const CreateEvent = React.createClass({
 
     newState.classNone = {};
     this.setState(newState);
-  },
+  }
 
   handleChange(e) {
     const { target } = e;
     const { state } = this;
     state.eventData[target.name] = target.value;
     this.setState(state);
-  },
+  }
 
   changeIsRepeatable() {
     const { state } = this;
     state.eventData.repeat = state.eventData.repeat ? '' : 'repeat';
     this.setState(state);
-  },
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -165,7 +177,7 @@ const CreateEvent = React.createClass({
     }
 
     requests.sendEventForm.call(this.props.scope, form, this.state.id);
-  },
+  }
 
   changeVisible(e) {
     e.stopPropagation();
@@ -185,17 +197,17 @@ const CreateEvent = React.createClass({
       const height = document.querySelector(`${className} .nav-date`).offsetHeight;
       document.querySelector(className).style.setProperty('--nav-date-height', `${height}px`);
     }
-  },
+  }
 
   selectStartDate(e) {
     e.stopPropagation();
     selectDate.call(this, e.target, 'startDate', 'startDate');
-  },
+  }
 
   selectEndDate(e) {
     e.stopPropagation();
     selectDate.call(this, e.target, 'endDate', 'endDate');
-  },
+  }
 
   selectTime(e) {
     e.stopPropagation();
@@ -209,7 +221,7 @@ const CreateEvent = React.createClass({
       state.vis[visState] = false;
       this.setState(state);
     }
-  },
+  }
 
   selectRepeatOptions(e) {
     e.stopPropagation();
@@ -228,18 +240,18 @@ const CreateEvent = React.createClass({
       state.vis[visState] = false;
       this.setState(state);
     }
-  },
+  }
 
   selectRepeatEnd(e) {
     e.stopPropagation();
     selectDate.call(this, e.target, 'repeatEnd', 'repEnd');
-  },
+  }
 
   hidden() {
     const { state } = this;
     state.vis = {};
     this.setState(state);
-  },
+  }
 
   render() {
     const { eventData } = this.state;
@@ -504,7 +516,12 @@ const CreateEvent = React.createClass({
         </form>
       </div>
     );
-  },
-});
+  }
+}
+
+CreateEvent.propTypes = {
+  scope: PropTypes.object.isRequired,
+  visible: PropTypes.bool.isRequired,
+};
 
 export default CreateEvent;

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import IventsOfDay from './day';
 import IventsOfWeek from './week';
@@ -51,22 +52,23 @@ function getNotification() {
   if (eventsForNotif !== []) createNotification(eventsForNotif);
 }
 
-const EventsTable = React.createClass({
-  getInitialState() {
-    return {
+class EventsTable extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       events: [],
       eventId: '',
-      visEventForm: this.props.visEventForm,
+      visEventForm: props.visEventForm,
       visFullEvent: false,
       visError: false,
     };
-  },
 
-  componentWillReceiveProps(nextProps) {
-    const { state } = this;
-    state.visEventForm = nextProps.visEventForm;
-    getThisEvents.call(this, state, nextProps);
-  },
+    this.clearForm = this.clearForm.bind(this);
+    this.changeFullEvent = this.changeFullEvent.bind(this);
+    this.viewFullEvent = this.viewFullEvent.bind(this);
+    this.changeVisError = this.changeVisError.bind(this);
+  }
 
   componentWillMount() {
     getThisEvents.call(this);
@@ -74,7 +76,25 @@ const EventsTable = React.createClass({
     const start = new Date().getTime();
     const end = start + MS_IN_DAY + MS_IN_HOUR;
     setInterval(requests.getDayEvents.call(this, start, end), MS_IN_DAY);
-  },
+  }
+
+  componentDidMount() {
+    if (!('Notification' in window)) {
+      alert('This browser does not support desktop notification');
+    } else {
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          setInterval(getNotification, 1000);
+        }
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { state } = this;
+    state.visEventForm = nextProps.visEventForm;
+    getThisEvents.call(this, state, nextProps);
+  }
 
   getArrOfEvents(res, startMS, endMS) {
     const arrSort = sortEvents(res, startMS, endMS);
@@ -82,19 +102,20 @@ const EventsTable = React.createClass({
 
     state.events = arrSort;
     this.setState(state);
-  },
+  }
+
+  // eslint-disable-next-line
+  getArrOfDayEvents(res, start, end) {
+    const arrSort = sortEvents(res, start, end);
+    todayEvents = arrSort;
+  }
 
   updateEvents() {
     const start = new Date().getTime();
     const end = start + MS_IN_DAY + MS_IN_HOUR;
     getThisEvents.call(this);
     requests.getDayEvents.call(this, start, end);
-  },
-
-  getArrOfDayEvents(res, start, end) {
-    const arrSort = sortEvents(res, start, end);
-    todayEvents = arrSort;
-  },
+  }
 
   clearForm(e) {
     const { target } = e;
@@ -103,7 +124,7 @@ const EventsTable = React.createClass({
       state.eventId = '';
       this.setState(state);
     }
-  },
+  }
 
   changeFullEvent(e) {
     const { target } = e;
@@ -122,7 +143,7 @@ const EventsTable = React.createClass({
       state.visFullEvent = false;
       this.setState(state);
     }
-  },
+  }
 
   viewFullEvent(e) {
     const { target } = e;
@@ -147,7 +168,7 @@ const EventsTable = React.createClass({
     }
 
     this.setState(state);
-  },
+  }
 
   changeVisError(e) {
     const { state } = this;
@@ -159,19 +180,7 @@ const EventsTable = React.createClass({
     }
 
     this.setState(state);
-  },
-
-  componentDidMount() {
-    if (!('Notification' in window)) {
-      alert('This browser does not support desktop notification');
-    } else {
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          setInterval(getNotification, 1000);
-        }
-      });
-    }
-  },
+  }
 
   render() {
     let body;
@@ -219,7 +228,13 @@ const EventsTable = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+EventsTable.propTypes = {
+  visEventForm: PropTypes.bool.isRequired,
+  period: PropTypes.string.isRequired,
+  selDate: PropTypes.object.isRequired,
+};
 
 export default EventsTable;

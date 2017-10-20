@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import validation from '../validation';
 import request from '../requests';
 
-const Login = React.createClass({
-  getInitialState() {
-    validation.validLogin = validation.validLogin.bind(this);
-    validation.validPass = validation.validPass.bind(this);
-    validation.validAuthForm = validation.validAuthForm.bind(this);
+class Login extends Component {
+  constructor(props) {
+    super(props);
 
-    return {
+    this.state = {
       valid: false,
       mesEmail: '',
       mesPassword: '',
     };
-  },
+
+    validation.validLogin = validation.validLogin.bind(this);
+    validation.validPass = validation.validPass.bind(this);
+    validation.validAuthForm = validation.validAuthForm.bind(this);
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -25,7 +30,7 @@ const Login = React.createClass({
     };
 
     request.sendLoginForm.call(this.props.scope, form);
-  },
+  }
 
   render() {
     return (
@@ -82,8 +87,11 @@ const Login = React.createClass({
         </form>
       </div>
     );
-  },
-});
+  }
+}
 
+Login.propTypes = {
+  scope: PropTypes.object.isRequired,
+};
 
 export default Login;
