@@ -61,8 +61,8 @@ class Login extends Component {
 
 
   render() {
+    // TODO: Rewrite classes according to BEM methodology
     const isButtonEnabled = formFields.every(field => this.state[`${field}IsValid`]);
-
     const fields = formFields.map(this.renderInput);
 
     return (

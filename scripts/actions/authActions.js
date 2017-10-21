@@ -6,11 +6,14 @@ export const AUTH_FETCHING = 'AUTH_FETCHING';
 export const LOGGED_IN = 'LOGGED_IN';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const SIGNUP_FAILED = 'SIGNUP_FAILED';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 const authFetching = () => ({ type: AUTH_FETCHING });
 const loggedIn = () => ({ type: LOGGED_IN });
 const loginFailed = () => ({ type: LOGIN_FAILED });
 const signupFailed = () => ({ type: SIGNUP_FAILED });
+
+export const clearErrors = () => ({ type: CLEAR_ERRORS });
 
 export function requestLogin(formData) {
   return (dispatch) => {

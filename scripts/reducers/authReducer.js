@@ -4,13 +4,14 @@ import {
   LOGGED_IN,
   LOGIN_FAILED,
   SIGNUP_FAILED,
-  MODAL_CLOSED,
+  CLEAR_ERRORS,
 } from '../actions/authActions';
 
 const initialState = {
   loginError: false,
   signupError: false,
   authFetching: false,
+  serverError: false,
 };
 
 export default createReducer(initialState, {
@@ -18,7 +19,7 @@ export default createReducer(initialState, {
   [LOGGED_IN]: loggedIn,
   [LOGIN_FAILED]: loginFailed,
   [SIGNUP_FAILED]: signupFailed,
-  [MODAL_CLOSED]: modalClosed,
+  [CLEAR_ERRORS]: clearErrors,
 });
 
 function authFetching(state) {
@@ -37,6 +38,6 @@ function signupFailed(state) {
   return { ...state, loginError: false, signupError: true };
 }
 
-function modalClosed(state) {
-  return { ...state, loginError: false, signupError: false };
+function clearErrors(state) {
+  return { ...state, loginError: false, signupError: false, serverError: false };
 }

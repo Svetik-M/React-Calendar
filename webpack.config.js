@@ -6,7 +6,7 @@ module.exports = {
   context: __dirname,
   entry: [
     'webpack-hot-middleware/client',
-    './scripts/index.jsx',
+    './scripts/index.js',
   ],
   output: {
     path: `${__dirname}/build`,

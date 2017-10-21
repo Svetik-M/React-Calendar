@@ -1,4 +1,6 @@
 {
+  "appName": "My Calendar",
+
   "categoryUnselected": "Please, select the event category",
   "firstNameEmpty": "Enter your First Name",
   "lastNameEmpty": "Enter your Last Name",
@@ -8,6 +10,12 @@
   "passwordInvalid": "Invalid Password!",
   "periodInvalid": "The begining of the event must be no later then the and of the event",
   "titleEmpty": "Please, enter the event title",
+  "loginError": "Incorrect E-mail Address or Password",
+  "signupError": "User already exists, please Log in",
+  "serverError": "Internal server or database error.\nPlease try again later",
+
+  "signupTab": "Sign Up",
+  "loginTab": "Log In",
 
   "loginFormTitle": "Welcome Back!",
   "loginPlaceholder": "E-mail Address",

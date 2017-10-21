@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 
-import AuthorizationForm from './components/auth/auth';
+import AuthorizationForm from './containers/AuthorizationFormContainer';
 import AppView from './components/app';
 
 export default function Root() {
