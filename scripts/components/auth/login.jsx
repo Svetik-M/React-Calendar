@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
-import * as validator from '../../utils/validation';
+import * as validator from '../../utils/validator';
 import { requestLogin } from '../../actions/authorizationActions';
 import { errorMessages } from '../../config/constants.json';
 

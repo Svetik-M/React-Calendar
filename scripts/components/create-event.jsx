@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CalendarWidget from './calendar-widget';
 
 import requests from '../utils/requests';
-import validation from '../utils/validation';
+import validation from '../utils/validator';
 import { getDateStr, getTimeStr } from '../viewing-options';
 
 const MS_IN_HOUR = 3600000;

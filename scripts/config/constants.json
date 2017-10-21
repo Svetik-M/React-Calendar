@@ -1,10 +1,13 @@
 {
   "errorMessages": {
-    "emptyLogin": "Enter your E-mail Address",
-    "emptyPassword": "Enter your Password",
-    "emptyFirstName": "Enter your First Name",
-    "emptyLastName": "Enter your Last Name",
-    "invalidLogin": "Invalid E-mail Address!",
-    "invalidPassword": "Invalid Password!"
+    "categoryUnselected": "Please, select the event category",
+    "firstNameEmpty": "Enter your First Name",
+    "lastNameEmpty": "Enter your Last Name",
+    "loginEmpty": "Enter your E-mail Address",
+    "loginInvalid": "Invalid E-mail Address!",
+    "passwordEmpty": "Enter your Password",
+    "passwordInvalid": "Invalid Password!",
+    "periodInvalid": "The begining of the event must be no later then the and of the event",
+    "titleEmpty": "Please, enter the event title"
   }
 }
