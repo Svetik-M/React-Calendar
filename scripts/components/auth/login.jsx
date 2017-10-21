@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import * as validator from '../../utils/validator';
-import { requestLogin } from '../../actions/authorizationActions';
 import labelsUtil from '../../utils/labelsUtil';
 
 const formFields = ['login', 'password'];
@@ -43,7 +43,7 @@ class Login extends Component {
       password: this.state.password,
     };
 
-    requestLogin(form);
+    this.props.requestLogin(form);
   }
 
   validateForm(value, name, changeValue) {
@@ -120,5 +120,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  requestLogin: PropTypes.func.isRequired,
+};
 
 export default Login;

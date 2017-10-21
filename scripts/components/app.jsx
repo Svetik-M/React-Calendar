@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
 
-import TitleMenu from './components/title-menu';
-import SidebarMenu from './components/sidebar-menu';
-import EventsTable from './components/events-table';
-import AuthorizationForm from './components/auth/auth';
+import TitleMenu from './title-menu';
+import SidebarMenu from './sidebar-menu';
+import EventsTable from './events-table';
 
-import '../styles/style.scss';
+import '../../styles/style.scss';
 
 const date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
@@ -116,11 +113,4 @@ class AppView extends Component {
   }
 }
 
-const routs = (
-  <Router history={browserHistory}>
-    <Route path="/user" component={AppView} />
-    <Route path="/:form" component={AuthorizationForm} />
-  </Router>
-);
-
-ReactDOM.render(routs, document.getElementById('content'));
+export default AppView;

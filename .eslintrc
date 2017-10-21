@@ -24,22 +24,10 @@
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/label-has-for": [ 2, {
       "components": [ "Label" ],
-      "required": {
-        "some": [ "nesting", "id" ]
-      },
+      "required": { "some": [ "nesting", "id" ] },
     }],
-    "comma-dangle": [
-      "error",
-      "always-multiline",
-      {
-        "functions": "ignore"
-      }
-    ],
-    "react/forbid-prop-types": [
-      "error",
-      {
-        "forbid": [ "any" ]
-      }
-    ]
+    "comma-dangle": [ "error", "always-multiline", { "functions": "ignore" }],
+    "react/forbid-prop-types": [ "error", { "forbid": [ "any" ] }],
+    "no-use-before-define": ["error", { "functions": false }]
   }
 }

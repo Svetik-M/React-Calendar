@@ -2,29 +2,32 @@ function getQueryString(params) {
   return Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
 }
 
-function getfetchoptions(method, body, additionalOptions) {
+function getfetchOptions(method, body) {
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+
   return {
     method,
-    body,
+    body: JSON.stringify(body),
+    headers,
     credentials: 'same-origin',
-    ...additionalOptions,
   };
 }
 
 export function GET(url, params) {
   const fullUrl = params ? url : `${url}?${getQueryString(params)}`;
-  return fetch(fullUrl, getfetchoptions('GET'));
+  return fetch(fullUrl, getfetchOptions('GET'));
 }
 
 export function POST(url, body) {
-  return fetch(url, getfetchoptions('POST', body));
+  return fetch(url, getfetchOptions('POST', body));
 }
 
 export function PUT(url, body) {
-  return fetch(url, getfetchoptions('PUT', body));
+  return fetch(url, getfetchOptions('PUT', body));
 }
 
 export function DELETE(url, params) {
   const fullUrl = params ? url : `${url}?${getQueryString(params)}`;
-  return fetch(fullUrl, getfetchoptions('DELETE'));
+  return fetch(fullUrl, getfetchOptions('DELETE'));
 }

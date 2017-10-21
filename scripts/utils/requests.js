@@ -1,31 +1,31 @@
 const requests = {
-  sendLoginForm(form, collback) {
-    const body = JSON.stringify(form);
-    const scope = this;
-
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('POST', '/login');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          if (xhr.responseText === 'Unauthorized') {
-            collback();
-          } else if (xhr.responseText === 'Success') {
-            window.location = 'http://localhost:8080/user/'; // 'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
-          } else {
-            scope.changeVisError();
-          }
-        } else {
-          scope.changeVisError();
-        }
-      }
-    };
-
-    xhr.send(body);
-  },
+  // sendLoginForm(form, collback) {
+  //   const body = JSON.stringify(form);
+  //   const scope = this;
+  //
+  //   const xhr = new XMLHttpRequest();
+  //
+  //   xhr.open('POST', '/login');
+  //   xhr.setRequestHeader('Content-Type', 'application/json');
+  //
+  //   xhr.onreadystatechange = () => {
+  //     if (xhr.readyState === 4) {
+  //       if (xhr.status === 200) {
+  //         if (xhr.responseText === 'Unauthorized') {
+  //           collback();
+  //         } else if (xhr.responseText === 'Success') {
+  //           window.location = 'http://localhost:8080/user/'; // 'https://my-calendar-react.herokuapp.com/user/'; // 'http://localhost:8080/user/';
+  //         } else {
+  //           scope.changeVisError();
+  //         }
+  //       } else {
+  //         scope.changeVisError();
+  //       }
+  //     }
+  //   };
+  //
+  //   xhr.send(body);
+  // },
 
   sendSignupForm(form) {
     const body = JSON.stringify(form);

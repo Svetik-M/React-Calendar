@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 
-import Login from './login';
+import LoginContainer from '../../containers/LoginContainer';
 import Signup from './signup';
 import Error from '../../components/error';
 
@@ -75,7 +75,7 @@ class AuthorizationForm extends Component {
       );
 
       errorMassage = 'Incorrect E-mail Address or Password';
-      form = <Login />;
+      form = <LoginContainer />;
     } else if (this.state.formType === 'signup') {
       menu = (
         <ul className="form-group">
