@@ -1,4 +1,4 @@
-import React, { Components } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -28,7 +28,7 @@ function getWeekPeriod(date) {
   };
 }
 
-class SelectedPeriod extends Components {
+class SelectedPeriod extends Component {
   constructor(props) {
     super(props);
 
@@ -56,6 +56,7 @@ class SelectedPeriod extends Components {
 
 SelectedPeriod.propTypes = {
   selDate: PropTypes.object.isRequired,
+  period: PropTypes.string.isRequired,
 };
 
 export default SelectedPeriod;

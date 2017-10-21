@@ -1,4 +1,4 @@
-import requests from './requests';
+import requests from './utils/requests';
 import { getDateStr, getTimeStr } from './viewing-options';
 
 const MS_IN_DAY = 86400000;

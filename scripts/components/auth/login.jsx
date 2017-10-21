@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import * as validation from '../../utils/validation';
+import * as validator from '../../utils/validation';
 import { requestLogin } from '../../actions/authorizationActions';
+import { errorMessages } from '../../config/constants.json';
+
+const formFields = ['login', 'password'];
 
 class Login extends Component {
   constructor(props) {
@@ -12,16 +14,28 @@ class Login extends Component {
     this.state = {
       login: '',
       password: '',
-      isValidLogin: false,
-      isValidPassword: false,
-      loginError: '',
-      passwordError: '',
+      loginIsValid: false,
+      passwordIsValid: false,
+      loginError: null,
+      passwordError: null,
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onHandleBlur = this.onHandleBlur.bind(this);
+    this.onHandleChange = this.onHandleChange.bind(this);
+    this.onHandleSubmit = this.onHandleSubmit.bind(this);
   }
 
-  handleSubmit(e) {
+  onHandleChange(e) {
+    const { value, name } = e.target;
+    this.validateForm(value, name, true);
+  }
+
+  onHandleBlur(e) {
+    const { value, name } = e.target;
+    this.validateForm(value, name, false);
+  }
+
+  onHandleSubmit(e) {
     e.preventDefault();
 
     const form = {
@@ -32,21 +46,40 @@ class Login extends Component {
     requestLogin(form);
   }
 
+  validateForm(value, name, changeValue) {
+    const { isValid, error } = validator[name](value);
+
+    this.setState(() => {
+      const newState = { [`${name}IsValid`]: isValid };
+
+      if (changeValue) {
+        newState[name] = value;
+      }
+      if (!changeValue || !error) {
+        newState[`${name}Error`] = errorMessages[error];
+      }
+
+      return newState;
+    });
+  }
+
   render() {
+    const isButtonEnabled = formFields.every(field => this.state[`${field}IsValid`]);
+
     return (
       <div id="login">
         <h2>Welcome Back!</h2>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.onHandleSubmit}>
           <div className="field-wrap">
             <label>
               <i className="fa fa-user" aria-hidden="true" />
               <input
                 type="email"
-                ref={(el) => { this.login = el; }}
+                name="login"
                 className={classNames('login', { error: this.state.loginError })}
-                onBlur={validation.validLogin}
-                onChange={validation.validAuthForm}
-                defaultValue=""
+                onBlur={this.onHandleBlur}
+                onChange={this.onHandleChange}
+                value={this.state.login}
                 placeholder="E-mail Address"
               />
             </label>
@@ -60,11 +93,11 @@ class Login extends Component {
               <i className="fa fa-lock" aria-hidden="true" />
               <input
                 type="password"
-                ref={(el) => { this.password = el; }}
-                className={`password${this.state.mesPassword ? ' error' : ''}`}
-                onBlur={validation.validPass}
-                onChange={validation.validAuthForm}
-                defaultValue=""
+                name="password"
+                className={classNames('password', { error: this.state.passwordError })}
+                onBlur={this.onHandleBlur}
+                onChange={this.onHandleChange}
+                value={this.state.password}
                 placeholder="Password"
               />
             </label>
@@ -72,14 +105,14 @@ class Login extends Component {
               <div className="message">
                 Password must be 7-15 characters, including letters and numbers
               </div>
-              <div className="err">{this.state.mesPassword}</div>
+              <div className="err">{this.state.passwordError}</div>
             </div>
           </div>
 
           <button
             type="submit"
-            className={this.state.valid ? 'button' : ' button-block'}
-            disabled={!this.state.valid}
+            className={isButtonEnabled ? 'button' : ' button-block'}
+            disabled={!isButtonEnabled}
             formNoValidate
           >
             Log In
@@ -89,9 +122,5 @@ class Login extends Component {
     );
   }
 }
-
-Login.propTypes = {
-  scope: PropTypes.object.isRequired,
-};
 
 export default Login;

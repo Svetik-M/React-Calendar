@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import validation from '../validation';
-import request from '../requests';
+import validation from '../../utils/validation';
+import request from '../../utils/requests';
 
 class Signup extends Component {
   constructor(props) {

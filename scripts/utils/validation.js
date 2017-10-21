@@ -16,23 +16,23 @@ function validateField(field, value) {
     || !checkField(field, fieldValue) && `invalid${field}`
     || null;
 
-  return { iaValid: !error, error };
+  return { isValid: !error, error };
 }
 
-export function validateLogin(value) {
-  validateField('Login', value);
+export function login(value) {
+  return validateField('Login', value);
 }
 
-export function validatePassword(value) {
-  validateField('Password', value);
+export function password(value) {
+  return validateField('Password', value);
 }
 
-export function validateFirstName(value) {
-  validateField('FirstName', value);
+export function firstName(value) {
+  return validateField('FirstName', value);
 }
 
-export function validateLastName(value) {
-  validateField('LastName', value);
+export function lastName(value) {
+  return validateField('LastName', value);
 }
 
 export function validateTitle() {

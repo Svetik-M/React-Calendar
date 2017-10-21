@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Login from './login';
 import Signup from './signup';
-import Error from '../components/error';
+import Error from '../../components/error';
 
 class AuthorizationForm extends Component {
   constructor(props) {
@@ -75,7 +75,7 @@ class AuthorizationForm extends Component {
       );
 
       errorMassage = 'Incorrect E-mail Address or Password';
-      form = <Login scope={this} />;
+      form = <Login />;
     } else if (this.state.formType === 'signup') {
       menu = (
         <ul className="form-group">

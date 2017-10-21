@@ -17,7 +17,11 @@ function Error(props) {
 }
 
 Error.propTypes = {
-  visible: PropTypes.bool.isRequired,
+  visible: PropTypes.bool,
+};
+
+Error.defaultProps = {
+  visible: false,
 };
 
 export default Error;

@@ -9,7 +9,7 @@ import FullEvent from './full-event';
 import Error from './error';
 
 import { getThisEvents, sortEvents, getEventDate } from '../get-events';
-import requests from '../requests';
+import requests from '../utils/requests';
 
 const MS_IN_DAY = 86400000;
 const MS_IN_HOUR = 3600000;

@@ -5,6 +5,6 @@
     "emptyFirstName": "Enter your First Name",
     "emptyLastName": "Enter your Last Name",
     "invalidLogin": "Invalid E-mail Address!",
-    "invalidPassword": "Invalid Password!",
+    "invalidPassword": "Invalid Password!"
   }
 }

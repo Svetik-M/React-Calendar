@@ -21,6 +21,7 @@ module.exports = {
     new ExtractTextPlugin('styles.css', {
       allChunks: true,
     }),
+    new WEBPACK.HotModuleReplacementPlugin(),
     new WEBPACK.NoErrorsPlugin(),
     new WEBPACK.DefinePlugin({
       NODE_ENV: JSON.stringify(NODE_ENV),
@@ -29,7 +30,7 @@ module.exports = {
 
   resolve: {
     modulesDirectories: ['node_modules'],
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.jsx'],
   },
 
   resolveLoader: {
@@ -55,6 +56,10 @@ module.exports = {
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!resolve-url!sass-loader?sourceMap'),
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
       },
     ],
   },
