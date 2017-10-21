@@ -1,0 +1,16 @@
+{
+  "categoryUnselected": "Please, select the event category",
+  "firstNameEmpty": "Enter your First Name",
+  "lastNameEmpty": "Enter your Last Name",
+  "loginEmpty": "Enter your E-mail Address",
+  "loginInvalid": "Invalid E-mail Address!",
+  "passwordEmpty": "Enter your Password",
+  "passwordInvalid": "Invalid Password!",
+  "periodInvalid": "The begining of the event must be no later then the and of the event",
+  "titleEmpty": "Please, enter the event title",
+  "loginFormTitle": "Welcome Back!",
+  "loginPlaceholder": "E-mail Address",
+  "passwordPlaceholder": "Password",
+  "loginformMessage": "Password must be 7-15 characters, including letters and numbers",
+  "loginButtom": "Log In"
+}

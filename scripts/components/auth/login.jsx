@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import * as validator from '../../utils/validator';
 import { requestLogin } from '../../actions/authorizationActions';
-import { errorMessages } from '../../config/constants.json';
+import labelsUtil from '../../utils/labelsUtil';
 
 const formFields = ['login', 'password'];
 
@@ -56,7 +56,7 @@ class Login extends Component {
         newState[name] = value;
       }
       if (!changeValue || !error) {
-        newState[`${name}Error`] = errorMessages[error];
+        newState[`${name}Error`] = labelsUtil(error);
       }
 
       return newState;
@@ -68,7 +68,7 @@ class Login extends Component {
 
     return (
       <div id="login">
-        <h2>Welcome Back!</h2>
+        <h2>{labelsUtil('loginFormTitle')}</h2>
         <form onSubmit={this.onHandleSubmit}>
           <div className="field-wrap">
             <label>
@@ -80,7 +80,7 @@ class Login extends Component {
                 onBlur={this.onHandleBlur}
                 onChange={this.onHandleChange}
                 value={this.state.login}
-                placeholder="E-mail Address"
+                placeholder={labelsUtil('loginPlaceholder')}
               />
             </label>
             <div className="err">
@@ -98,13 +98,11 @@ class Login extends Component {
                 onBlur={this.onHandleBlur}
                 onChange={this.onHandleChange}
                 value={this.state.password}
-                placeholder="Password"
+                placeholder={labelsUtil('passwordPlaceholder')}
               />
             </label>
             <div>
-              <div className="message">
-                Password must be 7-15 characters, including letters and numbers
-              </div>
+              <div className="message">{labelsUtil('loginformMessage')}</div>
               <div className="err">{this.state.passwordError}</div>
             </div>
           </div>
@@ -115,7 +113,7 @@ class Login extends Component {
             disabled={!isButtonEnabled}
             formNoValidate
           >
-            Log In
+            {labelsUtil('loginButtom')}
           </button>
         </form>
       </div>
