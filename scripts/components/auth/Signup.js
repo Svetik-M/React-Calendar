@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
-import * as validator from '../../utils/validator';
 import labelsUtil from '../../utils/labelsUtil';
+import Input from '../../ui-kit/Input';
 
 const formFields = ['firstName', 'lastName', 'login', 'password'];
+const fieldTypes = {
+  login: 'email',
+  password: 'password',
+};
 
 class Signup extends Component {
   constructor(props) {
@@ -20,25 +23,18 @@ class Signup extends Component {
       lastNameIsValid: false,
       loginIsValid: false,
       passwordIsValid: false,
-      firstNameError: null,
-      lastNameError: null,
-      loginError: null,
-      passwordError: null,
     };
 
-    this.onHandleBlur = this.onHandleBlur.bind(this);
     this.onHandleChange = this.onHandleChange.bind(this);
     this.onHandleSubmit = this.onHandleSubmit.bind(this);
+    this.renderInput = this.renderInput.bind(this);
   }
 
-  onHandleChange(e) {
-    const { value, name } = e.target;
-    this.validateForm(value, name, true);
-  }
-
-  onHandleBlur(e) {
-    const { value, name } = e.target;
-    this.validateForm(value, name, false);
+  onHandleChange(name, value, isValid) {
+    this.setState({
+      [name]: value,
+      [`${name}IsValid`]: isValid,
+    });
   }
 
   onHandleSubmit(e) {
@@ -54,25 +50,25 @@ class Signup extends Component {
     this.props.requestSignup(form);
   }
 
-  validateForm(value, name, changeValue) {
-    const { isValid, error } = validator[name](value);
-
-    this.setState(() => {
-      const newState = { [`${name}IsValid`]: isValid };
-
-      if (changeValue) {
-        newState[name] = value;
-      }
-      if (!changeValue || !error) {
-        newState[`${name}Error`] = labelsUtil(error);
-      }
-
-      return newState;
-    });
+  renderInput(name, index) {
+    return (
+      <Input
+        className={index > 1 ? 'main' : ''}
+        key={name}
+        type={fieldTypes[name]}
+        name={name}
+        onChange={this.onHandleChange}
+        value={this.state[name]}
+        placeholder={`${name}Placeholder`}
+      />
+    );
   }
 
   render() {
+    // TODO: Rewrite classes according to BEM methodology
     const isButtonEnabled = formFields.every(field => this.state[`${field}IsValid`]);
+
+    const fields = formFields.map(this.renderInput);
 
     return (
       <div id="signup">
@@ -80,65 +76,10 @@ class Signup extends Component {
 
         <form onSubmit={this.onHandleSubmit}>
           <div className="top-row">
-            <input
-              type="text"
-              name="firstName"
-              className={classNames('firstName', { error: this.state.firstNameError })}
-              onBlur={this.onHandleBlur}
-              onChange={this.onHandleChange}
-              value={this.state.firstName}
-              placeholder={labelsUtil('firstNamePlaceholder')}
-            />
-            <input
-              type="text"
-              name="lastName"
-              className={classNames('lastName', { error: this.state.lastNameError })}
-              onBlur={this.onHandleBlur}
-              onChange={this.onHandleChange}
-              value={this.state.lastName}
-              placeholder={labelsUtil('lastNamePlaceholder')}
-            />
-            <div className="err">
-              {this.state.firstNameError}
-            </div>
-            <div className="err">
-              {this.state.lastNameError}
-            </div>
+            {fields.slice(0, 2)}
           </div>
-
-          <div className="main">
-            <input
-              type="email"
-              name="login"
-              className={classNames('login', { error: this.state.loginError })}
-              onBlur={this.onHandleBlur}
-              onChange={this.onHandleChange}
-              value={this.state.login}
-              placeholder={labelsUtil('loginPlaceholder')}
-            />
-            <div className="err">
-              {this.state.loginError}
-            </div>
-          </div>
-
-          <div className="main">
-            <input
-              type="password"
-              name="password"
-              className={classNames('password', { error: this.state.passwordError })}
-              onBlur={this.onHandleBlur}
-              onChange={this.onHandleChange}
-              value={this.state.password}
-              placeholder={labelsUtil('passwordPlaceholder')}
-            />
-            <div>
-              <div className="message">
-                {labelsUtil('loginformMessage')}
-              </div>
-              <div className="err">{this.state.passwordError}</div>
-            </div>
-          </div>
-
+          {fields.slice(2)}
+          <div className="message">{labelsUtil('loginformMessage')}</div>
           <button
             type="submit"
             className={isButtonEnabled ? 'button' : ' button-block'}

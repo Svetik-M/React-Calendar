@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
-import * as validator from '../../utils/validator';
 import labelsUtil from '../../utils/labelsUtil';
+import Input from '../../ui-kit/Input';
 
 const formFields = ['login', 'password'];
+const fieldsProps = {
+  login: { type: 'email', icon: 'fa-user' },
+  password: { type: 'password', icon: 'fa-lock' },
+};
 
 class Login extends Component {
   constructor(props) {
@@ -16,23 +19,18 @@ class Login extends Component {
       password: '',
       loginIsValid: false,
       passwordIsValid: false,
-      loginError: null,
-      passwordError: null,
     };
 
-    this.onHandleBlur = this.onHandleBlur.bind(this);
     this.onHandleChange = this.onHandleChange.bind(this);
     this.onHandleSubmit = this.onHandleSubmit.bind(this);
+    this.renderInput = this.renderInput.bind(this);
   }
 
-  onHandleChange(e) {
-    const { value, name } = e.target;
-    this.validateForm(value, name, true);
-  }
-
-  onHandleBlur(e) {
-    const { value, name } = e.target;
-    this.validateForm(value, name, false);
+  onHandleChange(name, value, isValid) {
+    this.setState({
+      [name]: value,
+      [`${name}IsValid`]: isValid,
+    });
   }
 
   onHandleSubmit(e) {
@@ -46,67 +44,33 @@ class Login extends Component {
     this.props.requestLogin(form);
   }
 
-  validateForm(value, name, changeValue) {
-    const { isValid, error } = validator[name](value);
-
-    this.setState(() => {
-      const newState = { [`${name}IsValid`]: isValid };
-
-      if (changeValue) {
-        newState[name] = value;
-      }
-      if (!changeValue || !error) {
-        newState[`${name}Error`] = labelsUtil(error);
-      }
-
-      return newState;
-    });
+  renderInput(name) {
+    return (
+      <Input
+        className="field-wrap"
+        key={name}
+        type={fieldsProps[name].type}
+        name={name}
+        onChange={this.onHandleChange}
+        value={this.state[name]}
+        placeholder={`${name}Placeholder`}
+        icon={fieldsProps[name].icon}
+      />
+    );
   }
+
 
   render() {
     const isButtonEnabled = formFields.every(field => this.state[`${field}IsValid`]);
+
+    const fields = formFields.map(this.renderInput);
 
     return (
       <div id="login">
         <h2>{labelsUtil('loginFormTitle')}</h2>
         <form onSubmit={this.onHandleSubmit}>
-          <div className="field-wrap">
-            <label>
-              <i className="fa fa-user" aria-hidden="true" />
-              <input
-                type="email"
-                name="login"
-                className={classNames('login', { error: this.state.loginError })}
-                onBlur={this.onHandleBlur}
-                onChange={this.onHandleChange}
-                value={this.state.login}
-                placeholder={labelsUtil('loginPlaceholder')}
-              />
-            </label>
-            <div className="err">
-              {this.state.loginError}
-            </div>
-          </div>
-
-          <div className="field-wrap">
-            <label>
-              <i className="fa fa-lock" aria-hidden="true" />
-              <input
-                type="password"
-                name="password"
-                className={classNames('password', { error: this.state.passwordError })}
-                onBlur={this.onHandleBlur}
-                onChange={this.onHandleChange}
-                value={this.state.password}
-                placeholder={labelsUtil('passwordPlaceholder')}
-              />
-            </label>
-            <div>
-              <div className="message">{labelsUtil('loginformMessage')}</div>
-              <div className="err">{this.state.passwordError}</div>
-            </div>
-          </div>
-
+          {fields}
+          <div className="message">{labelsUtil('loginformMessage')}</div>
           <button
             type="submit"
             className={isButtonEnabled ? 'button' : ' button-block'}
