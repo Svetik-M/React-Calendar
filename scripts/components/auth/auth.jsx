@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 
 import LoginContainer from '../../containers/LoginContainer';
-import Signup from './signup';
+import SignupContainer from '../../containers/SignupContainer';
 import Error from '../../components/error';
 
 class AuthorizationForm extends Component {
@@ -87,7 +87,7 @@ class AuthorizationForm extends Component {
       );
 
       errorMassage = 'User already exists, please Log in';
-      form = <Signup scope={this} />;
+      form = <SignupContainer />;
     }
 
     return (

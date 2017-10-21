@@ -19,7 +19,10 @@ export function requestLogin(formData) {
     POST('/login', formData)
       .then(res => res.text())
       .then((resText) => {
-        if (resText === 'Unauthorized') dispatch(loginFailed());
+        if (resText === 'Unauthorized') {
+          dispatch(loginFailed());
+        }
+
         if (resText === 'Success') {
           dispatch(loggedIn());
           browserHistory.push('/user');
@@ -33,10 +36,16 @@ export function requestSignup(formData) {
     dispatch(authFetching());
 
     POST('/signup', formData)
-      .then((res) => {
-        const response = res.json();
-        if (response === 'Usrd') dispatch(signupFailed());
-        if (response === 'Success') window.location = 'http://localhost:8080/user/';
+      .then(res => res.text())
+      .then((resText) => {
+        if (resText === 'Used') {
+          dispatch(signupFailed());
+        }
+
+        if (resText === 'Success') {
+          dispatch(loggedIn());
+          browserHistory.push('/user');
+        }
       });
   };
 }

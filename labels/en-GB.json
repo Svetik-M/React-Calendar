@@ -8,9 +8,15 @@
   "passwordInvalid": "Invalid Password!",
   "periodInvalid": "The begining of the event must be no later then the and of the event",
   "titleEmpty": "Please, enter the event title",
+
   "loginFormTitle": "Welcome Back!",
   "loginPlaceholder": "E-mail Address",
   "passwordPlaceholder": "Password",
   "loginformMessage": "Password must be 7-15 characters, including letters and numbers",
-  "loginButtom": "Log In"
+  "loginButtom": "Log In",
+
+  "signupFormTitle": "Sign Up for Free",
+  "firstNamePlaceholder": "First Name",
+  "lastNamePlaceholder": "Last Name",
+  "signupButton": "Get Started"
 }
